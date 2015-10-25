@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="asmlBuilder"
+         name="ASML Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="asmlbuilder.builder.ASMLBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="asmlNature"
+         name="ASML Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="asmlbuilder.builder.ASMLNature">
+         </run>
+      </runtime>
+      <builder
+            id="br.ufmg.dcc.asml.checker.asmlBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands"> 
+      <category
+            name="ASML Project Nature commands"
+            id="asmlbuilder.asmlNature.category">
+      </category>
+      <command
+            name="Add/RemoveASML Project Nature"
+            defaultHandler="asmlbuilder.builder.AddRemoveASMLNatureHandler"
+            categoryId="asmlbuilder.asmlNature.category"
+            id="asmlbuilder.addRemoveASMLNature">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               commandId="asmlbuilder.addRemoveASMLNature"
+               label="Disable ASML builder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <test
+                              value="br.ufmg.dcc.asml.checker.asmlNature"
+                              property="org.eclipse.core.resources.projectNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="asmlbuilder.addRemoveASMLNature"
+               label="Enable ASML builder"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <not>
+                           <test
+                                 value="br.ufmg.dcc.asml.checker.asmlNature"
+                                 property="org.eclipse.core.resources.projectNature">
+                           </test>
+                        </not>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="br.ufmg.dcc.asml.asmlproblem"
+         name="ASML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="false">
+      </persistent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+   </extension>
+   
+<extension point="org.eclipse.ui.ide.markerResolution">
+    <markerResolutionGenerator
+        markerType="org.eclipse.core.resources.problemmarker"
+        class="asmlbuilder.resolution.QuickFixer"/>
+</extension>
+  <extension point="org.eclipse.ui.ide.projectNatureImages">   
+	<image icon="icons/vaccine.jpg" natureId="br.ufmg.dcc.asml.checker.asmlNature" id="asmlNatureImage"/> 
+  </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="asmlbuilder.view.preferences.VaccinePreferencePage"
+           id="asmlbuilder.view.preferences.VaccinePreferencePage"
+           name="Vaccine Preferences">
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.core.runtime.preferences">
+     <initializer
+           class="asmlbuilder.view.preferences.PreferenceInitializer">
+     </initializer>
+  </extension>
+  <extension
+        point="org.eclipse.ui.console.consoleFactories">
+        
+        <consoleFactory label="ConsoleASML" class="asmlbuilder.view.console.ASMLConsoleFactory" icon= "icons/vaccine.jpg">
+        </consoleFactory>
+        
+        
+  </extension>
+  <extension
+        point="org.eclipse.ui.views">
+     <view
+           category="br.ufmg.dcc.asml.checker.category"
+           class="asmlbuilder.view.navigator.ASMLCommonNavigator"
+           icon="icons/vaccine.jpg"
+           id="br.ufmg.dcc.asml.checker.navigator"
+           name="ASML Common Navigator">
+     </view>
+     <category
+           id="br.ufmg.dcc.asml.checker.category"
+           name="ASML">
+     </category>
+  </extension>
+  <extension
+        point="org.eclipse.ui.navigator.viewer">
+     <viewerActionBinding
+           viewerId="br.ufmg.dcc.asml.checker.navigator">
+        <includes>
+           <actionExtension
+                 pattern="org.eclipse.ui.navigator.resources.*">
+           </actionExtension>
+        </includes>
+     </viewerActionBinding>
+     <viewerContentBinding
+           viewerId="br.ufmg.dcc.asml.checker.navigator">
+        <includes>
+           <contentExtension
+                 pattern="br.ufmg.dcc.asml.checker.navigatorContent">
+           </contentExtension>
+           <contentExtension
+                 pattern="br.ufmg.dcc.asml.checker.filters.*">
+           </contentExtension>
+        </includes>
+     </viewerContentBinding>
+  </extension>
+  <extension
+        point="org.eclipse.ui.perspectiveExtensions">
+     <perspectiveExtension
+           targetID="org.eclipse.ui.resourcePerspective">
+        <view
+              id="br.ufmg.dcc.asml.checker.navigator"
+              ratio="0.5"
+              relationship="stack"
+              relative="org.eclipse.ui.navigator.ProjectExplorer">
+        </view>
+     </perspectiveExtension>
+  </extension>
+  <extension
+        point="org.eclipse.ui.navigator.navigatorContent">
+     <navigatorContent
+           contentProvider="asmlbuilder.view.navigator.ASMLContentProvider"
+           id="br.ufmg.dcc.asml.checker.navigatorContent"
+           labelProvider="asmlbuilder.view.navigator.ASMLLabelProvider"
+           name="ASML Content">
+        <triggerPoints>
+           <or>
+              <instanceof
+                    value="org.eclipse.core.resources.IWorkspaceRoot">
+              </instanceof>
+           </or>
+        </triggerPoints>
+     </navigatorContent>
+     <commonFilter
+           class="asmlbuilder.view.navigator.filters.ASMLRequiresFilter"
+           id="br.ufmg.dcc.asml.checker.filters.commonFilter"
+           name="ASMLRequiresFilter">
+     </commonFilter>
+  </extension>
+  <extension
+        point="org.eclipse.ui.startup">
+     <startup
+           class="asmlbuilder.view.start.ASMLStartup">
+     </startup>
+  </extension>
+</plugin>

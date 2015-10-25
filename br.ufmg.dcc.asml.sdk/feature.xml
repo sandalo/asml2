@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature id="br.ufmg.dcc.asml.sdk"
+	label="ASMLModel SDK Feature "
+	version="1.0.0.qualifier">
+	<plugin
+			id="br.ufmg.dcc.asml"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+	<plugin
+			id="br.ufmg.dcc.asml.ui"
+			download-size="0"
+			install-size="0"
+			version="0.0.0"
+			unpack="false"/>
+</feature>
