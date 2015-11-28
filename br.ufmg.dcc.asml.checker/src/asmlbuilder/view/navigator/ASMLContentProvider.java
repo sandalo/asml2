@@ -39,7 +39,7 @@ public class ASMLContentProvider implements ITreeContentProvider, IResourceChang
 
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		_viewer.refresh();
+		//_viewer.refresh();
 	}
 
 	@Override

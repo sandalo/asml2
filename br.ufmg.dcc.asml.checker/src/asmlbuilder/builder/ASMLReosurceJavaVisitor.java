@@ -11,6 +11,7 @@ import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
+import org.eclipse.jdt.core.dom.BlockComment;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
@@ -20,7 +21,6 @@ import org.eclipse.jdt.core.dom.ImportDeclaration;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.ParameterizedType;
 import org.eclipse.jdt.core.dom.PrimitiveType;
@@ -30,6 +30,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
+import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -227,6 +228,28 @@ public class ASMLReosurceJavaVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(MethodDeclaration node) {
 		try {
+			BlockComment newBlockComment = node.getAST().newBlockComment();
+			newBlockComment.setSourceRange(node.getStartPosition(), 50);
+			
+			
+			//create a ASTRewrite
+/*			ASTRewrite rewriter = ASTRewrite.create(node.getAST());
+			
+			ListRewrite listRewrite = rewriter.getListRewrite(block, Block.STATEMENTS_PROPERTY);
+			Statement placeHolder = (Statement) rewriter.createStringPlaceholder("//mycomment", ASTNode.EMPTY_STATEMENT);
+			listRewrite.insertFirst(placeHolder, null);
+		 
+			TextEdit edits = rewriter.rewriteAST();
+		 
+			// apply the text edits to the compilation unit
+			Document document = new Document(unit.getSource());
+		 
+			edits.apply(document);
+		 
+			// this is the code for adding statements
+			unit.getBuffer().setContents(document.get());
+			
+*/			
 			MethodDeclaration methodDeclaration = (MethodDeclaration) node;
 			String qualifiedName = "";
 			ITypeBinding[] exceptionTypes = methodDeclaration.resolveBinding().getExceptionTypes();

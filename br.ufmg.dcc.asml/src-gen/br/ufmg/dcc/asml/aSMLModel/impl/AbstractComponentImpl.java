@@ -434,7 +434,7 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public boolean containsType(String fullName) {
 		Set<ComponentInstance> instances = null;
-		instances = getAllComponentInstances();
+		instances = getInstances();
 		for (ComponentInstance componentInstance : instances) {
 			IType iType = componentInstance.getType();
 			if (iType == null)
@@ -446,6 +446,22 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		return false;
 	}
 
+	@Override
+	public boolean fullContainsType(String fullName) {
+		Set<ComponentInstance> instances = null;
+		instances = getAllComponentInstances();
+		for (ComponentInstance componentInstance : instances) {
+			IType iType = componentInstance.getType();
+			if (iType == null)
+				continue;
+			String fullyQualifiedName = iType.getFullyQualifiedName();
+			if (fullyQualifiedName.equals(fullName))
+				return true;
+		}
+		return false;
+	}
+	
+	
 	@Override
 	public String[] getAllSupertypesNames() {
 		Set<ComponentInstance> componentInstances = this.getInstances();

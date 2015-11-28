@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IClassFile;
@@ -66,7 +67,6 @@ public class ASMLProcessor {
 	private ASMLContext asmlContext;
 	XtextParser xtextParser = new XtextParser();
 	private String path_vaccine = null;
-	private boolean initialized = false;
 	private boolean DESIGN_MODE;
 	private boolean DEBUG;
 
@@ -75,7 +75,6 @@ public class ASMLProcessor {
 	public void printLog() {
 		if (DEBUG) {
 			List<ComponentInstance> componentInstances = new ArrayList<ComponentInstance>(asmlContext.getComponentInstances());
-
 			Collections.sort(componentInstances, new Comparator<ComponentInstance>() {
 				@Override
 				public int compare(ComponentInstance o1, ComponentInstance o2) {
@@ -354,6 +353,7 @@ public class ASMLProcessor {
 	}
 
 	private void carregaArvoreDeComponentes(List<IProject> projects) {
+		System.out.println();
 		Map<String, String> paths = recoveryVaccineInfo(projects);
 		Resource resourcePrimario = mergeVaccinesComponents(paths);
 		associatesModelsToProjects(projects, resourcePrimario);

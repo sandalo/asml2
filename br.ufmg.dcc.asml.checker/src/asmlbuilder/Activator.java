@@ -98,6 +98,7 @@ public class Activator extends AbstractUIPlugin {
 				e.printStackTrace();
 			}
 		}
+		if(openedProjects.size()>0)
 		asmlProcessor.initialize(ASMLProcessor.FULL_BUILD, openedProjects);
 	}
 

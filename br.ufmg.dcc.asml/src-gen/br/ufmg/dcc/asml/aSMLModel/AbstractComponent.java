@@ -143,4 +143,6 @@ void removeInstance(ComponentInstance componentInstance);
 
 ASMLModel getModel();
 
+boolean fullContainsType(String fullName);
+
 } // AbstractComponent

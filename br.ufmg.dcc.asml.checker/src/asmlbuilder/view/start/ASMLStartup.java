@@ -9,7 +9,11 @@ public class ASMLStartup implements IStartup {
 	@Override
 	public void earlyStartup() {
 		Activator activator = Activator.getDefault();
-		activator.notifyAll();
+		try {
+			activator.notifyAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
