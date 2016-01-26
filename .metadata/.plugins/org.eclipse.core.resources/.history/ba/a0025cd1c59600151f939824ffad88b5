@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<struts-config>
+	<global-forwards>
+		<forward name="logon" path="/logon.jsp" />
+		<forward name="logoff" path="/logoff.do" />
+	</global-forwards>
+	<action-mappings>
+		<action path="/home" type="foo.FooAction" input="/autenticationForm.jsp">
+			<forward name="success" path="/home.jsp" />
+			<forward name="failure" path="/failure.jsp" />
+		</action>
+		<action path="/logoff" parameter="/logoff.jsp" type="org.apache.struts.action.ForwardAction" />
+	</action-mappings>
+</struts-config>
