@@ -19,7 +19,7 @@ public class ClassPathUtil {
 	 * (non-Javadoc)
 	 * 
 	 * @see org.eclipse.core.internal.events.InternalBuilder#build(int, java.util.Map, org.eclipse.core.runtime.IProgressMonitor)
-	 */
+	 */ 
 	public static String recuperaPathVaccine(IJavaProject javaProject) {
 		IClasspathEntry iClasspathEntryVaccine; 
 		try {

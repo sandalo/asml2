@@ -2,9 +2,11 @@ package asmlbuilder.restriction.implement;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -39,7 +41,7 @@ public class OnlyCanImplement extends RestricionChecker {
 					if (!isA) {
 						lineNumber = reference.getLineNumber();
 						String defaultMessage = "Somente  classes do tipo  " + componentA.getName() + " podem herdar de classe do tipo " + componentB.getName();
-						addViolation(restriction, lineNumber, instance, defaultMessage);
+						addViolation(restriction, lineNumber, instance, defaultMessage,IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"ONLY_CAN_IMPLEMENTS");
 					}
 				}
 			}

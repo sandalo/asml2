@@ -124,6 +124,9 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 				}
 			}
 		}
+		if(componentInstance.getResource() instanceof FileInJar)
+			if(isFalsePositive(componentInstance, component))
+				isMatch = false;
 		return isMatch;
 	}
 
@@ -192,6 +195,7 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 					if (!segments_component[i].equals("{?}") && !segments_component[i].equals(segments_instance[i])) {
 						// TODO: Reavaliar se esse código é necessário.
 						falsePositive = true;
+						break;
 					}
 				}
 			}

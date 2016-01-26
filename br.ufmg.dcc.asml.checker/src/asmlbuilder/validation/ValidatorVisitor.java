@@ -7,9 +7,12 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.EList;
 
+import asmlbuilder.Activator;
 import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.builder.Violation;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
+import asmlbuilder.view.preferences.PreferenceConstants;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentVisitor;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
@@ -25,8 +28,10 @@ public class ValidatorVisitor implements ComponentVisitor {
 
 	@Override
 	public void visit(AbstractComponent abstractComponent) {
-		validateComponentRestrictions(abstractComponent);
-		validateLocalization(abstractComponent);
+		if (Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SHOW_RESTRCTION_VALIDATIONS))
+			validateComponentRestrictions(abstractComponent);
+		if (Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SHOW_STRUCTURAL_VIOLATIONS))
+			validateLocalization(abstractComponent);
 	}
 
 	void validateComponentRestrictions(AbstractComponent abstractComponent) {
@@ -89,23 +94,23 @@ public class ValidatorVisitor implements ComponentVisitor {
 		for (ComponentInstance instanceOfComponent : intancesOfComponent) {
 			if (!localizacaoCorreta(abstractComponent, instanceOfComponent.getResource())) {
 				AbstractComponent eContainer = (AbstractComponent) abstractComponent.eContainer();
-				String message = "O  componente  " + abstractComponent.getName() + " deveria estar localizado de acordo com a definição: "+eContainer.getFullName();
-				asmlContext.getViolations().add(new Violation(instanceOfComponent.getResource(), message, 1, IMarker.SEVERITY_ERROR));
+				String message = "O componente  " + abstractComponent.getName() + " deveria estar localizado de acordo com a definição: " + eContainer.getFullName();
+				asmlContext.getViolations().add(new Violation(instanceOfComponent.getResource(), message, 1, IMarker.SEVERITY_ERROR, DependecyType.STRUCTURAL,"INVALID LOCALIZATION"));
 			}
 		}
 	}
 
 	private boolean localizacaoCorreta(AbstractComponent component, IResource resource) {
 		try {
-			if(resource==null)
+			if (resource == null)
 				return true;
-/*			if(resource instanceof IFolder)
-				return true;
-*/			String[] segments = resource.getFullPath().segments();
-			if(segments.length==1)
+			/*
+			 * if(resource instanceof IFolder) return true;
+			 */String[] segments = resource.getFullPath().segments();
+			if (segments.length == 1)
 				return true;
 			AbstractComponent componentPai = null;
-			if(component.eContainer()instanceof AbstractComponent)
+			if (component.eContainer() instanceof AbstractComponent)
 				componentPai = (AbstractComponent) component.eContainer();
 			else
 				return true;

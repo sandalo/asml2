@@ -500,7 +500,7 @@ public interface ASMLModelPackage extends EPackage
   int RESTRICTION__GROUP_CLAUSE_B = 3;
 
   /**
-   * The feature id for the '<em><b>Component B</b></em>' reference list.
+   * The feature id for the '<em><b>Component B</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -527,6 +527,43 @@ public interface ASMLModelPackage extends EPackage
   int RESTRICTION_FEATURE_COUNT = 6;
 
   /**
+   * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.impl.ComponentsBinRestrictionDeclareationImpl <em>Components Bin Restriction Declareation</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see br.ufmg.dcc.asml.aSMLModel.impl.ComponentsBinRestrictionDeclareationImpl
+   * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getComponentsBinRestrictionDeclareation()
+   * @generated
+   */
+  int COMPONENTS_BIN_RESTRICTION_DECLAREATION = 10;
+
+  /**
+   * The feature id for the '<em><b>Component B</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPONENTS_BIN_RESTRICTION_DECLAREATION__COMPONENT_B = 0;
+
+  /**
+   * The feature id for the '<em><b>Wildcard</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPONENTS_BIN_RESTRICTION_DECLAREATION__WILDCARD = 1;
+
+  /**
+   * The number of structural features of the '<em>Components Bin Restriction Declareation</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int COMPONENTS_BIN_RESTRICTION_DECLAREATION_FEATURE_COUNT = 2;
+
+  /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.Cardinality <em>Cardinality</em>}' enum.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -534,7 +571,7 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getCardinality()
    * @generated
    */
-  int CARDINALITY = 10;
+  int CARDINALITY = 11;
 
   /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.ExpressionMatchingClause <em>Expression Matching Clause</em>}' enum.
@@ -544,7 +581,7 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getExpressionMatchingClause()
    * @generated
    */
-  int EXPRESSION_MATCHING_CLAUSE = 11;
+  int EXPRESSION_MATCHING_CLAUSE = 12;
 
   /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.ModuleMatchingParamenter <em>Module Matching Paramenter</em>}' enum.
@@ -554,7 +591,7 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getModuleMatchingParamenter()
    * @generated
    */
-  int MODULE_MATCHING_PARAMENTER = 12;
+  int MODULE_MATCHING_PARAMENTER = 13;
 
   /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.GroupClause <em>Group Clause</em>}' enum.
@@ -564,7 +601,7 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getGroupClause()
    * @generated
    */
-  int GROUP_CLAUSE = 13;
+  int GROUP_CLAUSE = 14;
 
   /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.PermissionClause <em>Permission Clause</em>}' enum.
@@ -574,7 +611,7 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getPermissionClause()
    * @generated
    */
-  int PERMISSION_CLAUSE = 14;
+  int PERMISSION_CLAUSE = 15;
 
   /**
    * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.RelactionType <em>Relaction Type</em>}' enum.
@@ -584,7 +621,17 @@ public interface ASMLModelPackage extends EPackage
    * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getRelactionType()
    * @generated
    */
-  int RELACTION_TYPE = 15;
+  int RELACTION_TYPE = 16;
+
+  /**
+   * The meta object id for the '{@link br.ufmg.dcc.asml.aSMLModel.WildCard <em>Wild Card</em>}' enum.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see br.ufmg.dcc.asml.aSMLModel.WildCard
+   * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getWildCard()
+   * @generated
+   */
+  int WILD_CARD = 17;
 
 
   /**
@@ -919,10 +966,10 @@ public interface ASMLModelPackage extends EPackage
   EAttribute getRestriction_GroupClauseB();
 
   /**
-   * Returns the meta object for the reference list '{@link br.ufmg.dcc.asml.aSMLModel.Restriction#getComponentB <em>Component B</em>}'.
+   * Returns the meta object for the containment reference list '{@link br.ufmg.dcc.asml.aSMLModel.Restriction#getComponentB <em>Component B</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Component B</em>'.
+   * @return the meta object for the containment reference list '<em>Component B</em>'.
    * @see br.ufmg.dcc.asml.aSMLModel.Restriction#getComponentB()
    * @see #getRestriction()
    * @generated
@@ -939,6 +986,38 @@ public interface ASMLModelPackage extends EPackage
    * @generated
    */
   EAttribute getRestriction_Message();
+
+  /**
+   * Returns the meta object for class '{@link br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation <em>Components Bin Restriction Declareation</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>Components Bin Restriction Declareation</em>'.
+   * @see br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation
+   * @generated
+   */
+  EClass getComponentsBinRestrictionDeclareation();
+
+  /**
+   * Returns the meta object for the reference '{@link br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation#getComponentB <em>Component B</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the reference '<em>Component B</em>'.
+   * @see br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation#getComponentB()
+   * @see #getComponentsBinRestrictionDeclareation()
+   * @generated
+   */
+  EReference getComponentsBinRestrictionDeclareation_ComponentB();
+
+  /**
+   * Returns the meta object for the attribute '{@link br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation#getWildcard <em>Wildcard</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Wildcard</em>'.
+   * @see br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation#getWildcard()
+   * @see #getComponentsBinRestrictionDeclareation()
+   * @generated
+   */
+  EAttribute getComponentsBinRestrictionDeclareation_Wildcard();
 
   /**
    * Returns the meta object for enum '{@link br.ufmg.dcc.asml.aSMLModel.Cardinality <em>Cardinality</em>}'.
@@ -999,6 +1078,16 @@ public interface ASMLModelPackage extends EPackage
    * @generated
    */
   EEnum getRelactionType();
+
+  /**
+   * Returns the meta object for enum '{@link br.ufmg.dcc.asml.aSMLModel.WildCard <em>Wild Card</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for enum '<em>Wild Card</em>'.
+   * @see br.ufmg.dcc.asml.aSMLModel.WildCard
+   * @generated
+   */
+  EEnum getWildCard();
 
   /**
    * Returns the factory that creates the instances of the model.
@@ -1292,7 +1381,7 @@ public interface ASMLModelPackage extends EPackage
     EAttribute RESTRICTION__GROUP_CLAUSE_B = eINSTANCE.getRestriction_GroupClauseB();
 
     /**
-     * The meta object literal for the '<em><b>Component B</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Component B</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -1306,6 +1395,32 @@ public interface ASMLModelPackage extends EPackage
      * @generated
      */
     EAttribute RESTRICTION__MESSAGE = eINSTANCE.getRestriction_Message();
+
+    /**
+     * The meta object literal for the '{@link br.ufmg.dcc.asml.aSMLModel.impl.ComponentsBinRestrictionDeclareationImpl <em>Components Bin Restriction Declareation</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see br.ufmg.dcc.asml.aSMLModel.impl.ComponentsBinRestrictionDeclareationImpl
+     * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getComponentsBinRestrictionDeclareation()
+     * @generated
+     */
+    EClass COMPONENTS_BIN_RESTRICTION_DECLAREATION = eINSTANCE.getComponentsBinRestrictionDeclareation();
+
+    /**
+     * The meta object literal for the '<em><b>Component B</b></em>' reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference COMPONENTS_BIN_RESTRICTION_DECLAREATION__COMPONENT_B = eINSTANCE.getComponentsBinRestrictionDeclareation_ComponentB();
+
+    /**
+     * The meta object literal for the '<em><b>Wildcard</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute COMPONENTS_BIN_RESTRICTION_DECLAREATION__WILDCARD = eINSTANCE.getComponentsBinRestrictionDeclareation_Wildcard();
 
     /**
      * The meta object literal for the '{@link br.ufmg.dcc.asml.aSMLModel.Cardinality <em>Cardinality</em>}' enum.
@@ -1366,6 +1481,16 @@ public interface ASMLModelPackage extends EPackage
      * @generated
      */
     EEnum RELACTION_TYPE = eINSTANCE.getRelactionType();
+
+    /**
+     * The meta object literal for the '{@link br.ufmg.dcc.asml.aSMLModel.WildCard <em>Wild Card</em>}' enum.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see br.ufmg.dcc.asml.aSMLModel.WildCard
+     * @see br.ufmg.dcc.asml.aSMLModel.impl.ASMLModelPackageImpl#getWildCard()
+     * @generated
+     */
+    EEnum WILD_CARD = eINSTANCE.getWildCard();
 
   }
 

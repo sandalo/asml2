@@ -146,20 +146,20 @@ public interface Restriction extends EObject
   void setGroupClauseB(GroupClause value);
 
   /**
-   * Returns the value of the '<em><b>Component B</b></em>' reference list.
-   * The list contents are of type {@link br.ufmg.dcc.asml.aSMLModel.AbstractComponent}.
+   * Returns the value of the '<em><b>Component B</b></em>' containment reference list.
+   * The list contents are of type {@link br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Component B</em>' reference list isn't clear,
+   * If the meaning of the '<em>Component B</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Component B</em>' reference list.
+   * @return the value of the '<em>Component B</em>' containment reference list.
    * @see br.ufmg.dcc.asml.aSMLModel.ASMLModelPackage#getRestriction_ComponentB()
-   * @model
+   * @model containment="true"
    * @generated
    */
-  EList<AbstractComponent> getComponentB();
+  EList<ComponentsBinRestrictionDeclareation> getComponentB();
 
   /**
    * Returns the value of the '<em><b>Message</b></em>' attribute.

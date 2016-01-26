@@ -36,14 +36,22 @@ import br.ufmg.dcc.asml.aSMLModel.Restriction;
 import br.ufmg.dcc.asml.aSMLModel.View;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Abstract Component</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Abstract Component</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getName <em>Name</em>}</li>
- * <li>{@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getAttributes <em>Attributes</em>}</li>
- * <li>{@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getComponents <em>Components</em>}</li>
- * <li>{@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getRestrictions <em>Restrictions</em>}</li>
+ * <li>{@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getName <em>
+ * Name</em>}</li>
+ * <li>
+ * {@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getAttributes
+ * <em>Attributes</em>}</li>
+ * <li>
+ * {@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getComponents
+ * <em>Components</em>}</li>
+ * <li>
+ * {@link br.ufmg.dcc.asml.aSMLModel.impl.AbstractComponentImpl#getRestrictions
+ * <em>Restrictions</em>}</li>
  * </ul>
  * </p>
  *
@@ -51,7 +59,8 @@ import br.ufmg.dcc.asml.aSMLModel.View;
  */
 public class AbstractComponentImpl extends MinimalEObjectImpl.Container implements AbstractComponent {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getName()
 	 * @generated
@@ -60,7 +69,8 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	protected static final String NAME_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getName()
 	 * @generated
@@ -69,7 +79,8 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	protected String name = NAME_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getAttributes()
 	 * @generated
@@ -78,7 +89,8 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	protected EList<Attribute> attributes;
 
 	/**
-	 * The cached value of the '{@link #getComponents() <em>Components</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getComponents() <em>Components</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
 	 * 
 	 * @see #getComponents()
 	 * @generated
@@ -87,7 +99,9 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	protected EList<AbstractComponent> components;
 
 	/**
-	 * The cached value of the '{@link #getRestrictions() <em>Restrictions</em>}' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * The cached value of the '{@link #getRestrictions() <em>Restrictions</em>}
+	 * ' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
 	 * 
 	 * @see #getRestrictions()
 	 * @generated
@@ -288,27 +302,24 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	 */
 	@Override
 	public String toString() {
-		/*
-		 * if (eIsProxy()) return super.toString();
-		 * 
-		 * StringBuffer result = new StringBuffer(super.toString()); result.append(" (name: "); result.append(name); result.append(')'); return result.toString();
-		 */
-		return getName();
+		if (eIsProxy())
+			return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
 	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
-	 * @generated NOT
-	 */
-
-	private static View uniqueView = new ViewImpl();
 
 	/**
 	 * <!-- custom code -->
 	 * 
 	 * 
 	 */
+
+	private static View uniqueView = new ViewImpl();
+
 	private final Set<ComponentInstance> componentInstances = new HashSet<ComponentInstance>();
 
 	public Set<ComponentInstance> getInstances() {
@@ -320,7 +331,6 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		componentInstances.remove(componentInstance);
 	}
 
-	
 	public Set<ComponentInstance> getAllComponentInstances() {
 		Set<ComponentInstance> resourcesAux = new HashSet<ComponentInstance>();
 		EList<AbstractComponent> children = getComponents();
@@ -335,10 +345,14 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public void addComponentInstance(ComponentInstance componentInstance) {
 		try {
-/*			boolean falsePositive = false;
-			if (isFalsePositive(componentInstance)) {// Esse teste impede que recursos com mesmo nome mas de projetos diferentes sejam reconhecidos como instancas do componente. Este erro ocorre quando há clisão de nomes entre definições de arquiteturas.
-				return;
-			}*/
+			/*
+			 * boolean falsePositive = false; if
+			 * (isFalsePositive(componentInstance)) {// Esse teste impede que
+			 * recursos com mesmo nome mas de projetos diferentes sejam
+			 * reconhecidos como instancas do componente. Este erro ocorre
+			 * quando há clisão de nomes entre definições de arquiteturas.
+			 * return; }
+			 */
 			componentInstances.remove(componentInstance);
 			componentInstances.add(componentInstance);
 			componentInstance.setComponent(this);
@@ -385,14 +399,14 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 	@Override
 	public AbstractComponent getRootComponent() {
 		EObject root = this.eContainer();
-		if(!(root instanceof AbstractComponent))
+		if (!(root instanceof AbstractComponent))
 			return null;
 		while (root != null && root.eContainer() instanceof AbstractComponent) {
 			root = root.eContainer();
 		}
 		return (AbstractComponent) root;
 	}
-	
+
 	@Override
 	public ASMLModel getModel() {
 		EObject root = this.eContainer();
@@ -460,8 +474,7 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		}
 		return false;
 	}
-	
-	
+
 	@Override
 	public String[] getAllSupertypesNames() {
 		Set<ComponentInstance> componentInstances = this.getInstances();
@@ -517,8 +530,12 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		return uniqueView;
 	}
 
+	private String fullName = null;
+	
 	@Override
 	public String getFullName() {
+		if(fullName!=null)
+			return fullName;
 		String aux = this.getName();
 		AbstractComponent abstractComponent = this;
 		while (abstractComponent != null) {
@@ -529,7 +546,8 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 				abstractComponent = null;
 			}
 		}
-		return aux;
+		fullName = aux;
+		return fullName;
 	}
 
 	@Override
@@ -561,7 +579,9 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		String fisicalPathComponent = "";
 		while (eObject != null && (eObject instanceof AbstractComponent)) {
 			/**
-			 * Este token(MetaModule) será utilizado para que a lógica ignore a coparações com resources físicos, pois os meta modulos // são / abstratos
+			 * Este token(MetaModule) será utilizado para que a lógica ignore a
+			 * coparações com resources físicos, pois os meta modulos // são /
+			 * abstratos
 			 */
 			if (eObject instanceof MetaModule) {
 				String nameSpace = getNameSpace((AbstractComponent) eObject);
@@ -580,13 +600,24 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		String matching = eObject.getMatching();
 		if (matching == null) {
 			/*
-			 * if (eObject.getName() == null) return ""; else return eObject.getName();
+			 * if (eObject.getName() == null) return ""; else return
+			 * eObject.getName();
 			 */
 			return "";
 		} else {
 			String replace = matching.replace(".*", "");
 			return replace;
 		}
+	}
+
+	@Override
+	public int compareTo(AbstractComponent o) {
+		if (o != null){
+			String fullName = o.getFullName();
+			if(fullName != null && !"".equals(fullName))
+				return this.getFullName().compareTo(fullName);
+		}
+		return -1;
 	}
 
 } // AbstractComponentImpl

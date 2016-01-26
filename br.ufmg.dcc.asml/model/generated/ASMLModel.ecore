@@ -78,13 +78,21 @@
     <eLiterals name="DEPEND" value="8" literal="depend"/>
     <eLiterals name="REQUIRES" value="9" literal="requires"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="WildCard">
+    <eLiterals name="Package" literal=".*"/>
+    <eLiterals name="PackageAndSubPackage" value="1" literal=".**"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Restriction">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="groupClause" eType="#//GroupClause"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="permissionClause" eType="#//PermissionClause"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="relactionType" eType="#//RelactionType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="groupClauseB" eType="#//GroupClause"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="componentB" unique="false"
-        upperBound="-1" eType="#//AbstractComponent"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentB" upperBound="-1"
+        eType="#//ComponentsBinRestrictionDeclareation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ComponentsBinRestrictionDeclareation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="componentB" eType="#//AbstractComponent"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wildcard" eType="#//WildCard"/>
   </eClassifiers>
 </ecore:EPackage>

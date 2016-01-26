@@ -57,7 +57,7 @@ public class ASMLReosurceJavaVisitor extends ASTVisitor {
 			reference.setAstNode(node);
 			componentInstance.addDependency(reference);// Referência declarada nesta instancia, o addReference pode levar a pessar que a referência da componentInstance mas na verdade a referência é para outra instancia
 			if (componentInstanceReferenced == null /* && findType.isBinary() */) {
-				asmlContext.getViolations().add(new Violation(reference, componentInstance.getResource(), "Referencia desconhecida ao tipo :" + qualifiedName, reference.getLineNumber(), IMarker.SEVERITY_ERROR));
+				//asmlContext.getViolations().add(new Violation(reference, componentInstance.getResource(), "Referência sem componente declarado na arquitetura(externo):" + qualifiedName, reference.getLineNumber(), IMarker.SEVERITY_ERROR));
 			}
 			componentInstanceReferenced.addReferenceThatPointToMe(reference);
 		} catch (JavaModelException e) {

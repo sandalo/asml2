@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.builder.Violation;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -50,7 +51,7 @@ public class OnlyCanCreate extends RestricionChecker {
 								message = restriction.getMessage();
 							else
 								message = "Somente classes do tipo " + componentA.getName() + " podem criar " + componentB.getName();
-							asmlContext.getViolations().add(new Violation(componentInstance.getResource(), message, lineNumber, IMarker.SEVERITY_ERROR));
+							asmlContext.getViolations().add(new Violation(componentInstance.getResource(), message, lineNumber, IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"CREATE"));
 						}
 					}
 				}

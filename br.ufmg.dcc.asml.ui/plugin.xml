@@ -394,12 +394,4 @@
             extensions="asml">
     </provider>
   </extension>
-  <extension
-        point="org.eclipse.sirius.externalJavaAction">
-     <javaActions
-           actionClass="br.ufmg.dcc.asml.ui.OpenEmbeddedEditor"
-           id="OpenEmbeddedEditor">
-     </javaActions>
-  </extension>
-
 </plugin>

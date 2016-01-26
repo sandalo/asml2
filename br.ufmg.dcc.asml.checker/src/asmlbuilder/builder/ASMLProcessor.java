@@ -1,9 +1,12 @@
 package asmlbuilder.builder;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -17,11 +20,12 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IClassFile;
@@ -38,6 +42,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.core.JarPackageFragmentRoot;
 
 import asmlbuilder.Activator;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.classloader.ASMLClassLoader;
 import asmlbuilder.constants.ASMLConstant;
 import asmlbuilder.matching.MatchingVisitor;
@@ -70,39 +75,110 @@ public class ASMLProcessor {
 	private boolean DESIGN_MODE;
 	private boolean DEBUG;
 
-	// private IConsoleView consoleView;
-
 	public void printLog() {
 		if (DEBUG) {
 			List<ComponentInstance> componentInstances = new ArrayList<ComponentInstance>(asmlContext.getComponentInstances());
 			Collections.sort(componentInstances, new Comparator<ComponentInstance>() {
 				@Override
 				public int compare(ComponentInstance o1, ComponentInstance o2) {
-					return o1.toString().compareTo(o2.toString());
+					AbstractComponent component = o1.getComponent();
+					AbstractComponent component2 = o2.getComponent();
+					String fullName = "";
+					String fullName2 = "";
+
+					if (component != null)
+						fullName = component.getFullName();
+
+					if (component2 != null)
+						fullName2 = component2.getFullName();
+
+					String string = fullName + " " + o1.toString();
+					String string2 = fullName2 + " " + o2.toString();
+
+					return string.compareTo(string2);
 				}
 			});
+			String filter = Activator.getDefault().getPreferenceStore().getString(PreferenceConstants.P_DEBUG_COMPONENT_FILTER);
+
+			AbstractComponent componentAtual = null;
+			int cont = 0;
+			boolean print = false;
 			for (ComponentInstance componentInstance : componentInstances) {
-				log(Level.ALL, componentInstance.toString());
+				if (componentInstance.getComponent() != null && !componentInstance.getComponent().equals(componentAtual)) {
+					componentAtual = componentInstance.getComponent();
+					boolean full = filter.endsWith("*");
+					String filter_sem_operador = filter.replace("*", "");
+					if ((full && componentInstance.getComponent().getFullName().contains(filter_sem_operador)) || componentInstance.getComponent().getName().equals(filter_sem_operador) || "".equals(filter)) {
+						print = true;
+						log(Level.ALL, ++cont + ") Componente: " + componentAtual.getFullName() + " ###################################################################");
+					} else
+						print = false;
+				}
+				String msg = componentInstance.toString();
+				if (print)
+					log(Level.ALL, "     " + msg);
 			}
 		}
 	}
 
-	public void initialize(int kind, List<IProject> projects) {
+	public void initialize(int kind, List<IProject> projects, IProgressMonitor monitor) {
 		try {
+			monitor.beginTask("Atualização de arquitetura: ", 5 + (5 * projects.size()));
+
+			monitor.subTask("Configurando o contexto...");
 			configuraContexto(projects.get(0));// TODO - Rever
+			monitor.worked(1);
+
+			monitor.subTask("Carregrando arvore de componentes...");
 			carregaArvoreDeComponentes(projects);
-			allTokensNameConventionRecovery();
+			monitor.worked(1);
+
+			monitor.subTask("Recuperando tokens(sufix, prefixo)...");
+			recoveryAllTokensNameConvention();
+			monitor.worked(1);
+
+			monitor.subTask("Limpando jars carregados...");
 			asmlContext.clearJarMathingLoadedAll();
+			monitor.worked(1);
+
 			for (IProject iProject : projects) {
+				monitor.subTask("Configurando classloader..." + iProject.getName());
 				configuraClassLoaderEspecifico(iProject);
+				monitor.worked(1);
+
+				monitor.subTask("Limpando instancias de conponentes internos..." + iProject.getName());
 				limpaInstanciasDeComponetesInternos(iProject);
-				allExternalComponentInstancesRecoveryInJarFiles(iProject);
-				allInternalComponentInstancesRecovery(iProject);
-				allInternalComponentInstancesReferencesRecovery(iProject);
-			}
+				monitor.worked(1);
+
+				monitor.subTask("Carregando instancias de conponentes externos..." + iProject.getName());
+				recoveryAllExternalComponentInstancesInJarFiles(iProject);
+				monitor.worked(1);
+
+				/*
+				 * monitor.subTask(
+				 * "Carregando instancias de conponentes internos..." +
+				 * iProject.getName());
+				 * recoveryAllInternalComponentInstances(iProject);
+				 * monitor.worked(1);
+				 * 
+				 * monitor.subTask(
+				 * "Carregando referências à conponentes internos..." +
+				 * iProject.getName());
+				 * recoveryAllInternalComponentInstancesReferences(iProject);
+				 * monitor.worked(1);
+				 */}
+			monitor.subTask("Realizando matching...");
 			matchingExternal();
+			monitor.worked(1);
+
 		} catch (Exception e) {
+			Throwable cause = e.getCause();
+			if (cause instanceof FileNotFoundException && cause.getMessage().contains("vaccine")) {
+				throw new RuntimeException(" Arquivo da vacina não encontrado. Se estiver com o projeto da vacina aberto, verifique se o projeto da vacina se encontra no mesmo workspace do projeto alvo.");
+			}
 			e.printStackTrace();
+		} finally {
+			monitor.done();
 		}
 	}
 
@@ -127,7 +203,9 @@ public class ASMLProcessor {
 				log(Level.INFO, "Número de componentes: " + size);
 				log(Level.INFO, "Número de restrições: " + restrictions);
 				sizeTotaComponentes = sizeTotaComponentes + size;
-
+				log(Level.INFO, "--------------------------------------------------------------------");
+				log(Level.INFO, "--------------------------------------------------------------------");
+				log(Level.INFO, "--------------------------------------------------------------------");
 			}
 			int references = 0;
 			Set<ComponentInstance> componentInstances = asmlContext.getComponentInstances();
@@ -135,58 +213,116 @@ public class ASMLProcessor {
 				Set<ComponentInstanceReference> dependencies = componentInstance.getDependencies();
 				references = references + dependencies.size();
 			}
+			
 			log(Level.INFO, "--------------------------------------------------------------------");
 			log(Level.INFO, "--------------------------------------------------------------------");
 			log(Level.INFO, "--------------------------------------------------------------------");
 			log(Level.INFO, "Número de componentes totais: " + sizeTotaComponentes);
 			log(Level.INFO, "Número de instâncias totais:" + componentInstances.size());
 			log(Level.INFO, "Número de relações totais:" + references);
-			log(Level.INFO, "Número de violações totais: " + asmlContext.getViolations().size());
+
+			List<Violation> violations = asmlContext.getViolations();
+			int erros = 0, avisos = 0;
+			String sql = "INSERT INTO tb_violacoes_asml(id, dependency_type, description, resource, path, line, complexity, author, exper, project, workspace, checking_data, severity, violation_type) VALUES (";
+			for (Violation violation : violations) {
+				if(violation.getSeverity()==IMarker.SEVERITY_ERROR)
+					erros++;
+				if(violation.getSeverity()==IMarker.SEVERITY_WARNING)
+					avisos++;
+			}
+			log(Level.INFO, "Número de violações avisos: " + avisos);
+			log(Level.INFO, "Número de violações erros: " + erros);
+			log(Level.INFO, "Número de violações totais: " + violations.size());
+			
+			String message = "";
+			for (Violation violation : violations) {
+				try {
+					
+					Date date = new Date();
+					SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+					String[] segments = violation.getResource().getProject().getLocation().segments();
+					message = violation.getMessage().replaceAll("\\\\", "");
+					if(message.contains("desconhecido")|| (message.contains("inválido") && !message.contains("Componente inválido"))) {
+						int indexOf = message.indexOf(";");
+						if(indexOf !=-1){
+							message = message.substring(0, indexOf);
+						}else{
+							message = message.substring(0, message.length()-1);
+						}
+					}
+					
+					log(Level.INFO, sql+" nextval('violation_sequence'),'"+violation.getDependecyType()+"','"+message
+							+"','"+violation.getResource().getName()+"','"+violation.getResource().getFullPath()+"','"
+							+violation.getLineNumber()+"','','','','"+violation.getResource().getProject().getName()+"','"+segments[segments.length-2]+"','"+dateFormat.format(date)+   "','" + violation.getSeverity()+   "','" + violation.getViolation_type() +"');");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();// TODO: handle exception
 		}
 	}
 
 	/*
-	 * private void configuraConsole() { PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() { public void run() { IWorkbenchWindow dwindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow(); IWorkbenchPage page = dwindow.getActivePage(); if (page != null) { try { consoleView = (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW); } catch (Exception pie) { // pie.printStackTrace(); } } } }); }
+	 * private void configuraConsole() {
+	 * PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() { public
+	 * void run() { IWorkbenchWindow dwindow =
+	 * PlatformUI.getWorkbench().getActiveWorkbenchWindow(); IWorkbenchPage page
+	 * = dwindow.getActivePage(); if (page != null) { try { consoleView =
+	 * (IConsoleView) page.showView(IConsoleConstants.ID_CONSOLE_VIEW); } catch
+	 * (Exception pie) { // pie.printStackTrace(); } } } }); }
 	 */
 	private void log(Level level, String msg) {
 		DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
 		if (DEBUG) {
 			ASMLConsoleFactory.print(msg);
+			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.PLUGIN_ID, msg));
 		}
 	}
 
 	public void showViolations(IProject project) {
-		for (ComponentInstance componentInstance : asmlContext.getComponentInstances()) {
-			if (componentInstance.getComponent() == null && !componentInstance.isExternal()) {
-				if (componentInstance.getResource().exists() && componentInstance.getResource().getProject().equals(project)) {
-					MarkerUtils.addMarker(componentInstance.getResource(), "Component unknown!", 1, IMarker.SEVERITY_ERROR, ASMLConstant.MARKER_TYPE);
-				}
-			}
-		}
+		if (Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SHOW_RESTRCTION_VALIDATIONS))
+			showRestrictionsViolations(project);
+	}
 
-		for (ComponentInstance componentInstance : asmlContext.getComponentInstances()) {
-			Set<ComponentInstanceReference> referencesToOthersComponentInstances = componentInstance.getDependencies();
-			if (!referencesToOthersComponentInstances.isEmpty()) {
-				for (ComponentInstanceReference componentInstanceReference : referencesToOthersComponentInstances) {
-					if (componentInstance.getResource().exists() && componentInstance.getResource().getProject().equals(project)) {
-						if (componentInstanceReference.getComponentInstanceReferenced() != null && componentInstanceReference.getComponentInstanceReferenced().getComponent() == null)
-							MarkerUtils.addMarker(componentInstance.getResource(), "Referência sem componente declarado na arquitetura: " + componentInstanceReference.getComponentInstanceReferenced(), componentInstanceReference.getLineNumber(), IMarker.SEVERITY_ERROR, ASMLConstant.MARKER_TYPE);
-					}
-				}
-			}
-		}
-
-		for (Violation violation : asmlContext.getViolations()) {// TODO: Mudar "desconhecida para uma constante, talvez criar um atributo para dizer o tipo de violação"
-			if (violation.getComponentInstanceReference() != null && violation.getMessage().contains("desconhecida") && violation.getComponentInstanceReference().getComponentInstanceDependent().getComponent() == null)
-				continue;
+	private void showRestrictionsViolations(IProject project) {
+		for (Violation violation : asmlContext.getViolations()) {
 			if (violation.getResource().exists() && violation.getResource().getProject().equals(project))
 				MarkerUtils.addMarker(violation.getResource(), violation.getMessage(), violation.getLineNumber(), violation.getSeverity(), ASMLConstant.MARKER_TYPE);
 		}
 	}
 
-	public void allExternalComponentInstancesRecoveryInJarFiles(IProject project) throws JavaModelException {
+	private void validateHierachicalViolations(IProject project) {
+		for (ComponentInstance componentInstance : asmlContext.getComponentInstances()) {
+			if (componentInstance.getComponent() == null && !componentInstance.isExternal()) {
+				if (componentInstance.getResource().exists() && componentInstance.getResource().getProject().equals(project)) {
+					String message = "Componente desconhecido!";
+					asmlContext.getViolations().add(new Violation(componentInstance.getResource(), message, 1, IMarker.SEVERITY_ERROR,DependecyType.STRUCTURAL,"UNKNOWN COMPONENT"));
+				}
+			}
+		}
+
+		for (ComponentInstance componentInstance : asmlContext.getComponentInstances()) {
+			if (componentInstance.getComponent() == null)
+				continue;
+			Set<ComponentInstanceReference> referencesToOthersComponentInstances = componentInstance.getDependencies();
+			if (!referencesToOthersComponentInstances.isEmpty()) {
+				for (ComponentInstanceReference componentInstanceReference : referencesToOthersComponentInstances) {
+					if (componentInstance.getResource().exists() && componentInstance.getResource().getProject().equals(project)) {
+						if (componentInstanceReference.getComponentInstanceReferenced() != null && componentInstanceReference.getComponentInstanceReferenced().getComponent() == null){
+							asmlContext.getViolations().add(new Violation(componentInstance.getResource(), "Referência apontanto para um componente desconhecido(a): " + componentInstanceReference.getComponentInstanceReferenced(), componentInstanceReference.getLineNumber(), IMarker.SEVERITY_ERROR, DependecyType.STRUCTURAL, "UNKNOWN REFERENCE"));
+						}else if (componentInstanceReference.getComponentInstanceReferenced() == null) {
+							asmlContext.getViolations().add(new Violation(componentInstance.getResource(), "Referência apontanto para um componente desconhecido(b): " + componentInstanceReference.toString() +  componentInstanceReference.getComponentInstanceReferenced(), componentInstanceReference.getLineNumber(), IMarker.SEVERITY_ERROR, DependecyType.STRUCTURAL, "UNKNOWN REFERENCE"));
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public void recoveryAllExternalComponentInstancesInJarFiles(IProject project) throws JavaModelException {
 		// IProject project = asmlContext.getJavaProject().getProject();
 		IJavaProject javaProject = asmlContext.getJavaProject(project);
 
@@ -197,10 +333,7 @@ public class ASMLProcessor {
 			if (!asmlContext.isJarMathingLoaded(jarName)) {
 				if (packagesRoot.getKind() == IPackageFragmentRoot.K_BINARY) {
 					IJavaElement[] children = packagesRoot.getChildren();
-					int i = 0;
-					children:
-					for (IJavaElement iJavaElement : children) {
-						i++;
+					children: for (IJavaElement iJavaElement : children) {
 						if (iJavaElement instanceof IPackageFragment) {
 							IPackageFragment iPackageFragment = (IPackageFragment) iJavaElement;
 							String elementName = iPackageFragment.getElementName() + "";
@@ -218,6 +351,7 @@ public class ASMLProcessor {
 										ComponentInstance componentInstance = ComponentInstance.createInstance(fileInJar, true, null);
 										componentInstance.setType(iClassFile.getType());
 										asmlContext.addComponentInstance(componentInstance);
+										// System.out.println(jarName+" => "+componentInstance);
 									}
 									continue children;
 								}
@@ -230,12 +364,14 @@ public class ASMLProcessor {
 				// System.out.println(jarName);
 			}
 		}
+		System.out.println("");
 	}
 
-	public void allInternalComponentInstancesRecovery(IProject project) throws CoreException {
+	public void recoveryAllInternalComponentInstances(IProject project) throws CoreException {
 		// IProject project = asmlContext.getJavaProject().getProject();
 		IPackageFragmentRoot[] packageFragmentRoots = null;
-		// packageFragmentRoots = asmlContext.getJavaProject().getAllPackageFragmentRoots();
+		// packageFragmentRoots =
+		// asmlContext.getJavaProject().getAllPackageFragmentRoots();
 		IJavaProject javaProject = asmlContext.getJavaProject(project);
 		packageFragmentRoots = javaProject.getAllPackageFragmentRoots();
 
@@ -258,19 +394,19 @@ public class ASMLProcessor {
 		}
 	}
 
-	public void allInternalComponentInstancesReferencesIncrementalRecovery(IResourceDelta delta, IProject iProject) throws CoreException {
+	public void recoveryAllInternalComponentInstancesReferencesIncremental(IResourceDelta delta, IProject iProject) throws CoreException {
 		asmlContext.getResourceDeltaVisitor().setProject(iProject);
 		delta.accept(asmlContext.getResourceDeltaVisitor());
 		// allInternalComponentInstancesRecoveryNaoJava();
 
 	}
 
-	public void allInternalComponentInstancesReferencesRecovery(IProject iProject) throws CoreException {
+	public void recoveryAllInternalComponentInstancesReferences(IProject iProject) throws CoreException {
 		asmlContext.getResourceVisitor().setProject(iProject);
 		iProject.accept(asmlContext.getResourceVisitor());
 	}
 
-	private void allTokensNameConventionRecovery() throws CoreException {
+	private void recoveryAllTokensNameConvention() throws CoreException {
 		TokensNameConventionVisitor componentRecoveryVisitor = new TokensNameConventionVisitor(asmlContext);
 		Set<ASMLModel> models = new HashSet<ASMLModel>(asmlContext.getOtherAsmlModelReferenced());
 		models.add(asmlContext.getAsmlModelPrimario());
@@ -283,7 +419,10 @@ public class ASMLProcessor {
 	}
 
 	/*
-	 * private IProject inicialize(int kind) throws CoreException { IProject project =asmlContext.getJavaProject().getProject(); log.log(Level.INFO, "##################################"); try { IJavaProject javaProject = JavaCore.create(project);
+	 * private IProject inicialize(int kind) throws CoreException { IProject
+	 * project =asmlContext.getJavaProject().getProject(); log.log(Level.INFO,
+	 * "##################################"); try { IJavaProject javaProject =
+	 * JavaCore.create(project);
 	 * 
 	 * configuraContexto();
 	 * 
@@ -293,7 +432,10 @@ public class ASMLProcessor {
 	 * 
 	 * limpaInstanciasDeComponetesInternos(javaProject);
 	 * 
-	 * } catch (Throwable e) { MarkerUtils.addMarker(project, "Projeto não vacinado! Verifique se a vaccine consta no classpath do projeto.", 1, IMarker.SEVERITY_ERROR, ASMLConstant.MARKER_TYPE); throw new CoreException(Status.CANCEL_STATUS); } return project; }
+	 * } catch (Throwable e) { MarkerUtils.addMarker(project,
+	 * "Projeto não vacinado! Verifique se a vaccine consta no classpath do projeto."
+	 * , 1, IMarker.SEVERITY_ERROR, ASMLConstant.MARKER_TYPE); throw new
+	 * CoreException(Status.CANCEL_STATUS); } return project; }
 	 */
 	private void configuraCaminhoDaVacina(IJavaProject javaProject) {
 		if (path_vaccine == null)
@@ -332,7 +474,14 @@ public class ASMLProcessor {
 				asmlContext.clearInternalsComponentInstance(iProject);
 				List<AbstractComponent> allComponents = asmlModel.getComponents();
 				for (AbstractComponent abstractComponent : allComponents) {
-					abstractComponent.componentInstancesClearAll();// A partir da raiz limpa todos as instancias de componentes encontradas.
+					abstractComponent.componentInstancesClearAll();// A partir
+																	// da raiz
+																	// limpa
+																	// todos as
+																	// instancias
+																	// de
+																	// componentes
+																	// encontradas.
 				}
 			}
 		} catch (Exception e) {
@@ -344,7 +493,11 @@ public class ASMLProcessor {
 		try {
 			IJavaProject javaProject = asmlContext.getJavaProject(iProject);
 			IClasspathEntry iClasspathEntryVaccine = ClassPathUtil.recuperaClassPathDaVaccina(javaProject);
-			String workspacePath = javaProject.getProject().getWorkspace().getRoot().getLocation().toString();// TODO:Melhorar as duas linhas abaixo
+			String workspacePath = javaProject.getProject().getWorkspace().getRoot().getLocation().toString();// TODO:Melhorar
+																												// as
+																												// duas
+																												// linhas
+																												// abaixo
 			URL[] urls = new URL[] { new URL("file:/" + workspacePath + iClasspathEntryVaccine.getPath() + "/target/classes/") };
 			asmlContext.setClassLoader(new ASMLClassLoader(urls, this.getClass().getClassLoader()));
 		} catch (Throwable e) {
@@ -353,7 +506,6 @@ public class ASMLProcessor {
 	}
 
 	private void carregaArvoreDeComponentes(List<IProject> projects) {
-		System.out.println();
 		Map<String, String> paths = recoveryVaccineInfo(projects);
 		Resource resourcePrimario = mergeVaccinesComponents(paths);
 		associatesModelsToProjects(projects, resourcePrimario);
@@ -374,7 +526,8 @@ public class ASMLProcessor {
 			for (IProject project : projects) {
 				String name2 = project.getName();
 				if (name2.endsWith(name)) {
-					// log.info("Encontrou jar ou porjeto maven da vaccine...:" + iClasspathEntry.getPath().toString());
+					// log.info("Encontrou jar ou porjeto maven da vaccine...:"
+					// + iClasspathEntry.getPath().toString());
 					asmlModel.setProject(project);
 					break;
 				}
@@ -440,7 +593,9 @@ public class ASMLProcessor {
 				if (iClasspathAttribute != null) {
 					vaccineName = iClasspathAttribute.getValue();
 				} else {
-					vaccineName = iClasspathEntry.getPath().lastSegment();// Projetos não maven
+					vaccineName = iClasspathEntry.getPath().lastSegment();// Projetos
+																			// não
+																			// maven
 				}
 				if (iClasspathEntry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 					path = "jar:file:/" + vaccinaFisicalPath.toString() + "!" + "/vaccine.asml";
@@ -498,7 +653,8 @@ public class ASMLProcessor {
 		for (ASMLModel asmlModel : otherAsmlModelReferenced) {
 			List<AbstractComponent> components = asmlModel.getComponents();
 			for (AbstractComponent component : components) {
-				component.accept(matchingVisitor);
+				if (component.getModel().getProject() == null)
+					component.accept(matchingVisitor);
 			}
 		}
 	}
@@ -510,18 +666,40 @@ public class ASMLProcessor {
 		for (AbstractComponent component : components) {
 			component.accept(validatorVisitor);
 		}
+		if (Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_SHOW_STRUCTURAL_VIOLATIONS))
+			validateHierachicalViolations(iProject);
+
 		log(Level.INFO, "Finalizou o processo validação...");
 	}
 
-	public void fullBuild(IProject project) {
+	public void fullBuild(IProject project, IProgressMonitor monitor) {
 		try {
 			if (getAsmlContext() != null) {
+				monitor.beginTask("Validação de arquitetura: ", 6);
+
+				monitor.subTask("Limpando instancias de componentes internos...");
 				limpaInstanciasDeComponetesInternos(project);
-				allInternalComponentInstancesRecovery(project);
-				allInternalComponentInstancesReferencesRecovery(project);
+				monitor.worked(1);
+
+				monitor.subTask("Recuperando instancias de componentes internos...");
+				recoveryAllInternalComponentInstances(project);
+				monitor.worked(1);
+
+				monitor.subTask("Recuperando referências à componentes internos...");
+				recoveryAllInternalComponentInstancesReferences(project);
+				monitor.worked(1);
+
+				monitor.subTask("Realizando o matching...");
 				matchingInternal(null, project);
+				monitor.worked(1);
+
+				monitor.subTask("Validando...");
 				validate(project);
+				monitor.worked(1);
+
+				monitor.subTask("Mostrando violações...");
 				showViolations(project);
+				monitor.worked(1);
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Erro em full build", e);
@@ -530,15 +708,21 @@ public class ASMLProcessor {
 
 	public void autoBuild(IResourceDelta delta, IProject project) {
 		try {
-			if (delta == null || getAsmlContext().getAsmlModel(project) == null) {
-				List<IProject> projects = new ArrayList<IProject>();
+			ASMLModel asmlModel = getAsmlContext().getAsmlModel(project);
+			List<IProject> projects = new ArrayList<IProject>();
+			if (asmlModel == null) {
+				projects = Activator.getOpenedProjects(project.getWorkspace());
+				carregaArvoreDeComponentes(projects);
+			} else {
 				projects.add(project);
 				updateArvoreDeComponentes(projects);
-				allTokensNameConventionRecovery();
+			}
+			if (delta == null) {
+				recoveryAllTokensNameConvention();
 				configuraClassLoaderEspecifico(project);
 				limpaInstanciasDeComponetesInternos(project);
-				allInternalComponentInstancesRecovery(project);
-				allInternalComponentInstancesReferencesRecovery(project);
+				recoveryAllInternalComponentInstances(project);
+				recoveryAllInternalComponentInstancesReferences(project);
 				matchingInternal(null, project);
 				matchingExternal();
 				validate(project);
@@ -547,13 +731,13 @@ public class ASMLProcessor {
 				incrementalBuild(delta, project);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Erro em  full  build", e);
+			throw new RuntimeException("Erro em auto Build", e);
 		}
 	}
 
 	public void incrementalBuild(IResourceDelta delta, IProject project) {
 		try {
-			allInternalComponentInstancesReferencesIncrementalRecovery(delta, project);
+			recoveryAllInternalComponentInstancesReferencesIncremental(delta, project);
 			Set<ComponentInstance> componentInstances = new HashSet<ComponentInstance>();
 			List<IResourceDelta> deltas = new ArrayList<IResourceDelta>();
 			revoreyChildrenResources(delta, deltas);

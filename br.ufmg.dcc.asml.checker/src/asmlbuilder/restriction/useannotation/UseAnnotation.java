@@ -2,7 +2,10 @@ package asmlbuilder.restriction.useannotation;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
+
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -23,7 +26,7 @@ public class UseAnnotation extends RestricionChecker {
 
 	private void componentACannotUseAnnotationCompontB(Restriction restriction) {
 		AbstractComponent componentA =  (AbstractComponent) restriction.eContainer();
-		AbstractComponent componentB = null;//restriction.getComponentB();
+		AbstractComponent componentB = (AbstractComponent) restriction.getComponentB().iterator().next();
 		Set<ComponentInstance> instancesOfA = componentA.getInstances();
 		int lineNumber = 1;
 		for (ComponentInstance instanceOfA : instancesOfA) {
@@ -33,7 +36,7 @@ public class UseAnnotation extends RestricionChecker {
 				if (componentInstanceReferenced!=null) {
 					if (componentInstanceReferenced.instanceOf(componentB)) {
 						lineNumber = reference.getLineNumber();
-						addViolation(restriction, lineNumber, instanceOfA, "Classes do componete " + componentA.getName() + " não podem usar anotações: " + componentB.getName());
+						addViolation(restriction, lineNumber, instanceOfA, "Classes do componete " + componentA.getName() + " não podem usar anotações: " + componentB.getName(),IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"CANNOT_USE_ANNOTATION");
 					}
 				}
 			}

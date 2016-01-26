@@ -74,7 +74,11 @@ enum RelactionType:
 	ACCESS='access' | DECLARE='declare' | HANDLE='handle' | EXTEND='extend' | IMPLEMENT='implement' | CREATE='create' |
 	THROW='throw' | USEANOTATION='use-annotation'
 	| DEPEND='depend' | REQUIRES='requires';
+enum WildCard:
+	Package = '.*'|
+	PackageAndSubPackage = '.**';
 
 Restriction:
-	(groupClause=GroupClause)? (permissionClause=PermissionClause)? relactionType=RelactionType (groupClauseB=GroupClause)? (componentB+=([AbstractComponent|QualifiedName])(',')?)* ('message'message=STRING)? ';';
-// Criar uma tipo para abarcar todos os atributos básicos, e assim evitar redundância e o uso exessivo de instanceof ao utilizar a linguagem programaticamente. (componentA+=([AbstractComponent|QualifiedName])*)?
+	(groupClause=GroupClause)? (permissionClause=PermissionClause)? relactionType=RelactionType (groupClauseB=GroupClause)? (componentB+=(ComponentsBinRestrictionDeclareation)(',')?)* ('message'message=STRING)? ';';
+ComponentsBinRestrictionDeclareation:
+	 componentB=([AbstractComponent|QualifiedName]) (wildcard=WildCard)?;

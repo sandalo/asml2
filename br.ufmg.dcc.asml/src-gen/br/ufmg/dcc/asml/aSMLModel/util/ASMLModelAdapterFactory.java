@@ -125,6 +125,11 @@ public class ASMLModelAdapterFactory extends AdapterFactoryImpl
         return createRestrictionAdapter();
       }
       @Override
+      public Adapter caseComponentsBinRestrictionDeclareation(ComponentsBinRestrictionDeclareation object)
+      {
+        return createComponentsBinRestrictionDeclareationAdapter();
+      }
+      @Override
       public Adapter defaultCase(EObject object)
       {
         return createEObjectAdapter();
@@ -292,6 +297,21 @@ public class ASMLModelAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createRestrictionAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation <em>Components Bin Restriction Declareation</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation
+   * @generated
+   */
+  public Adapter createComponentsBinRestrictionDeclareationAdapter()
   {
     return null;
   }

@@ -106,6 +106,24 @@
    </extension>
    <extension
          point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="true"
+            class="asmlbuilder.view.decorator.ASMLDecorator"
+            icon="icons/vaccine_decorator.png"
+            id="br.ufmg.dcc.asml.checker.decorator1"
+            label="ASML decorator"
+            lightweight="true"
+            location="BOTTOM_RIGHT"
+            state="true">
+         <enablement>
+            <objectClass
+                  name="org.eclipse.core.resources.IProject">
+            </objectClass>
+         </enablement>
+         <description>
+            Quando exibido mostra que o projeto está vacinado.
+         </description>
+      </decorator>
    </extension>
    
 <extension point="org.eclipse.ui.ide.markerResolution">
@@ -143,7 +161,7 @@
      <view
            category="br.ufmg.dcc.asml.checker.category"
            class="asmlbuilder.view.navigator.ASMLCommonNavigator"
-           icon="icons/vaccine.jpg"
+           icon="icons/vaccine.png"
            id="br.ufmg.dcc.asml.checker.navigator"
            name="ASML Common Navigator">
      </view>
@@ -160,6 +178,9 @@
            <actionExtension
                  pattern="org.eclipse.ui.navigator.resources.*">
            </actionExtension>
+           <actionExtension
+                 pattern="br.ufmg.dcc.asml.checker.navigator.ASMLCommonAction">
+           </actionExtension>
         </includes>
      </viewerActionBinding>
      <viewerContentBinding
@@ -173,6 +194,15 @@
            </contentExtension>
         </includes>
      </viewerContentBinding>
+     <viewer
+           viewerId="br.ufmg.dcc.asml.checker.navigator">
+        <popupMenu
+              id="br.ufmg.dcc.asml.checker.navigator#PopupMenu">
+           <insertionPoint
+                 name="group.build">
+           </insertionPoint>
+        </popupMenu>
+     </viewer>
   </extension>
   <extension
         point="org.eclipse.ui.perspectiveExtensions">
@@ -200,6 +230,25 @@
               </instanceof>
            </or>
         </triggerPoints>
+        <actionProvider
+              class="br.ufmg.dcc.asml.checker.navigator.ASMLCommonActionProvider"
+              id="br.ufmg.dcc.asml.checker.navigator.ASMLCommonAction">
+           <enablement>
+              <or>
+                 <or>
+                    <adapt
+                          type="org.eclipse.core.resources.IResource">
+                    </adapt>
+                    <adapt
+                          type="java.util.Collection">
+                       <count
+                             value="0">
+                       </count>
+                    </adapt>
+                 </or>
+              </or>
+           </enablement>
+        </actionProvider>
      </navigatorContent>
      <commonFilter
            class="asmlbuilder.view.navigator.filters.ASMLRequiresFilter"

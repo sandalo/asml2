@@ -75,6 +75,7 @@ public class ASMLModelFactoryImpl extends EFactoryImpl implements ASMLModelFacto
       case ASMLModelPackage.CLASS_MATCHING: return createClassMatching();
       case ASMLModelPackage.META_MODULE: return createMetaModule();
       case ASMLModelPackage.RESTRICTION: return createRestriction();
+      case ASMLModelPackage.COMPONENTS_BIN_RESTRICTION_DECLAREATION: return createComponentsBinRestrictionDeclareation();
       default:
         throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
     }
@@ -102,6 +103,8 @@ public class ASMLModelFactoryImpl extends EFactoryImpl implements ASMLModelFacto
         return createPermissionClauseFromString(eDataType, initialValue);
       case ASMLModelPackage.RELACTION_TYPE:
         return createRelactionTypeFromString(eDataType, initialValue);
+      case ASMLModelPackage.WILD_CARD:
+        return createWildCardFromString(eDataType, initialValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -129,6 +132,8 @@ public class ASMLModelFactoryImpl extends EFactoryImpl implements ASMLModelFacto
         return convertPermissionClauseToString(eDataType, instanceValue);
       case ASMLModelPackage.RELACTION_TYPE:
         return convertRelactionTypeToString(eDataType, instanceValue);
+      case ASMLModelPackage.WILD_CARD:
+        return convertWildCardToString(eDataType, instanceValue);
       default:
         throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
     }
@@ -242,6 +247,17 @@ public class ASMLModelFactoryImpl extends EFactoryImpl implements ASMLModelFacto
   {
     RestrictionImpl restriction = new RestrictionImpl();
     return restriction;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public ComponentsBinRestrictionDeclareation createComponentsBinRestrictionDeclareation()
+  {
+    ComponentsBinRestrictionDeclareationImpl componentsBinRestrictionDeclareation = new ComponentsBinRestrictionDeclareationImpl();
+    return componentsBinRestrictionDeclareation;
   }
 
   /**
@@ -372,6 +388,28 @@ public class ASMLModelFactoryImpl extends EFactoryImpl implements ASMLModelFacto
    * @generated
    */
   public String convertRelactionTypeToString(EDataType eDataType, Object instanceValue)
+  {
+    return instanceValue == null ? null : instanceValue.toString();
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public WildCard createWildCardFromString(EDataType eDataType, String initialValue)
+  {
+    WildCard result = WildCard.get(initialValue);
+    if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+    return result;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public String convertWildCardToString(EDataType eDataType, Object instanceValue)
   {
     return instanceValue == null ? null : instanceValue.toString();
   }

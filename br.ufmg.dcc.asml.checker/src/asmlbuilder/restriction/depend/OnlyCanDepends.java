@@ -2,7 +2,10 @@ package asmlbuilder.restriction.depend;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
+
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -22,7 +25,7 @@ public class OnlyCanDepends extends RestricionChecker {
 
 	void onlyComponentACanDependCompontB(Restriction restriction) {
 		AbstractComponent componentA =  (AbstractComponent) restriction.eContainer();
-		AbstractComponent componentB = null;//restriction.getComponentB();
+		AbstractComponent componentB = (AbstractComponent) restriction.getComponentB().iterator().next();
 		Set<ComponentInstance> allInstances = asmlContext.getComponentInstances();
 		for (ComponentInstance componentInstance : allInstances) {
 			Set<ComponentInstanceReference> references = componentInstance.getDependencies();
@@ -34,7 +37,7 @@ public class OnlyCanDepends extends RestricionChecker {
 				AbstractComponent componentOwner = componentInstanceOwner.getComponent();
 				AbstractComponent componentReferenced = componentInstanceReferenced.getComponent();
 				if(!componentOwner.equals(componentA) && (componentReferenced.equals(componentB)) || componentReferenced.isChild(componentB)){
-					addViolation(restriction, reference.getLineNumber(), componentInstance, "Componente não pode depender de "+componentB.getName());
+					addViolation(restriction, reference.getLineNumber(), componentInstance, "Componente não pode depender de "+componentB.getName(),IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"ONLY_CAN_DEPENDS");
 				}
 			}
 		}

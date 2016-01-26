@@ -3,7 +3,7 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufmg.dcc.asml/src-gen" editDirectory="/br.ufmg.dcc.asml.edit/src"
     editorDirectory="/br.ufmg.dcc.asml.editor/src" modelPluginID="br.ufmg.dcc.asml"
     forceOverwrite="true" modelName="ASMLModel" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    complianceLevel="5.0" copyrightFields="false" editPluginID="br.ufmg.dcc.asml.edit"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="br.ufmg.dcc.asml.edit"
     editorPluginID="br.ufmg.dcc.asml.editor" runtimeVersion="2.10">
   <genPackages prefix="ASMLModel" basePackage="br.ufmg.dcc.asml" disposableProviderFactory="true"
       fileExtensions="asml" ecorePackage="ASMLModel.ecore#/">
@@ -46,6 +46,10 @@
       <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/DEPEND"/>
       <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/REQUIRES"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//WildCard">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//WildCard/Package"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//WildCard/PackageAndSubPackage"/>
+    </genEnums>
     <genClasses ecoreClass="ASMLModel.ecore#//ASMLModel">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ASMLModel/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ASMLModel/importURI"/>
@@ -84,8 +88,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/permissionClause"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/relactionType"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/groupClauseB"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//Restriction/componentB"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//Restriction/componentB"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/message"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//ComponentsBinRestrictionDeclareation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//ComponentsBinRestrictionDeclareation/componentB"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ComponentsBinRestrictionDeclareation/wildcard"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

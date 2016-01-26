@@ -3,7 +3,7 @@
 package br.ufmg.dcc.asml.aSMLModel.impl;
 
 import br.ufmg.dcc.asml.aSMLModel.ASMLModelPackage;
-import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.GroupClause;
 import br.ufmg.dcc.asml.aSMLModel.PermissionClause;
 import br.ufmg.dcc.asml.aSMLModel.RelactionType;
@@ -12,15 +12,18 @@ import br.ufmg.dcc.asml.aSMLModel.Restriction;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -123,14 +126,14 @@ public class RestrictionImpl extends MinimalEObjectImpl.Container implements Res
   protected GroupClause groupClauseB = GROUP_CLAUSE_B_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getComponentB() <em>Component B</em>}' reference list.
+   * The cached value of the '{@link #getComponentB() <em>Component B</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getComponentB()
    * @generated
    * @ordered
    */
-  protected EList<AbstractComponent> componentB;
+  protected EList<ComponentsBinRestrictionDeclareation> componentB;
 
   /**
    * The default value of the '{@link #getMessage() <em>Message</em>}' attribute.
@@ -270,11 +273,11 @@ public class RestrictionImpl extends MinimalEObjectImpl.Container implements Res
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<AbstractComponent> getComponentB()
+  public EList<ComponentsBinRestrictionDeclareation> getComponentB()
   {
     if (componentB == null)
     {
-      componentB = new EObjectResolvingEList<AbstractComponent>(AbstractComponent.class, this, ASMLModelPackage.RESTRICTION__COMPONENT_B);
+      componentB = new EObjectContainmentEList<ComponentsBinRestrictionDeclareation>(ComponentsBinRestrictionDeclareation.class, this, ASMLModelPackage.RESTRICTION__COMPONENT_B);
     }
     return componentB;
   }
@@ -300,6 +303,22 @@ public class RestrictionImpl extends MinimalEObjectImpl.Container implements Res
     message = newMessage;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, ASMLModelPackage.RESTRICTION__MESSAGE, oldMessage, message));
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  @Override
+  public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+  {
+    switch (featureID)
+    {
+      case ASMLModelPackage.RESTRICTION__COMPONENT_B:
+        return ((InternalEList<?>)getComponentB()).basicRemove(otherEnd, msgs);
+    }
+    return super.eInverseRemove(otherEnd, featureID, msgs);
   }
 
   /**
@@ -353,7 +372,7 @@ public class RestrictionImpl extends MinimalEObjectImpl.Container implements Res
         return;
       case ASMLModelPackage.RESTRICTION__COMPONENT_B:
         getComponentB().clear();
-        getComponentB().addAll((Collection<? extends AbstractComponent>)newValue);
+        getComponentB().addAll((Collection<? extends ComponentsBinRestrictionDeclareation>)newValue);
         return;
       case ASMLModelPackage.RESTRICTION__MESSAGE:
         setMessage((String)newValue);

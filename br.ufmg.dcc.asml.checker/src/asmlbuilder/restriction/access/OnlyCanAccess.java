@@ -2,12 +2,14 @@ package asmlbuilder.restriction.access;
 
 import java.util.Set;
 
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -50,7 +52,7 @@ public class OnlyCanAccess extends RestricionChecker {
 								break for2;
 							}
 						}
-						addViolation(restriction, lineNumber, componentInstance, "Somente classes do componente " + componentA.getName() + " podem acessar classes do componete " + componentB.getName());
+						addViolation(restriction, lineNumber, componentInstance, "Somente classes do componente " + componentA.getName() + " podem acessar classes do componete " + componentB.getName(), IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"ONLY_CAN_ACESS");
 					}
 				}
 			}

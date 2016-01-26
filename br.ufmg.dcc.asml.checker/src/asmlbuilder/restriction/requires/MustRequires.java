@@ -3,13 +3,16 @@ package asmlbuilder.restriction.requires;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.common.util.EList;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.matching.ModuleMatching;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 
 public class MustRequires extends RestricionChecker {
@@ -26,17 +29,17 @@ public class MustRequires extends RestricionChecker {
 	private void anyComponentAMustRequiresCompontB(Restriction restriction) {
 		AbstractComponent componentA = (AbstractComponent) restriction.eContainer();
 		Set<ComponentInstance> instancesA = componentA.getInstances();
-		EList<AbstractComponent> componentsB2 = restriction.getComponentB();
+		EList<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations = restriction.getComponentB();
 		exrenal_for: for (ComponentInstance componentInstanceA : instancesA) {
-			for (AbstractComponent componentB : componentsB2) {
-				Set<ComponentInstance> instancesB = componentB.getInstances();
+			for (ComponentsBinRestrictionDeclareation componentsBinRestrictionDeclareation : componentsBinRestrictionDeclareations) {
+				Set<ComponentInstance> instancesB = componentsBinRestrictionDeclareation.getComponentB().getInstances();
 				for (ComponentInstance componentInstanceB : instancesB) {
 					if (componentInstanceA.getRawName().equalsIgnoreCase(componentInstanceB.getRawName())) {
 						if (componentInstanceA.getResource() != null && componentInstanceA.getResource() instanceof IFile) {
 							boolean isSimetric = isSimetric(componentInstanceA, componentInstanceB);
 							if (!isSimetric) {
-								String message = "O componente requerido " + getComponentNames(componentsB2) + " existe mas o nome qualificado esta em disacordo com o componente " + componentA.getName();
-								addViolation(restriction, 1, componentInstanceA, message);
+								String message = "O componente requerido " + getComponentNames(componentsBinRestrictionDeclareations) + " existe mas o nome qualificado esta em disacordo com o componente " + componentA.getName();
+								addViolation(restriction, 1, componentInstanceA, message, IMarker.SEVERITY_WARNING, DependecyType.STRUCTURAL,"INVALIDE - REQUIRES");
 								continue exrenal_for;
 							}
 						}
@@ -45,18 +48,18 @@ public class MustRequires extends RestricionChecker {
 					}
 				}
 			}
-			String message = "Todo componente " + componentA.getName() + " requer um componente " + getComponentNames(componentsB2) + " de mesmo nome. Descrição do componente " + componentA.getName();
-			addViolation(restriction, 1, componentInstanceA, message);
+			String message = "Todo componente " + componentA.getName() + " requer um componente " + getComponentNames(componentsBinRestrictionDeclareations) + " de mesmo nome. Descrição do componente " + componentA.getName();
+			addViolation(restriction, 1, componentInstanceA, message,IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"REQUIRES");
 		}
 	}
 
-	private String getComponentNames(EList<AbstractComponent> componentsB2) {
+	private String getComponentNames(EList<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations) {
 		String name = "";
 		boolean primeiraIteracao = true;
-		for (AbstractComponent abstractComponent : componentsB2) {
+		for (ComponentsBinRestrictionDeclareation abstractComponent : componentsBinRestrictionDeclareations) {
 			if (!primeiraIteracao)
 				name = name + " ou ";
-			name = name + abstractComponent.getName();
+			name = name + abstractComponent.getComponentB().getName();
 			primeiraIteracao = false;
 		}
 		return name;

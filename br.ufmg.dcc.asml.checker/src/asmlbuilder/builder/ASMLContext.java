@@ -257,6 +257,8 @@ public class ASMLContext {
 	
 	public ASMLModel getAsmlModel(IProject iProject) {//TODO: Melhorar para evitar colisão de projetos que terminam com nomes iguais.
 		//TODO: Possibilitar que a vacina de cada projeto possa ser indicada via configuração
+		if(asmlModel==null)
+			return null;
 		EList<EObject> contents = asmlModel.eResource().getContents();
 		for (EObject eObject : contents) {
 			ASMLModel asmlModel = (ASMLModel) eObject;

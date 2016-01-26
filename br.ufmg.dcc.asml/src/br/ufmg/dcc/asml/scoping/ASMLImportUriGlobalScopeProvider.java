@@ -19,7 +19,7 @@ import br.ufmg.dcc.asml.ClassPathUtil;
 public class ASMLImportUriGlobalScopeProvider extends ImportUriGlobalScopeProvider {
 	private static final Logger log = Logger.getLogger(ASMLImportUriGlobalScopeProvider.class.getName());
 
-	@Override
+	@Override 
 	protected LinkedHashSet<URI> getImportedUris(final Resource resource) {
 		LinkedHashSet<URI> temp = new LinkedHashSet<URI>();
 		try {

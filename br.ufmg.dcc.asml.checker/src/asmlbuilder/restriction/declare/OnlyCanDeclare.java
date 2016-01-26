@@ -3,11 +3,13 @@ package asmlbuilder.restriction.declare;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -48,7 +50,7 @@ public class OnlyCanDeclare extends RestricionChecker {
 									break for2;
 								}
 							}
-							addViolation(restriction, lineNumber, componentInstance, "Somente classes do componente " + componentA.getName() + " podem declarar classes do componete " + componentB.getName());
+							addViolation(restriction, lineNumber, componentInstance, "Somente classes do componente " + componentA.getName() + " podem declarar classes do componete " + componentB.getName(),IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"ONLY_CAN_DECLARE");
 						}
 					}
 				}

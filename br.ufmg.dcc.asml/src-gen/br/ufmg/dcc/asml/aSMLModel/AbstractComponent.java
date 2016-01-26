@@ -30,7 +30,7 @@ import br.ufmg.dcc.asml.ComponentVisitor;
  * @model
  * @generated
  */
-public interface AbstractComponent extends EObject
+public interface AbstractComponent extends EObject, Comparable<AbstractComponent>
 {
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.

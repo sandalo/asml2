@@ -10,6 +10,7 @@ import br.ufmg.dcc.asml.aSMLModel.AbstractNameConvetion;
 import br.ufmg.dcc.asml.aSMLModel.Attribute;
 import br.ufmg.dcc.asml.aSMLModel.Cardinality;
 import br.ufmg.dcc.asml.aSMLModel.ClassMatching;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.ExpressionMatchingClause;
 import br.ufmg.dcc.asml.aSMLModel.ExpressionMatchingOperator;
 import br.ufmg.dcc.asml.aSMLModel.GroupClause;
@@ -20,6 +21,7 @@ import br.ufmg.dcc.asml.aSMLModel.PermissionClause;
 import br.ufmg.dcc.asml.aSMLModel.RelactionType;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 import br.ufmg.dcc.asml.aSMLModel.View;
+import br.ufmg.dcc.asml.aSMLModel.WildCard;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -112,6 +114,13 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass componentsBinRestrictionDeclareationEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EEnum cardinalityEEnum = null;
 
   /**
@@ -148,6 +157,13 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
    * @generated
    */
   private EEnum relactionTypeEEnum = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EEnum wildCardEEnum = null;
 
   /**
    * Creates an instance of the model <b>Package</b>, registered with
@@ -547,6 +563,36 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getComponentsBinRestrictionDeclareation()
+  {
+    return componentsBinRestrictionDeclareationEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getComponentsBinRestrictionDeclareation_ComponentB()
+  {
+    return (EReference)componentsBinRestrictionDeclareationEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getComponentsBinRestrictionDeclareation_Wildcard()
+  {
+    return (EAttribute)componentsBinRestrictionDeclareationEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EEnum getCardinality()
   {
     return cardinalityEEnum;
@@ -600,6 +646,16 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
   public EEnum getRelactionType()
   {
     return relactionTypeEEnum;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EEnum getWildCard()
+  {
+    return wildCardEEnum;
   }
 
   /**
@@ -675,6 +731,10 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
     createEReference(restrictionEClass, RESTRICTION__COMPONENT_B);
     createEAttribute(restrictionEClass, RESTRICTION__MESSAGE);
 
+    componentsBinRestrictionDeclareationEClass = createEClass(COMPONENTS_BIN_RESTRICTION_DECLAREATION);
+    createEReference(componentsBinRestrictionDeclareationEClass, COMPONENTS_BIN_RESTRICTION_DECLAREATION__COMPONENT_B);
+    createEAttribute(componentsBinRestrictionDeclareationEClass, COMPONENTS_BIN_RESTRICTION_DECLAREATION__WILDCARD);
+
     // Create enums
     cardinalityEEnum = createEEnum(CARDINALITY);
     expressionMatchingClauseEEnum = createEEnum(EXPRESSION_MATCHING_CLAUSE);
@@ -682,6 +742,7 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
     groupClauseEEnum = createEEnum(GROUP_CLAUSE);
     permissionClauseEEnum = createEEnum(PERMISSION_CLAUSE);
     relactionTypeEEnum = createEEnum(RELACTION_TYPE);
+    wildCardEEnum = createEEnum(WILD_CARD);
   }
 
   /**
@@ -758,8 +819,12 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
     initEAttribute(getRestriction_PermissionClause(), this.getPermissionClause(), "permissionClause", null, 0, 1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRestriction_RelactionType(), this.getRelactionType(), "relactionType", null, 0, 1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRestriction_GroupClauseB(), this.getGroupClause(), "groupClauseB", null, 0, 1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getRestriction_ComponentB(), this.getAbstractComponent(), null, "componentB", null, 0, -1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getRestriction_ComponentB(), this.getComponentsBinRestrictionDeclareation(), null, "componentB", null, 0, -1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getRestriction_Message(), ecorePackage.getEString(), "message", null, 0, 1, Restriction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(componentsBinRestrictionDeclareationEClass, ComponentsBinRestrictionDeclareation.class, "ComponentsBinRestrictionDeclareation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getComponentsBinRestrictionDeclareation_ComponentB(), this.getAbstractComponent(), null, "componentB", null, 0, 1, ComponentsBinRestrictionDeclareation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getComponentsBinRestrictionDeclareation_Wildcard(), this.getWildCard(), "wildcard", null, 0, 1, ComponentsBinRestrictionDeclareation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     // Initialize enums and add enum literals
     initEEnum(cardinalityEEnum, Cardinality.class, "Cardinality");
@@ -800,6 +865,10 @@ public class ASMLModelPackageImpl extends EPackageImpl implements ASMLModelPacka
     addEEnumLiteral(relactionTypeEEnum, RelactionType.USEANOTATION);
     addEEnumLiteral(relactionTypeEEnum, RelactionType.DEPEND);
     addEEnumLiteral(relactionTypeEEnum, RelactionType.REQUIRES);
+
+    initEEnum(wildCardEEnum, WildCard.class, "WildCard");
+    addEEnumLiteral(wildCardEEnum, WildCard.PACKAGE);
+    addEEnumLiteral(wildCardEEnum, WildCard.PACKAGE_AND_SUB_PACKAGE);
 
     // Create resource
     createResource(eNS_URI);

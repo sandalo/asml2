@@ -28,7 +28,7 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 	
 	private CompilationUnit compilationUnitAST;
 	private Object resourceType;
-
+ 
 	private ComponentInstance() {	}
 	
 	public static ComponentInstance createInstance(IResource resource, boolean external, CompilationUnit compilationUnitAST){
@@ -100,10 +100,10 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 
 	@Override
 	public String toString() {
-		if (resource != null)
-			return resource.toString();
 		if (getType() != null)
 			return getType().getFullyQualifiedName();
+		if (resource != null)
+			return resource.toString();
 		return "undefined";
 	}
 

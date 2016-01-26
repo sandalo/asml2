@@ -113,6 +113,15 @@ public interface ASMLModelFactory extends EFactory
   Restriction createRestriction();
 
   /**
+   * Returns a new object of class '<em>Components Bin Restriction Declareation</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>Components Bin Restriction Declareation</em>'.
+   * @generated
+   */
+  ComponentsBinRestrictionDeclareation createComponentsBinRestrictionDeclareation();
+
+  /**
    * Returns the package supported by this factory.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

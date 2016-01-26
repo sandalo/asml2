@@ -3,11 +3,13 @@ package asmlbuilder.restriction.throw_;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ThrowStatement;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -28,7 +30,7 @@ public class CannotThrow extends RestricionChecker {
 
 	void anyComponentACannotThrowCompontB(Restriction restriction) {
 		AbstractComponent componentA =  (AbstractComponent) restriction.eContainer();
-		AbstractComponent componentB = null;//restriction.getComponentB();
+		AbstractComponent componentB = (AbstractComponent) restriction.getComponentB().iterator().next();
 		Set<ComponentInstance> allInstances = componentA.getAllComponentInstances();
 		int lineNumber = 1;
 		for (ComponentInstance componentInstance : allInstances) {
@@ -41,7 +43,7 @@ public class CannotThrow extends RestricionChecker {
 						continue;
 					lineNumber = componentInstance.getCompilationUnitAST().getLineNumber(throwStatementResource.getAstNode().getStartPosition());
 					if (componentB.containsType(nameOfClassAccessed)) {
-						addViolation(restriction, lineNumber, componentInstance, "Componentes do tipo " + componentA.getName() + " não podem lançar exceções do tipo: " + componentB.getName());
+						addViolation(restriction, lineNumber, componentInstance, "Componentes do tipo " + componentA.getName() + " não podem lançar exceções do tipo: " + componentB.getName(), IMarker.SEVERITY_ERROR, DependecyType.COMPILE, "CANNOT_THROW");
 					}
 				}
 			}

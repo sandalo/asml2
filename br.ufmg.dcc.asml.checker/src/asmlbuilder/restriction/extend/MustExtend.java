@@ -3,9 +3,11 @@ package asmlbuilder.restriction.extend;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import asmlbuilder.builder.ASMLContext;
+import asmlbuilder.builder.Violation.DependecyType;
 import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
@@ -34,13 +36,13 @@ public class MustExtend extends RestricionChecker {
 				Set<ComponentInstanceReference> referencesOfInstaceOfA = instancesOfA.getDependencies(RelactionType.EXTEND);
 				for (ComponentInstanceReference typeDeclarationInResourceA : referencesOfInstaceOfA) {
 					ComponentInstance resourceDeclaredInA = typeDeclarationInResourceA.getComponentInstanceDependent();
-					AbstractComponent componentB = restriction.getComponentB().get(0);
+					AbstractComponent componentB = restriction.getComponentB().get(0).getComponentB();
 					extend = resourceDeclaredInA.extendsAtLeastOneOf(componentB);
 					if (!extend) {
 						typeName2 = componentB.getName();
 						lineNumber = typeDeclarationInResourceA.getLineNumber();
 						String defaultMessage = "Classes  do tipo   " + componentA.getName() + " devem herdar de classes " + typeName2;
-						addViolation(restriction, lineNumber, instancesOfA, defaultMessage);
+						addViolation(restriction, lineNumber, instancesOfA, defaultMessage,IMarker.SEVERITY_ERROR, DependecyType.COMPILE, "MUST_EXTENDS");
 					}
 				}
 			}
