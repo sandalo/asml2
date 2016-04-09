@@ -77,6 +77,11 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 			return;
 		component.isChild(this.component);
 		if (this.component != null) {
+			if(this.component.getMatching().contains("extension=")){
+				this.component.removeInstance(this);
+				this.component = component;
+				return;
+			}
 			System.out.println("Tentando configurar " + this.getRawName() + " para o componente " + component.getName());
 			System.out.println("Componente " + this.component.getName() + " já esta configurado para esta instancia.");
 			return;
@@ -283,7 +288,17 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 			return getResource().getName();
 		}
 
-		if (matching != null && matching.contains("{?}")) {
+		if (matching != null && matching.contains("{?}_{*}")) {
+			try {
+				String segments[] = matching.split("\\{\\?\\}_\\{\\*\\}");
+				for (int i = 0; i < segments.length; i++) {
+					String token = segments[i];
+					name = name.replace(token, "");
+				}
+			} catch (Exception e) {
+				return getResource().getName();
+			}
+		}else if (matching != null && matching.contains("{?}")) {
 			try {
 				String segments[] = matching.split("\\{\\?\\}");
 				for (int i = 0; i < segments.length; i++) {
@@ -297,6 +312,24 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 		if (getResource().getFileExtension() != null)
 			name = name.replace("." + getResource().getFileExtension(), "");
 		return name;
+	}
+	
+	public String getRequiresRawName() {
+		String name = getResource().getName();
+		if (getComponent() == null)
+			return name;
+		String matching = getComponent().getMatching();
+
+		if (matching != null && matching.contains("{?}_{*}")) {
+			try {
+				String segments[] = name.split("_");
+				return segments[0];
+			} catch (Exception e) {
+				return name;
+			}
+		}else {
+			return getRawName();
+		}
 	}
 
 	public boolean isExternal() {

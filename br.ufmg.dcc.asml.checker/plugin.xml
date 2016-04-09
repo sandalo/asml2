@@ -262,4 +262,26 @@
            class="asmlbuilder.view.start.ASMLStartup">
      </startup>
   </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           class="asmlbuilder.view.properties.ASMLPropertyPage"
+           id="br.ufmg.dcc.asml.checker.properties.samplePropertyPage"
+           name="ASML Page"
+           nameFilter="*.*">
+        <enabledWhen>
+           <instanceof
+                 value="org.eclipse.core.resources.IResource">
+           </instanceof>
+        </enabledWhen>
+     </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.propertyPages">
+     <page
+           class="asmlbuilder.view.properties.WorkbenchPropertyASML"
+           id="br.ufmg.dcc.asml.checker.page1"
+           name="ASML">
+     </page>
+  </extension>
 </plugin>

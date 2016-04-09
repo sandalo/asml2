@@ -3,6 +3,8 @@ package br.ufmg.dcc.asml;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.management.RuntimeErrorException;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -117,9 +119,12 @@ public class XtextParser {
 	 */
 	public Resource getResource(String path) {
 		URI uri = URI.createURI(path);
-		Resource resource = resourceSet.getResource(uri, true,false);
-		
-		return resource;
+		try {
+			Resource resource = resourceSet.getResource(uri, true,false);
+			return resource;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

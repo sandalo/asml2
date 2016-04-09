@@ -19,9 +19,11 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -55,39 +57,44 @@ public class VaccinePreferencePage extends FieldEditorPreferencePage implements 
 	 * editor knows how to save and restore itself.
 	 */
 	public void createFieldEditors() {
-		BooleanFieldEditor booleanFieldEditor = new BooleanFieldEditor(PreferenceConstants.P_LIVE_FEEDBACK, "&Live feedback violations", getFieldEditorParent());
-		BooleanFieldEditor booleanFieldEditor1 = new BooleanFieldEditor(PreferenceConstants.P_BUILD_FEEDBACK, "&Build feedback violations", getFieldEditorParent());
+		Composite composite = new Composite(getFieldEditorParent(), SWT.NONE);
+		GridLayout layout = new GridLayout();
+		composite.setLayout(layout);
+		layout.numColumns = 1;
+		
+		BooleanFieldEditor booleanFieldEditor_P_LIVE_FEEDBACK = new BooleanFieldEditor(PreferenceConstants.P_LIVE_FEEDBACK, "&Live feedback violations", composite);
+		BooleanFieldEditor booleanFieldEditor1P_BUILD_FEEDBACK = new BooleanFieldEditor(PreferenceConstants.P_BUILD_FEEDBACK, "&Build feedback violations", composite);
 
 
-		Group groupDebug = new Group(getFieldEditorParent(), SWT.NONE);
+		
+		Group groupDebug = new Group(composite, SWT.NONE);
 		groupDebug.setText("Debug");
-		Layout layout = new FillLayout();
-		groupDebug.setLayout(layout);
-		groupDebug.setBounds(0, 0, 300, 100);
+		groupDebug.setBounds(0, 0, 400, 100);
 		
 
-		BooleanFieldEditor booleanFieldEditor2 = new BooleanFieldEditor(PreferenceConstants.P_DEBUG, "&Debug", groupDebug);
-		StringFieldEditor stringFieldEditor = new StringFieldEditor(PreferenceConstants.P_DEBUG_COMPONENT_FILTER, "&Debug component filter",25, groupDebug);
+		BooleanFieldEditor booleanFieldEditor2_P_DEBUG = new BooleanFieldEditor(PreferenceConstants.P_DEBUG, "&Debug", groupDebug);
+		StringFieldEditor debugFilterFieldEditor_P_DEBUG_COMPONENT_FILTER = new StringFieldEditor(PreferenceConstants.P_DEBUG_COMPONENT_FILTER, "&Debug component filter",25, groupDebug);
 		
 		
 		
-		Group groupFilter = new Group(getFieldEditorParent(), SWT.NONE);
+		Group groupFilter = new Group(composite, SWT.NONE);
 		groupFilter.setText("Filter");
-		Layout layout2 = new FillLayout();
-		groupFilter.setLayout(layout2);
-		groupFilter.setBounds(0, 0, 300, 100);
+		groupFilter.setLayout(layout);
+		groupFilter.setBounds(0, 0, 400, 100);
 
+		addField(booleanFieldEditor_P_LIVE_FEEDBACK);
+		addField(booleanFieldEditor1P_BUILD_FEEDBACK);
+		addField(booleanFieldEditor2_P_DEBUG);
+		addField(debugFilterFieldEditor_P_DEBUG_COMPONENT_FILTER);
 		
 		BooleanFieldEditor booleanFieldEditor3 = new BooleanFieldEditor(PreferenceConstants.P_SHOW_STRUCTURAL_VIOLATIONS, "Show structural violations", groupFilter);
 		BooleanFieldEditor booleanFieldEditor4 = new BooleanFieldEditor(PreferenceConstants.P_SHOW_RESTRCTION_VALIDATIONS, "Show restriction violations", groupFilter);
-		StringFieldEditor ignoreFieldEditor = new StringFieldEditor(PreferenceConstants.P_IGNORE_ARTFACT_FILTER, "&Ignore artifact filter",25, groupFilter);
+		StringFieldEditor ignoreFieldEditor = new StringFieldEditor(PreferenceConstants.P_IGNORE_ARTFACT_FILTER, "&Ignore artifact filter",30, groupFilter);
 		
 		
+//		new Label(getShell(), SWT.SEPARATOR | SWT.HORIZONTAL);
 		
-		addField(booleanFieldEditor);
-		addField(booleanFieldEditor1);
-		addField(booleanFieldEditor2);
-		addField(stringFieldEditor);
+		
 		addField(booleanFieldEditor3);
 		addField(booleanFieldEditor4);
 		addField(ignoreFieldEditor);

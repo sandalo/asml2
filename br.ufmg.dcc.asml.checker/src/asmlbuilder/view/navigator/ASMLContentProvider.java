@@ -45,69 +45,82 @@ public class ASMLContentProvider implements ITreeContentProvider, IResourceChang
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		Object[] children = null;
-		if (IWorkspaceRoot.class.isInstance(parentElement)) {
-			if (_customProjectParents == null) {
-				_customProjectParents = initializeParent(parentElement);
-			}
-			children = _customProjectParents;
-		} else if (ASMLModel.class.isInstance(parentElement)) {
-			EList<AbstractComponent> components = ((ASMLModel) parentElement).getComponents();
-			List<ComponentInstance> childrenInstances = new ArrayList<ComponentInstance>();
-			if (components != null) {
-				for (AbstractComponent abstractComponent : components) {
-					Set<ComponentInstance> instances2 = abstractComponent.getInstances();
-					childrenInstances.addAll(instances2);
+		try {
+			
+			if (IWorkspaceRoot.class.isInstance(parentElement)) {
+				if (_customProjectParents == null) {
+					_customProjectParents = initializeParent(parentElement);
 				}
-			}
-			children = childrenInstances.toArray();
-		} else if (ComponentInstance.class.isInstance(parentElement)) {
-			ComponentInstance componentInstance = (ComponentInstance) parentElement;
-			IResource resource = componentInstance.getResource();
-			IResource[] members = new IResource[] {};
-			if (IFolder.class.isInstance(resource)) {
-				IFolder folder = (IFolder) resource;
-				try {
-					members = folder.members();
-				} catch (CoreException e) {
-					e.printStackTrace();
+				children = _customProjectParents;
+			} else if (ASMLModel.class.isInstance(parentElement)) {
+				EList<AbstractComponent> components = ((ASMLModel) parentElement).getComponents();
+				List<ComponentInstance> childrenInstances = new ArrayList<ComponentInstance>();
+				if (components != null) {
+					for (AbstractComponent abstractComponent : components) {
+						Set<ComponentInstance> instances2 = abstractComponent.getInstances();
+						childrenInstances.addAll(instances2);
+					}
 				}
+				children = childrenInstances.toArray();
+			} else if (ComponentInstance.class.isInstance(parentElement)) {
+				ComponentInstance componentInstance = (ComponentInstance) parentElement;
+				IResource resource = componentInstance.getResource();
+				IResource[] members = new IResource[] {};
+				if (IFolder.class.isInstance(resource)) {
+					IFolder folder = (IFolder) resource;
+					try {
+						members = folder.members();
+					} catch (CoreException e) {
+						e.printStackTrace();
+					}
+				}
+				List<ComponentInstance> childrenInstances = new ArrayList<ComponentInstance>();
+				for (IResource iResource : members) {
+					ASMLContext asmlContext = Activator.getAsmlProcessor().getAsmlContext();
+					ComponentInstance componentInstanceByIResourceName = asmlContext.getComponentInstanceByIResourceName(iResource);
+					if (componentInstanceByIResourceName != null)
+						childrenInstances.add(componentInstanceByIResourceName);
+				}
+				children = childrenInstances.toArray();
+			} else {
+				children = NO_CHILDREN;
 			}
-			List<ComponentInstance> childrenInstances = new ArrayList<ComponentInstance>();
-			for (IResource iResource : members) {
-				ASMLContext asmlContext = Activator.getAsmlProcessor().getAsmlContext();
-				ComponentInstance componentInstanceByIResourceName = asmlContext.getComponentInstanceByIResourceName(iResource);
-				if (componentInstanceByIResourceName != null)
-					childrenInstances.add(componentInstanceByIResourceName);
-			}
-			children = childrenInstances.toArray();
-		} else {
-			children = NO_CHILDREN;
+			return children;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		children = NO_CHILDREN;
 		return children;
 	}
 
 	private ASMLModel[] initializeParent(Object parentElement) {
-		IWorkspaceRoot root = (IWorkspaceRoot) parentElement;
-		IProject[] projects = root.getProjects();
-
+		ASMLModel[] result = null; 			
 		List<ASMLModel> list = new Vector<ASMLModel>();
-		for (int i = 0; i < projects.length; i++) {
-			try {
-				IProject iProject = projects[i];
-				if (iProject.isOpen())
-					if (iProject.getNature(ASMLNature.NATURE_ID) != null) {
-						ASMLModel asmlModel = Activator.getAsmlProcessor().getAsmlContext().getAsmlModel(iProject);
-						list.add(asmlModel);
-					}
-			} catch (CoreException e) {
-				// Go to the next IProject
+		try {
+			IWorkspaceRoot root = (IWorkspaceRoot) parentElement;
+			IProject[] projects = root.getProjects();
+			
+			for (int i = 0; i < projects.length; i++) {
+				try {
+					IProject iProject = projects[i];
+					if (iProject.isOpen())
+						if (iProject.getNature(ASMLNature.NATURE_ID) != null) {
+							ASMLModel asmlModel = Activator.getAsmlProcessor().getAsmlContext().getAsmlModel(iProject);
+							list.add(asmlModel);
+						}
+				} catch (CoreException e) {
+					e.printStackTrace();
+				}
 			}
+			
+			result = new ASMLModel[list.size()];
+			list.toArray(result);
+
+			return result;
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-
-		ASMLModel[] result = new ASMLModel[list.size()];
-		list.toArray(result);
-
-		return result;
+		return list.toArray(result);
 	}
 
 	@Override
@@ -128,11 +141,16 @@ public class ASMLContentProvider implements ITreeContentProvider, IResourceChang
 
 	@Override
 	public Object getParent(Object element) {
+
 		Object parent = null;
-		if (ASMLModel.class.isInstance(element)) {
-			parent = ((ASMLModel) element).getProject().getWorkspace();
-		} else if (ComponentInstance.class.isInstance(element)) {
-			parent = ((ComponentInstance) element).getComponent().eContainer();
+		try {
+			if (ASMLModel.class.isInstance(element)) {
+				parent = ((ASMLModel) element).getProject().getWorkspace();
+			} else if (ComponentInstance.class.isInstance(element)) {
+				parent = ((ComponentInstance) element).getComponent().eContainer();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return parent;
 	}

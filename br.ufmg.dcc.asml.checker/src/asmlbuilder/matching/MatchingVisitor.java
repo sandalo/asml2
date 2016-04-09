@@ -34,7 +34,7 @@ public class MatchingVisitor implements ComponentVisitor {
 	}
 	
 
-	protected void matching(AbstractComponent component) {
+	protected void matching(AbstractComponent component) { 
 		boolean matching = false;
 		Set<ComponentInstance> componentInstances2 = componentInstances;
 		if(componentInstances2==null)

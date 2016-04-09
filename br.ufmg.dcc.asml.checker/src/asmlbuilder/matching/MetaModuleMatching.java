@@ -22,11 +22,11 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 	public boolean matching(ComponentInstance componentInstance, AbstractComponent component) {
 		boolean isMatch = false;
 		if (componentInstance.getResource() instanceof IFile) {
-			isMatch =  isMatchFileStrategy(componentInstance, component);
+			isMatch = isMatchFileStrategy(componentInstance, component);
 		} else if (componentInstance.getResource() instanceof FileInJar) {
-			isMatch =  isMatchFileStrategy(componentInstance, component);
+			isMatch = isMatchFileStrategy(componentInstance, component);
 		} else {
-			isMatch =  isMatchFolderStrategy(componentInstance, component);
+			isMatch = isMatchFolderStrategy(componentInstance, component);
 		}
 		return isMatch;
 	}
@@ -81,7 +81,7 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 					} else {
 						isMatch = false;
 					}
-				}else{
+				} else {
 					if (sufix.contains("extension")) {
 						isMatch = false;
 						String key_extensions[] = sufix.replaceAll("\\}", "").replaceAll("\\{", "").split("=");
@@ -96,7 +96,18 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 				}
 			}
 
-		} else if (component.getMatching().contains(".*") /*&& (componentInstance.getResource() instanceof IFolder || (componentInstance.getType() != null && componentInstance.getType().isBinary()))*/) {
+		} else if (component.getMatching().contains(".*") /*
+														 * &&
+														 * (componentInstance.
+														 * getResource()
+														 * instanceof IFolder ||
+														 * (
+														 * componentInstance.getType
+														 * () != null &&
+														 * componentInstance
+														 * .getType
+														 * ().isBinary()))
+														 */) {
 			isMatch = false;
 			String parents[] = component.getMatching().split("\\.");
 			String segments[] = componentInstance.getResource().getFullPath().segments();
@@ -107,14 +118,14 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 					isMatch = true;
 				}
 			}
-			if(isFalsePositive(componentInstance, component))
+			if (isFalsePositive(componentInstance, component))
 				isMatch = false;
 		} else {
 			isMatch = false;
 			String parents[] = component.getFullPathComponent().split("\\.");
 			String segments[] = componentInstance.getResource().getFullPath().segments();
-			String resourceName = (segments[segments.length - 1]+"").replace("."+fileExtension, "");
-			if (component.getName().equals(resourceName)) {
+			String resourceName = (segments[segments.length - 1] + "").replace("." + fileExtension, "");
+			if (component.getName().equals(resourceName) || component.getMatching().equals(resourceName)) {
 				if (parents.length > 1) {
 					if (parents[parents.length - 2].equals(segments[segments.length - 2])) {
 						isMatch = true;
@@ -124,15 +135,15 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 				}
 			}
 		}
-		if(componentInstance.getResource() instanceof FileInJar)
-			if(isFalsePositive(componentInstance, component))
+		if (componentInstance.getResource() instanceof FileInJar)
+			if (isFalsePositive(componentInstance, component))
 				isMatch = false;
 		return isMatch;
 	}
 
 	private boolean isMatchFolderStrategy(ComponentInstance resource, AbstractComponent component) {
 		try {
-			
+
 			String path = ModuleMatching.getFullPathComponent(component, true);
 			String[] segmentsComponent = path.split("\\.");
 			String[] segmentsResource = resource.getResource().getFullPath().segments();
@@ -166,12 +177,20 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 	}
 
 	private String[] getPrefixAndSufix(AbstractComponent component) {
-		String curinga = "\\{\\?\\}";
 		String matchingAux = component.getMatching();
-		if (matchingAux != null && !matchingAux.contains("?"))
+		if (matchingAux != null && !matchingAux.contains("?")) {
 			return new String[] {};
-		String[] prefixAndSufix = matchingAux.split(curinga);
-		return prefixAndSufix;
+		} else {
+			String curinga = "\\{\\?\\}";
+			String curinga2 = "\\{\\?\\}_\\{\\*\\}";
+			if (matchingAux.contains("?") && matchingAux.contains("*")) {
+				String[] prefixAndSufix = matchingAux.split(curinga2);
+				return prefixAndSufix;
+			} else {
+				String[] prefixAndSufix = matchingAux.split(curinga);
+				return prefixAndSufix;
+			}
+		}
 	}
 
 	private String getResourceName(ComponentInstance resource) {
@@ -181,8 +200,7 @@ public class MetaModuleMatching extends AbstraticMatching implements IMatching {
 			name = resource.getResource().getName().replace("." + fileExtension, "");
 		return name;
 	}
-	
-	
+
 	private boolean isFalsePositive(ComponentInstance componentInstance, AbstractComponent component) {
 		boolean falsePositive = false;
 		if (!(componentInstance.getResource() instanceof IFolder)) {

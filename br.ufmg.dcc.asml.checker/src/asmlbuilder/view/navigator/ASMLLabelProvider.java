@@ -49,8 +49,19 @@ public class ASMLLabelProvider implements ILabelProvider {
 		Image image = null;
 		try {
 			if (ASMLModel.class.isInstance(element)) {
-				imageFilePath = "icons/imagen_camadas.gif";
+				ASMLModel asmlmodel = (ASMLModel) element;
+				IProject project = asmlmodel.getProject();
+				IJavaProject create = JavaCore.create(project);
+				String path = ClassPathUtil.recuperaPathVaccine(create);
+				path = path.replace("vaccine.asml", "");
 				imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin("br.ufmg.dcc.asml.checker", imageFilePath);
+				imageFilePath = path+"icons/" + asmlmodel.getName() + ".gif";
+				imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin("br.ufmg.dcc.asml.checker", imageFilePath);
+				if (imageDescriptor.getImageData() ==null) {
+					imageFilePath = "icons/imagen_camadas.gif";
+					imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin("br.ufmg.dcc.asml.checker", imageFilePath);
+				}
+				image = imageDescriptor.createImage();
 			} else if (ComponentInstance.class.isInstance(element)) {
 				ComponentInstance componentInstance = (ComponentInstance) element;
 				if (componentInstance.getComponent() != null) {
@@ -81,23 +92,25 @@ public class ASMLLabelProvider implements ILabelProvider {
 	@Override
 	public String getText(Object element) {
 		String text = "";
-		ASMLModel asmlModel = null;
-		if (ASMLModel.class.isInstance(element)) {
-			text = ((ASMLModel) element).getProject().getName();
-		} else if (ComponentInstance.class.isInstance(element)) {
-			ComponentInstance componentInstance = (ComponentInstance) element;
-			String name2 = componentInstance.getResource().getName();
-			if (componentInstance.getComponent() != null) {
-				String name = componentInstance.getComponent().getName();
-				if (name.equals(name2))
-					text = name;
-				else
-					text = name2 + " <<" + name + ">>";
-			} else {
-				text = name2 + " <<unknown>>";
+		try {
+			if (ASMLModel.class.isInstance(element)) {
+				text = ((ASMLModel) element).getProject().getName();
+			} else if (ComponentInstance.class.isInstance(element)) {
+				ComponentInstance componentInstance = (ComponentInstance) element;
+				String name2 = componentInstance.getResource().getName();
+				if (componentInstance.getComponent() != null) {
+					String name = componentInstance.getComponent().getName();
+					if (name.equals(name2))
+						text = name;
+					else
+						text = name2 + " <<" + name + ">>";
+				} else {
+					text = name2 + " <<unknown>>";
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
 		return text;
 	}
 }

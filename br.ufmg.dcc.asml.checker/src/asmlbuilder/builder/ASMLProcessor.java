@@ -177,6 +177,7 @@ public class ASMLProcessor {
 				throw new RuntimeException(" Arquivo da vacina não encontrado. Se estiver com o projeto da vacina aberto, verifique se o projeto da vacina se encontra no mesmo workspace do projeto alvo.");
 			}
 			e.printStackTrace();
+			
 		} finally {
 			monitor.done();
 		}
@@ -235,7 +236,7 @@ public class ASMLProcessor {
 			log(Level.INFO, "Número de violações totais: " + violations.size());
 			
 			String message = "";
-			for (Violation violation : violations) {
+/*			for (Violation violation : violations) {
 				try {
 					
 					Date date = new Date();
@@ -258,7 +259,7 @@ public class ASMLProcessor {
 					e.printStackTrace();
 				}
 			}
-			
+*/			
 			
 		} catch (Exception e) {
 			e.printStackTrace();// TODO: handle exception
@@ -464,7 +465,13 @@ public class ASMLProcessor {
 			iProject.deleteMarkers(ASMLConstant.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 			ASMLModel asmlModel = asmlContext.getAsmlModel(iProject);
 			if (asmlModel == null) {
-				Resource eResource = asmlContext.getAsmlModelPrimario().eResource();
+				ASMLModel asmlModelPrimario = asmlContext.getAsmlModelPrimario();
+				if(asmlModelPrimario==null){
+					List<IProject> projects = new ArrayList<IProject>();
+					projects = Activator.getOpenedProjects(iProject.getWorkspace());
+					carregaArvoreDeComponentes(projects);
+				}
+				Resource eResource = asmlModelPrimario.eResource();
 				String path = ClassPathUtil.recuperaPathVaccine(asmlContext.getJavaProject(iProject));
 				xtextParser.addAllResourcesImported(eResource, path);
 				asmlModel = asmlContext.getAsmlModel(iProject);
@@ -485,7 +492,7 @@ public class ASMLProcessor {
 				}
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Erro ao limpar instancias de componentes");
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -702,7 +709,7 @@ public class ASMLProcessor {
 				monitor.worked(1);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Erro em full build", e);
+			throw new RuntimeException(e);
 		}
 	}
 

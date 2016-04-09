@@ -34,7 +34,10 @@ public class MustRequires extends RestricionChecker {
 			for (ComponentsBinRestrictionDeclareation componentsBinRestrictionDeclareation : componentsBinRestrictionDeclareations) {
 				Set<ComponentInstance> instancesB = componentsBinRestrictionDeclareation.getComponentB().getInstances();
 				for (ComponentInstance componentInstanceB : instancesB) {
-					if (componentInstanceA.getRawName().equalsIgnoreCase(componentInstanceB.getRawName())) {
+					String rawNameA = componentInstanceA.getRawName();
+					String rawNameB = componentInstanceB.getRawName();
+					String rawRequiresNameA = componentInstanceA.getRequiresRawName();
+					if (rawNameA.equalsIgnoreCase(rawNameB) || rawRequiresNameA.equalsIgnoreCase(rawNameB)){
 						if (componentInstanceA.getResource() != null && componentInstanceA.getResource() instanceof IFile) {
 							boolean isSimetric = isSimetric(componentInstanceA, componentInstanceB);
 							if (!isSimetric) {
@@ -49,7 +52,7 @@ public class MustRequires extends RestricionChecker {
 				}
 			}
 			String message = "Todo componente " + componentA.getName() + " requer um componente " + getComponentNames(componentsBinRestrictionDeclareations) + " de mesmo nome. Descrição do componente " + componentA.getName();
-			addViolation(restriction, 1, componentInstanceA, message,IMarker.SEVERITY_ERROR, DependecyType.COMPILE,"REQUIRES");
+			addViolation(restriction, 1, componentInstanceA, message,IMarker.SEVERITY_ERROR, DependecyType.STRUCTURAL,"REQUIRES");
 		}
 	}
 
