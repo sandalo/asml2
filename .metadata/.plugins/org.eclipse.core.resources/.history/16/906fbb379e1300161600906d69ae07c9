@@ -1,0 +1,79 @@
+grammar br.ufmg.dcc.asml.ASMLModel with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as types
+generate aSMLModel "http://www.ufmg.br/dcc/asml/ASMLModel"
+
+
+ASMLModel: 
+'architecture'	name=ID_ASML "{"
+	('import' importURI=STRING ';')?
+	(components+=AbstractComponent)*
+	('ignore' ((ignore+=STRING) (',')?)* (';'))?
+"}";
+
+AbstractComponent:
+	MetaModule | View;
+
+terminal ID_ASML:
+	('a'..'z' | 'A'..'Z' | '_' | '.') ('a'..'z' | 'A'..'Z' | '_' | '-' | '.' | '0'..'9')*;
+
+View:
+	'view' name=ID_ASML '{'
+	(('attributes' (attributes+=Attribute) (',')?)* (';'))?
+	(components+=AbstractComponent)*
+	(restrictions+=Restriction)*
+	'}';
+
+enum Cardinality:
+	One="1" | Zero="0" | OneOrMany="1..*" | ZeroOrMany="0..*";
+
+Attribute:
+	name=ID_ASML ':' value=STRING;
+
+AbstractNameConvetion:
+	STRING | ClassMatching;
+
+enum ExpressionMatchingClause:
+	NAME_START_WITH='name start with' | NAME_ENDS_WITH='name ends with' | ANNOTATED_WITH='annotated with';
+
+ExpressionMatchingOperator:
+	AND='and' | OR='or';
+
+enum ModuleMatchingParamenter:
+	PAKCAGE='by package name' | FOLDER='by folder name' | PAKCAGE_AND_FOLDER='by package and folder name' |
+	EXTERNAL_DEFINITION='by external implementation';
+
+ModuleMatching:
+	(parameter=ModuleMatchingParamenter);
+
+ClassMatching:
+	(expressionMatching=ExpressionMatchingClause parameter=STRING)
+	//	(expressionMatchings=ExpressionMatchingClause parameter=STRING (operator=ExpressionMatchingOperator )?)?
+;
+
+//ConfigurationElement: Configuration | XmlDocument | XmlElement | File ;
+ MetaModule:
+	name=ID_ASML '{'
+	(('attributes:' (attributes+=Attribute) (',')?)* (';'))?
+	('matching:' matching=STRING ';')?
+	('description:' description=STRING ';')?
+	(components+=AbstractComponent)*
+	('restrictions' '{' (restrictions+=Restriction)* '}')?
+	'}';
+
+QualifiedName:
+	ID_ASML ('.' ID_ASML)*;
+
+enum GroupClause:
+	NULL='$null' | ONLY='only' | ONLY_THIS='only-this';
+
+enum PermissionClause:
+	MUST='must' | CAN='can' | CANNOT='cannot';
+
+enum RelactionType:
+	ACCESS='access' | DECLARE='declare' | HANDLE='handle' | EXTEND='extend' | IMPLEMENT='implement' | CREATE='create' |
+	THROW='throw' | USEANOTATION='use-annotation'
+	| DEPEND='depend' | REQUIRES='requires';
+
+Restriction:
+	(groupClause=GroupClause)? (permissionClause=PermissionClause)? relactionType=RelactionType (groupClauseB=GroupClause)? (componentB+=([AbstractComponent|QualifiedName])(',')?)* ('message'message=STRING)? ';';

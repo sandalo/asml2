@@ -95,6 +95,8 @@ public class MetaModuleImpl extends AbstractComponentImpl implements MetaModule
    */
   public String getMatching()
   {
+	  if(matching==null)
+		  return getName();
     return matching;
   }
 

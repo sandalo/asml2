@@ -283,11 +283,11 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 			return getResource().getName();
 		String matching = getComponent().getMatching();
 
-		String name = getResource().getName();
 		if (matching != null && matching.equals("{?}")) {
 			return getResource().getName();
 		}
 
+		String name = getResource().getName();
 		if (matching != null && matching.contains("{?}_{*}")) {
 			try {
 				String segments[] = matching.split("\\{\\?\\}_\\{\\*\\}");

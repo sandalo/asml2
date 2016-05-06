@@ -51,6 +51,9 @@ public class ASMLReosurceJavaVisitor extends ASTVisitor {
 			IType findType;
 			IJavaProject javaProject = asmlContext.getJavaProject(iProject);
 			findType = javaProject.findType(qualifiedName);
+			if(qualifiedName.equals(Object.class.getName())){
+				return;
+			}
 			ComponentInstance componentInstanceReferenced = asmlContext.getComponentInstanceByITypeName(findType);
 			ComponentInstanceReference reference = new ComponentInstanceReference();
 			reference.setRelactionType(relactionType);

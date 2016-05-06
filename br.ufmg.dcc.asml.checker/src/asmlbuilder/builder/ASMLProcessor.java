@@ -352,7 +352,7 @@ public class ASMLProcessor {
 										ComponentInstance componentInstance = ComponentInstance.createInstance(fileInJar, true, null);
 										componentInstance.setType(iClassFile.getType());
 										asmlContext.addComponentInstance(componentInstance);
-										// System.out.println(jarName+" => "+componentInstance);
+										//System.out.println(jarName+" => "+componentInstance);
 									}
 									continue children;
 								}
@@ -475,6 +475,9 @@ public class ASMLProcessor {
 				String path = ClassPathUtil.recuperaPathVaccine(asmlContext.getJavaProject(iProject));
 				xtextParser.addAllResourcesImported(eResource, path);
 				asmlModel = asmlContext.getAsmlModel(iProject);
+				if(asmlModel==null){
+					throw new RuntimeException("Não existe especificação de arquitetura com nome:"+ iProject.getName() );
+				}
 			} else {
 				asmlContext.removeViolations(iProject);
 				iProject.deleteMarkers(ASMLConstant.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
