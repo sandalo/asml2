@@ -29,6 +29,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
+import org.eclipse.jdt.core.dom.TypeParameter;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 import org.eclipse.jdt.core.dom.rewrite.ASTRewrite;
 
@@ -342,7 +343,11 @@ public class ASMLReosurceJavaVisitor extends ASTVisitor {
 		}
 		return true;
 	}
-
+@Override
+public boolean visit(TypeParameter node) {
+	// TODO Auto-generated method stub
+	return super.visit(node);
+}
 	public void setComponentInstance(ComponentInstance componentInstance) {
 		this.componentInstance = componentInstance;
 	}

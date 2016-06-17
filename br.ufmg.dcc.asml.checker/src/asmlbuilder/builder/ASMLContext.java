@@ -436,7 +436,7 @@ public class ASMLContext {
 			fullPath = fullPath.replaceAll("\\.\\*", "");
 		}
 		String[] segments = fullPath.split("\\.");
-		if (segments.length <= 1)
+		if (/*segments.length <= 1 || */segments.length == 1 && ( segments[0].equals("java")|| segments[0].equals("javax")|| segments[0].equals("org")|| segments[0].equals("com")))
 			return;
 		String matchingAux = "";
 		for (int i = 0; i < segments.length; i++) {

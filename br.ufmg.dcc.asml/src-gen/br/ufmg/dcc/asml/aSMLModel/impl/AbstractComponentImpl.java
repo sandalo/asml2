@@ -3,6 +3,7 @@
 package br.ufmg.dcc.asml.aSMLModel.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,7 +32,9 @@ import br.ufmg.dcc.asml.aSMLModel.ASMLModel;
 import br.ufmg.dcc.asml.aSMLModel.ASMLModelPackage;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
 import br.ufmg.dcc.asml.aSMLModel.Attribute;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.MetaModule;
+import br.ufmg.dcc.asml.aSMLModel.RelactionType;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 import br.ufmg.dcc.asml.aSMLModel.View;
 
@@ -619,5 +622,70 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		}
 		return -1;
 	}
+	
+	public EList<Restriction> getAllRestrictions() {
+		if (restrictions == null) {
+			restrictions = new EObjectContainmentEList<Restriction>(Restriction.class, this, ASMLModelPackage.ABSTRACT_COMPONENT__RESTRICTIONS);
+		}
+		if(this.eContainer instanceof AbstractComponent){
+			AbstractComponent abstractComponent = (AbstractComponent) this.eContainer;
+			while(abstractComponent!=null){
+				restrictions.addAll(abstractComponent.getRestrictions());
+				if(abstractComponent.eContainer() instanceof AbstractComponent)
+					abstractComponent = (AbstractComponent) abstractComponent.eContainer();
+				else
+					return restrictions;
+			}
+		}
+		return restrictions;
+	}
+	
+	@Override
+	public List<Restriction> getAllRestrictions(RelactionType ... relactionType) {
+		List<Restriction>	restrictions = new ArrayList<Restriction>();
+		if(this.restrictions!=null)
+			restrictions.addAll(this.restrictions);
+		if(this.eContainer instanceof AbstractComponent){
+			AbstractComponent abstractComponent = (AbstractComponent) this.eContainer;
+			while(abstractComponent!=null){
+				EList<Restriction> restrictions2 = abstractComponent.getRestrictions();
+				for (Restriction restriction2 : restrictions2) {
+					if(Arrays.asList(relactionType).contains(restriction2.getRelactionType()))
+						restrictions.add(restriction2);
+				}
+				if(abstractComponent.eContainer() instanceof AbstractComponent)
+					abstractComponent = (AbstractComponent) abstractComponent.eContainer();
+				else
+					return restrictions;
+			}
+		}
+		return restrictions;
+	}
+	
+	@Override
+	public List<ComponentsBinRestrictionDeclareation> getAllComponentsB(RelactionType ... relactionType) {
+		List<ComponentsBinRestrictionDeclareation>	componentsB = new ArrayList<ComponentsBinRestrictionDeclareation>();
+		Object aux = this;
+		if(aux instanceof AbstractComponent){
+			AbstractComponent abstractComponent = (AbstractComponent) aux;
+			while(abstractComponent!=null){
+				EList<Restriction> restrictions2 = abstractComponent.getRestrictions();
+				for (Restriction restriction2 : restrictions2) {
+					if(Arrays.asList(relactionType).contains(restriction2.getRelactionType())) {
+						EList<ComponentsBinRestrictionDeclareation> componentB = restriction2.getComponentB();
+						for (ComponentsBinRestrictionDeclareation componentsBinRestrictionDeclareation : componentB) {
+							componentsB.add(componentsBinRestrictionDeclareation);
+						}
+					}
+				}
+				if(abstractComponent.eContainer() instanceof AbstractComponent)
+					abstractComponent = (AbstractComponent) abstractComponent.eContainer();
+				else
+					return componentsB;
+			}
+		}
+		return componentsB;
+	}
+	
 
 } // AbstractComponentImpl

@@ -12,7 +12,7 @@ public class ASMLStartup implements IStartup {
 		try {
 			activator.notifyAll();
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.err.println(e.getLocalizedMessage());
 		}
 	}
 

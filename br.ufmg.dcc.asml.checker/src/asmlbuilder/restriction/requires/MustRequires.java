@@ -1,5 +1,6 @@
 package asmlbuilder.restriction.requires;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -22,7 +23,7 @@ public class MustRequires extends RestricionChecker {
 	}
 
 	@Override
-	public void checker(Restriction restriction) {
+	public void checker(AbstractComponent componentA, Restriction restriction,  List<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations) {
 		anyComponentAMustRequiresCompontB(restriction);
 	}
 

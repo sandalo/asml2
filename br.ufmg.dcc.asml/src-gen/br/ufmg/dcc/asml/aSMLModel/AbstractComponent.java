@@ -145,4 +145,10 @@ ASMLModel getModel();
 
 boolean fullContainsType(String fullName);
 
+public EList<Restriction> getAllRestrictions();
+
+public List<Restriction> getAllRestrictions(RelactionType... relactionTypes);
+
+public List<ComponentsBinRestrictionDeclareation> getAllComponentsB(RelactionType ... relactionType);
+
 } // AbstractComponent

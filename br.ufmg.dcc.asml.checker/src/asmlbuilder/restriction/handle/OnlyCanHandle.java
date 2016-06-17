@@ -1,9 +1,13 @@
 package asmlbuilder.restriction.handle;
 
+import java.util.List;
+
 import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.restriction.RestricionChecker;
 import asmlbuilder.restriction.access.OnlyCanAccess;
 import asmlbuilder.restriction.declare.OnlyCanDeclare;
+import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 
 public class OnlyCanHandle extends RestricionChecker {
@@ -18,8 +22,8 @@ public class OnlyCanHandle extends RestricionChecker {
 	}
 
 	@Override
-	public void checker(Restriction restriction) {
-		componentAAccessCompontB.checker(restriction);
-		componentADeclareCompontB.checker(restriction);
+	public void checker(AbstractComponent componentA, Restriction restriction,  List<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations) {
+		componentAAccessCompontB.checker(componentA,restriction, componentsBinRestrictionDeclareations);
+		componentADeclareCompontB.checker(componentA, restriction, componentsBinRestrictionDeclareations);
 	}
 }

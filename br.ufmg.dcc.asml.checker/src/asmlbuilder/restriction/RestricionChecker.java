@@ -1,5 +1,7 @@
 package asmlbuilder.restriction;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.common.util.EList;
 
@@ -7,6 +9,7 @@ import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.builder.Violation;
 import asmlbuilder.builder.Violation.DependecyType;
 import br.ufmg.dcc.asml.ComponentInstance;
+import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
 import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 
@@ -16,8 +19,6 @@ public abstract class RestricionChecker {
 	public RestricionChecker(ASMLContext asmlContext) {
 		this.asmlContext = asmlContext;
 	}
-
-	public abstract void checker(Restriction restriction);
 
 
 	protected void addViolation(Restriction restriction, int lineNumber, ComponentInstance componentInstance, String defaultMessage, DependecyType dependecyType, String violation_type) {
@@ -47,4 +48,8 @@ public abstract class RestricionChecker {
 		return name.substring(1);
 	}
 
+	public void checker(AbstractComponent componentA, Restriction restriction, List<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations ) {
+	}
+
 }
+ 

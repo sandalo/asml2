@@ -70,7 +70,7 @@ public class ASMLProcessor {
 	}
 
 	private ASMLContext asmlContext;
-	XtextParser xtextParser = new XtextParser();
+ 	XtextParser xtextParser = new XtextParser();
 	private String path_vaccine = null;
 	private boolean DESIGN_MODE;
 	private boolean DEBUG;
@@ -365,7 +365,6 @@ public class ASMLProcessor {
 				// System.out.println(jarName);
 			}
 		}
-		System.out.println("");
 	}
 
 	public void recoveryAllInternalComponentInstances(IProject project) throws CoreException {

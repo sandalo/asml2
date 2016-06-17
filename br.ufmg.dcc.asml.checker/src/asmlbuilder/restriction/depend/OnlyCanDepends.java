@@ -1,5 +1,6 @@
 package asmlbuilder.restriction.depend;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
@@ -10,6 +11,7 @@ import asmlbuilder.restriction.RestricionChecker;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentInstanceReference;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 
 public class OnlyCanDepends extends RestricionChecker {
@@ -19,7 +21,7 @@ public class OnlyCanDepends extends RestricionChecker {
 	}
 
 	@Override
-	public void checker(Restriction restriction) {
+	public void checker(AbstractComponent componentA, Restriction restriction, List<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations) {
 		onlyComponentACanDependCompontB(restriction);
 	}
 

@@ -1,22 +1,13 @@
 package br.ufmg.dcc.asml;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.IAnnotationBinding;
-import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jdt.core.dom.MarkerAnnotation;
-import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jdt.core.dom.MethodInvocation;
-import org.eclipse.jdt.core.dom.NormalAnnotation;
-import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 import br.ufmg.dcc.asml.aSMLModel.RelactionType;
 
 public class ComponentInstanceReference {
+	Map<String, Boolean> validate = new HashMap<String, Boolean>();
 	private ASTNode astNode;
 	private ComponentInstance componentInstanceDependent;
 	private ComponentInstance componentInstanceReferenced;
@@ -68,6 +59,17 @@ public class ComponentInstanceReference {
 
 	public void setRelactionType(RelactionType relactionType) {
 		this.relactionType = relactionType;
+	}
+
+	
+	public Boolean isVerified(String key){
+		if(!validate.containsKey(key))
+			return false;
+		return validate.get(key);
+	}
+	
+	public void verified(String key){
+		validate.put(key,true);
 	}
 
 }

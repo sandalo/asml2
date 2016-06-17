@@ -1,21 +1,24 @@
 package asmlbuilder.validation;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.emf.common.util.EList;
 
 import asmlbuilder.Activator;
 import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.builder.Violation;
 import asmlbuilder.builder.Violation.DependecyType;
+import asmlbuilder.exception.ASMLException;
 import asmlbuilder.restriction.RestricionChecker;
 import asmlbuilder.view.preferences.PreferenceConstants;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.ComponentVisitor;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.ComponentsBinRestrictionDeclareation;
+import br.ufmg.dcc.asml.aSMLModel.RelactionType;
 import br.ufmg.dcc.asml.aSMLModel.Restriction;
 
 public class ValidatorVisitor implements ComponentVisitor {
@@ -35,7 +38,8 @@ public class ValidatorVisitor implements ComponentVisitor {
 	}
 
 	void validateComponentRestrictions(AbstractComponent abstractComponent) {
-		EList<Restriction> restrictions = abstractComponent.getRestrictions();
+		List<ComponentsBinRestrictionDeclareation>  componentsB = abstractComponent.getAllComponentsB(new RelactionType []{RelactionType.DECLARE});
+		List<Restriction> restrictions = abstractComponent.getRestrictions();
 		for (Restriction restriction : restrictions) {
 			String classRestriction = "";
 			classRestriction = getRestrictionCheckerClass(restriction);
@@ -43,7 +47,7 @@ public class ValidatorVisitor implements ComponentVisitor {
 			if (restricionChecker == null) {
 				restricionChecker = instanciateChecker(classRestriction, restricionChecker);
 			}
-			restricionChecker.checker(restriction);
+			restricionChecker.checker(abstractComponent,restriction,componentsB);
 		}
 
 	}
@@ -61,7 +65,9 @@ public class ValidatorVisitor implements ComponentVisitor {
 			}
 			asmlContext.getAsmlBinder().getBindRestrictionChecker().put(classRestriction, restricionChecker);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			if(forName == null){
+				throw new ASMLException("Erro ao instanciar RestricionChecker: "+classRestriction,e);
+			}
 		}
 		return restricionChecker;
 	}

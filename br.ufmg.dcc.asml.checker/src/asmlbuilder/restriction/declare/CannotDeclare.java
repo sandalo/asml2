@@ -1,10 +1,10 @@
 package asmlbuilder.restriction.declare;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jdt.core.dom.FieldDeclaration;
 
 import asmlbuilder.builder.ASMLContext;
 import asmlbuilder.builder.Violation.DependecyType;
@@ -24,7 +24,7 @@ public class CannotDeclare extends RestricionChecker {
 	}
 
 	@Override
-	public void checker(Restriction restriction) {
+	public void checker(AbstractComponent componentA, Restriction restriction,  List<ComponentsBinRestrictionDeclareation> componentsBinRestrictionDeclareations) {
 		componentACannnotDeclareCompontB(restriction);
 	}
 

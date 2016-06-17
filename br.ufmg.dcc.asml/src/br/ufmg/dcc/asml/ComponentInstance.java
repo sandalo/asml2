@@ -347,4 +347,14 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
 	public void addComponentInstancesThatRequireMe(ComponentInstance componentInstancesThatRequireMe) {
 		this.componentInstancesThatRequireMe.add(componentInstancesThatRequireMe);
 	}
+	
+	public boolean isSubClasse(ComponentInstance componentInstance){
+		String[] allSupertypesNames = this.getAllSupertypesNames();
+		for (String supertypesNames : allSupertypesNames) {
+			if(componentInstance!=null && componentInstance.getType() !=null)
+				if(supertypesNames.equals(componentInstance.getType().getFullyQualifiedName()))
+					return true;
+		}
+		return false;
+	}
 }

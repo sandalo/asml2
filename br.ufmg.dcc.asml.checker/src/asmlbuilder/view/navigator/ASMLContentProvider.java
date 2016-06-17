@@ -39,7 +39,11 @@ public class ASMLContentProvider implements ITreeContentProvider, IResourceChang
 
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		_viewer.refresh();
+		try {
+			_viewer.refresh();
+		} catch (Exception e) {
+			System.err.println("Erro de refresh");
+		}
 	}
 
 	@Override
