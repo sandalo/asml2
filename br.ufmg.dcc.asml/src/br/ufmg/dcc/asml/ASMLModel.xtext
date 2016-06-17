@@ -24,8 +24,6 @@ View:
 	(restrictions+=Restriction)*
 	'}';
 
-enum Cardinality:
-	One="1" | Zero="0" | OneOrMany="1..*" | ZeroOrMany="0..*";
 
 Attribute:
 	name=ID_ASML ':' value=STRING;
@@ -33,25 +31,18 @@ Attribute:
 AbstractNameConvetion:
 	STRING | ClassMatching;
 
-enum ExpressionMatchingClause:
-	NAME_START_WITH='name start with' | NAME_ENDS_WITH='name ends with' | ANNOTATED_WITH='annotated with';
 
 ExpressionMatchingOperator:
 	AND='and' | OR='or';
 
-enum ModuleMatchingParamenter:
-	PAKCAGE='by package name' | FOLDER='by folder name' | PAKCAGE_AND_FOLDER='by package and folder name' |
-	EXTERNAL_DEFINITION='by external implementation';
 
 ModuleMatching:
 	(parameter=ModuleMatchingParamenter);
 
 ClassMatching:
 	(expressionMatching=ExpressionMatchingClause parameter=STRING)
-	//	(expressionMatchings=ExpressionMatchingClause parameter=STRING (operator=ExpressionMatchingOperator )?)?
 ;
 
-//ConfigurationElement: Configuration | XmlDocument | XmlElement | File ;
  MetaModule:
 	name=ID_ASML '{'
 	(('attributes:' (attributes+=Attribute) (',')?)* (';'))?
@@ -64,6 +55,22 @@ ClassMatching:
 QualifiedName:
 	ID_ASML ('.' ID_ASML)*;
 
+
+Restriction:
+	(groupClause=GroupClause)? (permissionClause=PermissionClause)? relactionType=RelactionType (groupClauseB=GroupClause)? 
+	(componentB+=(ComponentsBinRestrictionDeclareation)(',')?)* ('message'message=STRING)? ';';
+ComponentsBinRestrictionDeclareation:
+	 componentB=([AbstractComponent|QualifiedName]) (wildcard=WildCard)?;
+	 
+enum ExpressionMatchingClause:
+	NAME_START_WITH='name start with' | NAME_ENDS_WITH='name ends with' | ANNOTATED_WITH='annotated with';
+	 
+enum Cardinality:
+	One="1" | Zero="0" | OneOrMany="1..*" | ZeroOrMany="0..*";
+	 
+enum ModuleMatchingParamenter:
+	PAKCAGE='by package name' | FOLDER='by folder name' | PAKCAGE_AND_FOLDER='by package and folder name' |
+	EXTERNAL_DEFINITION='by external implementation';
 enum GroupClause:
 	NULL='$null' | ONLY='only' | ONLY_THIS='only-this';
 
@@ -77,8 +84,3 @@ enum RelactionType:
 enum WildCard:
 	Package = '.*'|
 	PackageAndSubPackage = '.**';
-
-Restriction:
-	(groupClause=GroupClause)? (permissionClause=PermissionClause)? relactionType=RelactionType (groupClauseB=GroupClause)? (componentB+=(ComponentsBinRestrictionDeclareation)(',')?)* ('message'message=STRING)? ';';
-ComponentsBinRestrictionDeclareation:
-	 componentB=([AbstractComponent|QualifiedName]) (wildcard=WildCard)?;
