@@ -49,8 +49,8 @@ public class ASMLResourceVisitor implements IResourceVisitor {
 			if (resource.getFileExtension() == null || !resource.getFileExtension().equals("java")) {
 				componentInstance = ComponentInstance.createInstance(resource, false, null);
 			} else {
-				throw new RuntimeException("ComponenteInstane sem recurso.");
-			}
+				throw new RuntimeException("Recurso sem componentInstance. "+resource);
+			} 
 		}
 		this.asmlContext.addComponentInstance(componentInstance);
 		if (resource instanceof IFile && resource.getFileExtension().equals("java")){

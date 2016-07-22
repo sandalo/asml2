@@ -383,7 +383,11 @@ public class ASMLProcessor {
 						IPackageFragment iPackageFragment = (IPackageFragment) iJavaElement2;
 						ICompilationUnit[] iCompilationUnits = iPackageFragment.getCompilationUnits();
 						for (ICompilationUnit iCompilationUnit : iCompilationUnits) {
-							IType iType = iCompilationUnit.getTypes()[0];
+							IType[] types = iCompilationUnit.getTypes();
+							if(types.length==0){
+								continue;//Arquivos sem classe declarada
+							}
+							IType iType = types[0];
 							ComponentInstance componentInstance = ComponentInstance.createInstance(iCompilationUnit.getResource(), false, null);
 							componentInstance.setType(iType);
 							asmlContext.addComponentInstance(componentInstance);
