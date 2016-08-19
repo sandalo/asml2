@@ -183,7 +183,7 @@ public class ASMLContext {
 			if (typeFullQualifyName != null) {
 				componentInstanceITypeName.remove(typeFullQualifyName);// TODO: Avaliar, acho que não precisa disso, diferente de Set, Map atualiza objetos em colisões.
 				componentInstanceITypeName.put(typeFullQualifyName, componentInstance);
-				componentInstanceITypeName.get("br.gov.prodemge.ssc.admin.comuns.constantes.ConstantesDeAcesso");
+//				componentInstanceITypeName.get("br.gov.prodemge.ssc.admin.comuns.constantes.ConstantesDeAcesso");
 			}
 		}
 	}
