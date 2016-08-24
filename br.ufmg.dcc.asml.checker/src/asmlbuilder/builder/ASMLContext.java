@@ -457,7 +457,9 @@ public class ASMLContext {
 				String sufixAndPrefixNames[] = matching.split("\\{\\?\\}");
 				if (sufixAndPrefixNames.length > 0) {
 					// No momento trata apenas colisão de prefixos. Ex. VO => BaseVO
-					sufixAndPrefixNameConvention.put(sufixAndPrefixNames[sufixAndPrefixNames.length - 1], abstractComponent);
+					String sufixAndPrefixName = sufixAndPrefixNames[sufixAndPrefixNames.length - 1];
+					sufixAndPrefixName = sufixAndPrefixName.replace("_{*}","");
+					sufixAndPrefixNameConvention.put(sufixAndPrefixName, abstractComponent);
 				}
 			}
 		}
