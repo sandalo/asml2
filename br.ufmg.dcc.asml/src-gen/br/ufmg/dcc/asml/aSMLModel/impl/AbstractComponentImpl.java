@@ -582,8 +582,8 @@ public class AbstractComponentImpl extends MinimalEObjectImpl.Container implemen
 		String fisicalPathComponent = "";
 		while (eObject != null && (eObject instanceof AbstractComponent)) {
 			/**
-			 * Este token(MetaModule) será utilizado para que a lógica ignore a
-			 * coparações com resources físicos, pois os meta modulos // são /
+			 * Este token(MetaModule) será utilizado para que a lógica ignore as
+			 * comparações com resources físicos, pois os meta modulos // são /
 			 * abstratos
 			 */
 			if (eObject instanceof MetaModule) {

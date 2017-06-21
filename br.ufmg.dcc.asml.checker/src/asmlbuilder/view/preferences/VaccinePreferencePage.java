@@ -75,7 +75,7 @@ public class VaccinePreferencePage extends FieldEditorPreferencePage implements 
 		BooleanFieldEditor booleanFieldEditor2_P_DEBUG = new BooleanFieldEditor(PreferenceConstants.P_DEBUG, "&Debug", groupDebug);
 		StringFieldEditor debugFilterFieldEditor_P_DEBUG_COMPONENT_FILTER = new StringFieldEditor(PreferenceConstants.P_DEBUG_COMPONENT_FILTER, "&Debug component filter",25, groupDebug);
 		
-		
+		BooleanFieldEditor booleanFieldEditor2_P_COMPONENT_DESCRIPTION = new BooleanFieldEditor(PreferenceConstants.P_COMPONENT_DESCRIPTION, "&Component description", groupDebug);
 		
 		Group groupFilter = new Group(composite, SWT.NONE);
 		groupFilter.setText("Filter");
@@ -86,6 +86,7 @@ public class VaccinePreferencePage extends FieldEditorPreferencePage implements 
 		addField(booleanFieldEditor1P_BUILD_FEEDBACK);
 		addField(booleanFieldEditor2_P_DEBUG);
 		addField(debugFilterFieldEditor_P_DEBUG_COMPONENT_FILTER);
+		addField(booleanFieldEditor2_P_COMPONENT_DESCRIPTION);
 		
 		BooleanFieldEditor booleanFieldEditor3 = new BooleanFieldEditor(PreferenceConstants.P_SHOW_STRUCTURAL_VIOLATIONS, "Show structural violations", groupFilter);
 		BooleanFieldEditor booleanFieldEditor4 = new BooleanFieldEditor(PreferenceConstants.P_SHOW_RESTRCTION_VALIDATIONS, "Show restriction violations", groupFilter);

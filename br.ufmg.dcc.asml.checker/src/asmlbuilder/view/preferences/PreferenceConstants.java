@@ -9,6 +9,7 @@ public class PreferenceConstants {
 
 	public static final String P_LIVE_FEEDBACK = "liveFeedBack";
 	public static final String P_BUILD_FEEDBACK = "buildFeedBack";
+	public static final String P_COMPONENT_DESCRIPTION = "componentDescription";
 	public static final String P_DEBUG = "debugPreference";
 	public static final String P_DEBUG_COMPONENT_FILTER = "debugComponenteFilter";
 	public static final String P_SHOW_STRUCTURAL_VIOLATIONS = "hierarchicalViolations";

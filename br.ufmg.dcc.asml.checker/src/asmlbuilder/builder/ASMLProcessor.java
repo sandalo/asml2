@@ -53,6 +53,7 @@ import br.ufmg.dcc.asml.ComponentInstanceReference;
 import br.ufmg.dcc.asml.XtextParser;
 import br.ufmg.dcc.asml.aSMLModel.ASMLModel;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.MetaModule;
 
 public class ASMLProcessor {
 	static public int AUTO_BUILD = 9;
@@ -116,6 +117,7 @@ public class ASMLProcessor {
 					log(Level.ALL, "     " + msg);
 			}
 		}
+		asmlContext.getAsmlModelPrimario().getComponents();
 	}
 
 	public void initialize(int kind, List<IProject> projects, IProgressMonitor monitor) {
@@ -235,6 +237,50 @@ public class ASMLProcessor {
 			e.printStackTrace();// TODO: handle exception
 		}
 	}
+	
+	
+	public void printComponentesDescricao() {
+		try {
+			ASMLModel asmlModelPrimario = asmlContext.getAsmlModelPrimario();
+			EList<EObject> contents = asmlModelPrimario.eResource().getContents();
+			log(Level.INFO,"<style> "+
+					"#div01 {"+
+					"    background-color: silver;"+
+					"    margin: 50px;"+
+					"    padding: 10px;"+
+					"    width: 50%;"+
+					"    text-align: justify;"+
+					 "}</style>");
+			
+
+			log(Level.INFO, "<center>");
+			for (EObject eObject : contents) {
+				ASMLModel asmlModel = (ASMLModel) eObject;
+				log(Level.INFO, "<h1><b>Camada:</b> <i> " + asmlModel.getName()+"</i></h1><br><div id='div01'>");
+				List<AbstractComponent> allComponents = asmlModel.getAllComponents();
+				Integer cont = 1;
+				for (AbstractComponent abstractComponent : allComponents) {
+					String description = ((MetaModule)abstractComponent).getDescription();
+					String localization = ((MetaModule)abstractComponent).getFullName();
+					if(description!=null){
+						log(Level.INFO, "<b>" + cont+") </b>");
+						log(Level.INFO, "<b>Componente:</b> <i>" + abstractComponent.getName()+"</i><br>");
+						if(description.contains("Convenção:"))
+							description = description.replace("Convenção:", "</i><br><b>Convenção:</b> <i>");
+						log(Level.INFO, "<b>Descrição:</b> <i>" + description+"</i><br>");
+						log(Level.INFO, "<b>Localização:</b> <i>" + localization+"</i><br>");
+						log(Level.INFO, "<a href='" + abstractComponent.getFullName()+".html'><b>Exemplos:</b></a><br><br>");
+						cont++;
+					}
+				}
+				log(Level.INFO, "</div>");
+			}
+			log(Level.INFO, "</center>");
+		} catch (Exception e) {
+			e.printStackTrace();// TODO: handle exception
+		}
+	}
+
 
 	/*
 	 * private void configuraConsole() {
@@ -246,11 +292,8 @@ public class ASMLProcessor {
 	 * (Exception pie) { // pie.printStackTrace(); } } } }); }
 	 */
 	private void log(Level level, String msg) {
-		DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
-		if (DEBUG) {
 			ASMLConsoleFactory.print(msg);
 			Activator.getDefault().getLog().log(new Status(Status.INFO, Activator.PLUGIN_ID, msg));
-		}
 	}
 
 	public void showViolations(IProject project) {
@@ -303,7 +346,9 @@ public class ASMLProcessor {
 			String jarName = packagesRoot.getPath().toString();
 			if (!asmlContext.isJarMathingLoaded(jarName)) {
 				if (packagesRoot.getKind() == IPackageFragmentRoot.K_BINARY) {
-					ASMLConsoleFactory.print(jarName);
+					boolean P_DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
+					if(P_DEBUG)
+						ASMLConsoleFactory.print(jarName);
 					IJavaElement[] children = packagesRoot.getChildren();
 					children: for (IJavaElement iJavaElement : children) {
 						if (iJavaElement instanceof IPackageFragment) {
@@ -564,6 +609,7 @@ public class ASMLProcessor {
 	}
 
 	private Map<String, String> recoveryVaccineInfo(List<IProject> projects) {
+		boolean P_DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
 		Map<String, String> paths = new LinkedHashMap<String, String>();
 		String vaccineName = "";
 		for (IProject project : projects) {
@@ -573,9 +619,11 @@ public class ASMLProcessor {
 				String path = "";
 				IPath vaccinaFisicalPath = iClasspathEntry.getPath();
 				IClasspathAttribute iClasspathAttribute = recoveryArtifactIdAttribute(iClasspathEntry);
-				log(Level.INFO, "-----------------iClasspathAttribute--------------------------------"+iClasspathEntry);
-				log(Level.INFO, "-----------------ExtraAttributes--------------------------------"+iClasspathEntry.getExtraAttributes().length);
-				log(Level.INFO, "-----------------"+ iClasspathAttribute);
+				if(P_DEBUG){
+					log(Level.INFO, "-----------------iClasspathAttribute--------------------------------"+iClasspathEntry);
+					log(Level.INFO, "-----------------ExtraAttributes--------------------------------"+iClasspathEntry.getExtraAttributes().length);
+					log(Level.INFO, "-----------------"+ iClasspathAttribute);
+				}
 				if (iClasspathAttribute != null) {
 					vaccineName = iClasspathAttribute.getValue();
 				} else {
@@ -591,17 +639,18 @@ public class ASMLProcessor {
 			}
 		}
 		
-		log(Level.INFO, "-----------------Vacinas encontradas--------------------------------");
-		log(Level.INFO, "--------------------------------------------------------------------");
-		log(Level.INFO, "--------------------------------------------------------------------");
-		log(Level.INFO, "--------------------------------------------------------------------");
-		for(String path : paths.values()){
-			ASMLConsoleFactory.print(path);
+		if(P_DEBUG){
+			log(Level.INFO, "-----------------Vacinas encontradas--------------------------------");
+			log(Level.INFO, "--------------------------------------------------------------------");
+			log(Level.INFO, "--------------------------------------------------------------------");
+			log(Level.INFO, "--------------------------------------------------------------------");
+			for(String path : paths.values()){
+				ASMLConsoleFactory.print(path);
+			}
+			log(Level.INFO, "--------------------------------------------------------------------");
+			log(Level.INFO, "--------------------------------------------------------------------");
+			log(Level.INFO, "--------------------------------------------------------------------");
 		}
-		log(Level.INFO, "--------------------------------------------------------------------");
-		log(Level.INFO, "--------------------------------------------------------------------");
-		log(Level.INFO, "--------------------------------------------------------------------");
-
 		return paths;
 	}
 

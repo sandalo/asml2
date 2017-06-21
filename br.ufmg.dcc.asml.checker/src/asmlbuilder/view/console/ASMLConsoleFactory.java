@@ -42,14 +42,11 @@ public class ASMLConsoleFactory implements IConsoleFactory {
 	}
 
 	public static void print(String msg) {
-		boolean DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
-		if (DEBUG) {
-			try {
-				ASMLConsoleFactory.getConsole().activate();
-				ASMLConsoleFactory.getConsole().newOutputStream().write("\n" + msg);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			ASMLConsoleFactory.getConsole().activate();
+			ASMLConsoleFactory.getConsole().newOutputStream().write("\n" + msg);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

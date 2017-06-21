@@ -30,6 +30,7 @@ public class ThreadValidation extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 		Activator.getAsmlProcessor().initialize(ASMLProcessor.FULL_BUILD, openedProjects, monitor);
 		boolean P_DEBUG = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_DEBUG);
+		boolean P_COMPONENT_DESCRIPTION = Activator.getDefault().getPreferenceStore().getBoolean(PreferenceConstants.P_COMPONENT_DESCRIPTION);
 		Workspace workspace = (Workspace) ResourcesPlugin.getWorkspace();
 		IBuildConfiguration[] buildOrder = workspace.getBuildOrder();
 		if (build) {
@@ -44,6 +45,9 @@ public class ThreadValidation extends Job {
 		if (P_DEBUG) {
 			Activator.getAsmlProcessor().printEstatistica();
 			Activator.getAsmlProcessor().printLog();
+		}
+		if (P_COMPONENT_DESCRIPTION) {
+			Activator.getAsmlProcessor().printComponentesDescricao();
 		}
 		return Status.OK_STATUS;
 	}
