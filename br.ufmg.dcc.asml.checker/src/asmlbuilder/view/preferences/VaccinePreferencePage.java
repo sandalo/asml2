@@ -75,7 +75,7 @@ public class VaccinePreferencePage extends FieldEditorPreferencePage implements 
 		BooleanFieldEditor booleanFieldEditor2_P_DEBUG = new BooleanFieldEditor(PreferenceConstants.P_DEBUG, "&Debug", groupDebug);
 		StringFieldEditor debugFilterFieldEditor_P_DEBUG_COMPONENT_FILTER = new StringFieldEditor(PreferenceConstants.P_DEBUG_COMPONENT_FILTER, "&Debug component filter",25, groupDebug);
 		
-		BooleanFieldEditor booleanFieldEditor2_P_COMPONENT_DESCRIPTION = new BooleanFieldEditor(PreferenceConstants.P_COMPONENT_DESCRIPTION, "&Component description", groupDebug);
+		BooleanFieldEditor booleanFieldEditor2_P_COMPONENT_DESCRIPTION = new BooleanFieldEditor(PreferenceConstants.P_COMPONENT_DESCRIPTION, "&Component description", composite);
 		
 		Group groupFilter = new Group(composite, SWT.NONE);
 		groupFilter.setText("Filter");

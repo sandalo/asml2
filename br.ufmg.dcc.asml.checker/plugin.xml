@@ -38,6 +38,16 @@
             categoryId="asmlbuilder.asmlNature.category"
             id="asmlbuilder.addRemoveASMLNature">
       </command>
+      <command
+            categoryId="br.ufmg.dcc.asml.checker.category"
+            defaultHandler="asmlbuilder.view.handler.ValidateComandHandler"
+            id="br.ufmg.dcc.asml.checker.command_toolbar"
+            name="validate">
+      </command>
+      <category
+            id="br.ufmg.dcc.asml.checker.category"
+            name="name">
+      </category>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -91,6 +101,20 @@
                </with>
             </visibleWhen>
          </command>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="br.ufmg.dcc.asml.checker.toolbar6">
+            <command
+                  commandId="br.ufmg.dcc.asml.checker.command_toolbar"
+                  icon="icons/vaccine_decorator.png"
+                  id="br.ufmg.dcc.asml.checker.toolbar"
+                  style="push"
+                  tooltip="Vaccine">
+            </command>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
@@ -283,5 +307,12 @@
            id="br.ufmg.dcc.asml.checker.page1"
            name="ASML">
      </page>
+  </extension>
+  <extension
+        point="org.eclipse.ui.handlers">
+     <handler
+           class="asmlbuilder.view.handler.ValidateComandHandler"
+           commandId="br.ufmg.dcc.asml.checker.command_toolbar">
+     </handler>
   </extension>
 </plugin>

@@ -252,30 +252,41 @@ public class ASMLProcessor {
 					"    text-align: justify;"+
 					 "}</style>");
 			
+			String html = 
+					"<table>"
+						+ "<tr>"
+						+ "   <th width='86px'><b>#</b></th><th width='350px'><b>Componente</b></th><th width='370px'><b>Descrição</b></th><th width='330px'><b>Convenção</b></th>"
+						+ "</tr>"
+						+ "<tr> "
+						+ "		<td>#numero#</td><td>#componente#</td><td>#descrição#</td><td> #convencao#</td>"
+						+ "</tr>"
+						+ "		<tr><td style='background-color:#fafafa' ><b>Localização</b></td><td  colspan='3'>#localizacao#</td>"
+					    + "</tr>"
+					    + "<tr>"
+					    + "		<td style='background-color:#fafafa'><b>Exemplo</b></td><td  colspan='3'>#exemplo#</td>"
+					   	+ "</tr>"
+				   	+ "</table>";
 
-			log(Level.INFO, "<center>");
 			for (EObject eObject : contents) {
 				ASMLModel asmlModel = (ASMLModel) eObject;
-				log(Level.INFO, "<h1><b>Camada:</b> <i> " + asmlModel.getName()+"</i></h1><br><div id='div01'>");
 				List<AbstractComponent> allComponents = asmlModel.getAllComponents();
-				Integer cont = 1;
+				Integer cont = 0;
 				for (AbstractComponent abstractComponent : allComponents) {
-					String description = ((MetaModule)abstractComponent).getDescription();
-					String localization = ((MetaModule)abstractComponent).getFullName();
-					if(description!=null){
-						log(Level.INFO, "<b>" + cont+") </b>");
-						log(Level.INFO, "<b>Componente:</b> <i>" + abstractComponent.getName()+"</i><br>");
-						if(description.contains("Convenção:"))
-							description = description.replace("Convenção:", "</i><br><b>Convenção:</b> <i>");
-						log(Level.INFO, "<b>Descrição:</b> <i>" + description+"</i><br>");
-						log(Level.INFO, "<b>Localização:</b> <i>" + localization+"</i><br>");
-						log(Level.INFO, "<a href='" + abstractComponent.getFullName()+".html'><b>Exemplos:</b></a><br><br>");
+					String descriptionFull = ((MetaModule)abstractComponent).getDescription();
+					String convenção = "";
+					String description = "";
+					if(descriptionFull!=null){
+						String localization = ((MetaModule)abstractComponent).getFullName();
+						if(descriptionFull.contains("Convenção:")){
+							description = descriptionFull.split("Convenção:")[0];
+							convenção = descriptionFull.split("Convenção:")[1];
+						}
 						cont++;
+						String replaceAll = html.replaceAll("#numero#", cont+"").replaceAll("#componente#", abstractComponent.getName()+"").replaceAll("#descrição#", description).replaceAll("#convencao#", convenção).replaceAll("#localizacao#", localization);
+						log(Level.INFO, replaceAll );
 					}
 				}
-				log(Level.INFO, "</div>");
 			}
-			log(Level.INFO, "</center>");
 		} catch (Exception e) {
 			e.printStackTrace();// TODO: handle exception
 		}
