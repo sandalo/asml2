@@ -311,7 +311,6 @@
   <extension
         point="org.eclipse.ui.handlers">
      <handler
-           class="asmlbuilder.view.handler.ValidateComandHandler"
            commandId="br.ufmg.dcc.asml.checker.command_toolbar">
      </handler>
   </extension>

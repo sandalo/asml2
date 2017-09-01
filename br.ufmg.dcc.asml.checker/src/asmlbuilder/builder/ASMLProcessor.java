@@ -152,20 +152,7 @@ public class ASMLProcessor {
 				monitor.subTask("Carregando instancias de conponentes externos..." + iProject.getName());
 				recoveryAllExternalComponentInstancesInJarFiles(iProject);
 				monitor.worked(1);
-
-				/*
-				 * monitor.subTask(
-				 * "Carregando instancias de conponentes internos..." +
-				 * iProject.getName());
-				 * recoveryAllInternalComponentInstances(iProject);
-				 * monitor.worked(1);
-				 * 
-				 * monitor.subTask(
-				 * "Carregando referências à conponentes internos..." +
-				 * iProject.getName());
-				 * recoveryAllInternalComponentInstancesReferences(iProject);
-				 * monitor.worked(1);
-				 */}
+			}
 			monitor.subTask("Realizando matching...");
 			matchingExternal();
 			monitor.worked(1);
