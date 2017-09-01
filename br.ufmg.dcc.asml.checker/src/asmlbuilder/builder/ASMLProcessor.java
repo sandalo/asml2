@@ -54,7 +54,10 @@ import br.ufmg.dcc.asml.XtextParser;
 import br.ufmg.dcc.asml.aSMLModel.ASMLModel;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
 import br.ufmg.dcc.asml.aSMLModel.MetaModule;
-
+/**
+ * 
+ * 
+ * */
 public class ASMLProcessor {
 	static public int AUTO_BUILD = 9;
 	static public int FULL_BUILD = 6;
