@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="br.mg.prodemge.prodigio.wizard.category"
+            name="Proddígio Wizards">
+      </category>
+      <wizard
+            category="br.mg.prodemge.prodigio.wizard.category"
+            class="br.mg.prodemge.prodigio.wizard.curso.ProdigioCursoWizard"
+            icon="icons/project_obj.gif"
+            id="br.mg.prodemge.prodigio.wizard.wizard2"
+            name="Curso prodígio">
+      </wizard>
+      <wizard
+            category="br.mg.prodemge.prodigio.wizard.category"
+            class="br.mg.prodemge.prodigio.wizard.novoprojeto.ProdigioNovoProjetoWizard"
+            icon="icons/project_obj.gif"
+            id="br.mg.prodemge.prodigio.wizard.wizard1"
+            name="Novo projeto">
+      </wizard>
+      <wizard
+            category="br.mg.prodemge.prodigio.wizard.category"
+            class="br.mg.prodemge.prodigio.wizard.componentes.ProdigioComponentesWizard"
+            icon="icons/project_obj.gif"
+            id="br.mg.prodemge.prodigio.wizard.wizard1"
+            name="Componentes">
+      </wizard>
+   </extension>
+   <extension
+         id="br.mg.prodemge.prodigio.wizard.projectNature"
+         name="Projeto Prodígio"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="br.mg.prodemge.prodigio.wizard.ProjectNature">
+         </run>
+      </runtime>
+   </extension>
+
+</plugin>

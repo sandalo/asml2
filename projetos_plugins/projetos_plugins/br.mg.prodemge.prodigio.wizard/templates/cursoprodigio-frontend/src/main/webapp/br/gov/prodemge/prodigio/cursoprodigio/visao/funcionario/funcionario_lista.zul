@@ -1,0 +1,112 @@
+<selecaobox>
+	<sylistbox rows="5" pageSize="5">
+		<auxhead>
+			<auxheader colspan="7">
+				<grid zclass=".">
+					<rows zclass=".">
+						<group label="Pesquisa Funcionário" spans="3" open="false"/>
+						<row zclass=".">
+							<cell>
+								<label value="Nome:" />
+								<textboxbind nomeDoObjeto="classecontrole.objetoAtualArg.nome" width="300px"></textboxbind>
+							</cell>
+							<cell>
+								<label value="Data de alteração inicio:" />
+								<separator></separator>
+								<dateboxbind nomeDoObjeto="classecontrole.objetoAtualArg.tsMovimentacao" width="100px"></dateboxbind>
+							</cell>
+							<cell>
+								<label value="Data de alteração fim:" />
+								<separator></separator>
+								<dateboxbind nomeDoObjeto="classecontrole.objetoAtualArg2.tsMovimentacao" width="100px"></dateboxbind>
+							</cell>
+						</row>
+						<row zclass=".">
+<!-- 							<cell>
+								<label value="País:" />
+								<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.paisVO" identificador="pais" width="300px"></bandboxbind>
+							</cell>
+							<cell>
+								<label value="Estado:" />
+								<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.estadoVO" dependeDoComponente="pais" identificador="estados" width="300px"></bandboxbind>
+							</cell>
+							<cell>
+								<label value="Cidade:" />
+								<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade" dependeDoComponente="estados" identificador="cidades" width="300px" widthList="1000px" heightList="400px"></bandboxbind>
+							</cell>
+ -->						</row>
+					</rows>
+				</grid>
+			</auxheader>
+		</auxhead>
+
+		<listhead id="cabecalho">
+			<listheadersort label="Data de criação" value="tsMovimentacao" />
+			<listheadersort label="Matrícula" value="matricula" />
+			<listheadersort label="Cidade" value="cidade.nome" />
+			<listheader label="Foto" value="imagem" />
+<!-- 			<listheadersort label="Estado" value="cidade.estado.nome" width="300px" />
+			<listheadersort label="País" value="cidade.estado.pais.nome" />
+ -->			
+ 			<listheader label="Cursos" value="cursos.cursoVO.nome" />
+			<listheader label="Cursos" value="cursos.cursoVO.tsMovimentacao" visible="true" />
+		</listhead>
+
+		<listitem height="25px" tooltip="popuptooltip">
+			<listcellbind label="tsMovimentacao" />
+			<listcellbind label="matricula" mask="A.AAAAA"/>
+			<listcellbind label="cidade.nome" >					
+			</listcellbind>
+			<listcell>
+				<imagebind content="@{objeto.imagem}" width="50px" height="50px"></imagebind>
+			</listcell>
+<!-- 			<listcellbind label="cidade.estado.nome" />
+			<listcellbind label="cidade.estado.pais.nome" />
+ -->			<listcellbind label="cursosStr" />
+
+			<listcell>
+				<button label="Cursos" onClick="classecontrole.verCursos(self.parent)"></button>
+			</listcell>
+			
+		</listitem>
+	</sylistbox>
+
+	<internalwindow id="cursoDetalhe" title="Cursos" visible="false" width="30%" position="center,center" closable="true">
+		<listbox model="@{classecontrole.funcionarioEmDetalhes.cursos}">
+			<template name="model">
+				<listitem>
+					<listcell>
+						<label value="${each.cursoVO.nome}"></label>
+					</listcell>
+					<listcell>
+						<label value="${each.cursoVO.tsMovimentacao}"></label>
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+	</internalwindow>
+
+	<popup id="cursoDetalhePopup" width="30%" zclass=".">
+		<panel title="Cursos">
+			<panelchildren>
+				<listbox model="@{classecontrole.funcionarioEmDetalhes.cursos}">
+					<template name="model">
+						<listitem>
+							<listcell>
+								<label value="${each.cursoVO.nome}"></label>
+							</listcell>
+							<listcell>
+								<label value="${each.cursoVO.tsMovimentacao}"></label>
+							</listcell>
+						</listitem>
+					</template>
+				</listbox>
+			</panelchildren>
+		</panel>
+	</popup>
+
+	<popup id="popuptooltip" width="300px">
+		<div>Eu...</div>
+	</popup>
+
+</selecaobox>

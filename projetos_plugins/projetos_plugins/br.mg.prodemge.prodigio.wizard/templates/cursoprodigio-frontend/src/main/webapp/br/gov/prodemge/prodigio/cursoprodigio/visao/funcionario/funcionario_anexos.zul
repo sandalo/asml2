@@ -1,0 +1,82 @@
+<div>
+	<detbox width="100%" id="anexosDet" nomeDoObjeto="classecontrole.objetoAtual.anexosMemorando" label="Memorandos" nomeDoAtributoMestre="funcionario">
+		<listboxdet id="anexosMemorando" rows="5" pageSize="5">
+			<listhead>
+				<listheader label="Nome" width="50%" />
+				<listheader label="Formato" width="10%" />
+				<listheader label="Tipo" width="20%" />
+				<listheader label="Data" width="10%" />
+				<listheader label="Ver" />
+				<listheader label="Anexar" />
+				<listheader label="Baixar" />
+			</listhead>
+			<listitem value="@{anexosMemorando}">
+				<listcell>
+					<label value="@{anexosMemorando.nome}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosMemorando.formato}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosMemorando.anexoTipo}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosMemorando.tsMovimentacao}" width="200px" />
+				</listcell>
+				<listcell>
+					<button zclass="z-button" label="." onClick="self.getNextSibling().doModal()" width="50px" height="30px" visible="@{anexosMemorando.isImagem}" />
+					<internalwindow title="Imagens" visible="false" width="30%" position="top,center" closable="true">
+						<imagebind content="@{anexosMemorando.bytes}"></imagebind>
+					</internalwindow>
+				</listcell>
+				<listcell>
+					<buttonuploadbind nomeDoObjeto="anexosMemorando.bytes" width="50px" height="30px" />
+				</listcell>
+				<listcell>
+					<buttondownloadbind nomeDoObjeto="anexosMemorando.bytes" width="50px" height="30px" />
+				</listcell>
+			</listitem>
+		</listboxdet>
+	</detbox>
+
+
+	<detbox width="100%" id="anexosOficioDet" nomeDoObjeto="classecontrole.objetoAtual.anexosOficio" label="Oficios" nomeDoAtributoMestre="funcionario">
+		<listboxdet id="anexosOficio" rows="5" pageSize="5">
+			<listhead>
+				<listheader label="Nome" width="50%" />
+				<listheader label="Formato" width="10%" />
+				<listheader label="Tipo" width="20%" />
+				<listheader label="Data" width="10%" />
+				<listheader label="Ver" />
+				<listheader label="Anexar" />
+				<listheader label="Baixar" />
+			</listhead>
+			<listitem value="@{anexosOficio}">
+				<listcell>
+					<label value="@{anexosOficio.nome}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosOficio.formato}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosOficio.anexoTipo}" width="200px" />
+				</listcell>
+				<listcell>
+					<label value="@{anexosOficio.tsMovimentacao}" width="200px" />
+				</listcell>
+				<listcell>
+					<button zclass="z-button" label="." onClick="self.getNextSibling().doModal()" width="50px" height="30px" visible="@{anexosOficio.isImagem}" />
+					<internalwindow title="Imagens" visible="false" width="30%" position="top,center" closable="true">
+						<imagebind content="@{anexosOficio.bytes}"></imagebind>
+					</internalwindow>
+				</listcell>
+				<listcell>
+					<buttonuploadbind nomeDoObjeto="anexosOficio.bytes" width="50px" height="30px" />
+				</listcell>
+				<listcell>
+					<buttondownloadbind nomeDoObjeto="anexosOficio.bytes" width="50px" height="30px" />
+				</listcell>
+			</listitem>
+		</listboxdet>
+	</detbox>
+</div>

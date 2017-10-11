@@ -1,0 +1,7 @@
+<window id="<%componente%>"
+	apply="<%dependenciaVO%>"
+	sizable="true" title="<%componente%>" border="normal" closable="true">
+	
+	
+
+</window>

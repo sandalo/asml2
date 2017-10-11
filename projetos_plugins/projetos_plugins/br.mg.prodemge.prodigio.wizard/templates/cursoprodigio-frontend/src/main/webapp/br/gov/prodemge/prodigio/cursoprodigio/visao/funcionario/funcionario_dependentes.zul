@@ -1,0 +1,24 @@
+<div id="div_dependente">
+	<detbox width="100%" id="dependentesDet" nomeDoObjeto="classecontrole.objetoAtual.dependentes">
+		<listboxdet id="dependentes" rows="5" pageSize="5">
+			<listhead>
+				<listheader width="75%"></listheader>
+				<listheader  width="10%"></listheader>
+				<listheader align="center">
+					<button label="Novo dependente" onClick="classecontrole.novoDependente()" sclass="btn-success btn"></button>
+				</listheader>
+			</listhead>
+			<listitem value="@{dependentes}">
+				<listcell>
+					<label value="@{dependentes.nome}"></label>
+				</listcell>
+				<listcell style="text-align:center">
+					<imagebind id="imagemDepe" content="@{dependentes.imagem}" width="50px" height="50px"></imagebind>
+				</listcell>
+				<listcell>
+					<button label="Editar" onClick="classecontrole.editarDependente(self.parent.parent)" sclass="btn-success btn"></button>
+				</listcell>
+			</listitem>
+		</listboxdet>
+	</detbox>
+</div>

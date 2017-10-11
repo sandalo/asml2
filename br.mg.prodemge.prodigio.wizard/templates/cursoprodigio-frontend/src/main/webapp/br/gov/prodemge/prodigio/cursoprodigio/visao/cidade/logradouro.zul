@@ -1,0 +1,45 @@
+<window id="logradourowindow" height="600px" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.cidade.LogradouroCtr" sizable="true" closable="true" border="normal" title="Logradouro">
+	<div id="barradebotoes" align="right"> 
+		<button label="Voltar" onClick="classecontrole.voltar()"></button>
+	</div>
+	<selecaobox>
+		<sylistbox id="listaSelecao" rows="10" pageSize="10">
+			<auxhead >
+				<auxheader colspan="3">
+					<label value="Nome do logradouro:" />
+					<textboxbind nomeDoObjeto="classecontrole.objetoAtualArg.nome" width="100px"/>
+
+					<label value="Cep:" />
+					<textboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cep"></textboxbind>
+
+					<label value="Bairro:" />
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.bairro"></bandboxbind>
+				</auxheader>
+			</auxhead>
+			<listhead id="cabecalho" >
+				<listheadersort label="Nome do logradouro" value="nome" />
+				<listheadersort label="Cidade" value="bairro.cidade.nome" />
+				<listheadersort label="Bairro" value="bairro.nome" />
+			</listhead>
+			<listitem height="25px">
+				<listcellbind label="nome" />
+				<listcellbind label="bairro.cidade.nome" />
+				<listcellbind label="bairro.nome" />
+			</listitem>
+		</sylistbox>
+	</selecaobox>
+	<manutencaobox>
+		<tablelayout columns="3">
+			<tablechildren>
+				<vbox>
+					<label value="Nome do logradouro:"></label>
+					<textboxbind id="nome" maxlength="400" width="400px" />
+					<label value="Bairro:"></label>
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtual.bairro" width="400px" />
+					<label value="Cep:"></label>
+					<cepboxbind id="cep" width="400px" />
+				</vbox>
+			</tablechildren>
+		</tablelayout>
+	</manutencaobox>
+</window>

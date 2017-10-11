@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/br.ufmg.dcc.asml/src-gen" editDirectory="/br.ufmg.dcc.asml.edit/src"
+    editorDirectory="/br.ufmg.dcc.asml.editor/src" modelPluginID="br.ufmg.dcc.asml"
+    forceOverwrite="true" modelName="ASMLModel" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    complianceLevel="6.0" copyrightFields="false" editPluginID="br.ufmg.dcc.asml.edit"
+    editorPluginID="br.ufmg.dcc.asml.editor" runtimeVersion="2.10">
+  <genPackages prefix="ASMLModel" basePackage="br.ufmg.dcc.asml" disposableProviderFactory="true"
+      fileExtensions="asml" ecorePackage="ASMLModel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//Cardinality">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//Cardinality/One"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//Cardinality/Zero"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//Cardinality/OneOrMany"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//Cardinality/ZeroOrMany"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//ExpressionMatchingClause">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ExpressionMatchingClause/NAME_START_WITH"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ExpressionMatchingClause/NAME_ENDS_WITH"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ExpressionMatchingClause/ANNOTATED_WITH"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//ModuleMatchingParamenter">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ModuleMatchingParamenter/PAKCAGE"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ModuleMatchingParamenter/FOLDER"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ModuleMatchingParamenter/PAKCAGE_AND_FOLDER"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//ModuleMatchingParamenter/EXTERNAL_DEFINITION"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//GroupClause">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//GroupClause/NULL"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//GroupClause/ONLY"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//GroupClause/ONLY_THIS"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//PermissionClause">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//PermissionClause/MUST"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//PermissionClause/CAN"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//PermissionClause/CANNOT"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//RelactionType">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/ACCESS"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/DECLARE"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/HANDLE"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/EXTEND"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/IMPLEMENT"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/CREATE"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/THROW"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/USEANOTATION"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/DEPEND"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//RelactionType/REQUIRES"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ASMLModel.ecore#//WildCard">
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//WildCard/Package"/>
+      <genEnumLiterals ecoreEnumLiteral="ASMLModel.ecore#//WildCard/PackageAndSubPackage"/>
+    </genEnums>
+    <genClasses ecoreClass="ASMLModel.ecore#//ASMLModel">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ASMLModel/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ASMLModel/importURI"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//ASMLModel/components"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ASMLModel/ignore"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//AbstractComponent">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//AbstractComponent/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//AbstractComponent/attributes"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//AbstractComponent/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//AbstractComponent/restrictions"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//View"/>
+    <genClasses ecoreClass="ASMLModel.ecore#//Attribute">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Attribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Attribute/value"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//AbstractNameConvetion"/>
+    <genClasses ecoreClass="ASMLModel.ecore#//ExpressionMatchingOperator">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ExpressionMatchingOperator/AND"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ExpressionMatchingOperator/OR"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//ModuleMatching">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ModuleMatching/parameter"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//ClassMatching">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ClassMatching/expressionMatching"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ClassMatching/parameter"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//MetaModule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//MetaModule/matching"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//MetaModule/description"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//Restriction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/groupClause"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/permissionClause"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/relactionType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/groupClauseB"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//Restriction/componentB"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//Restriction/message"/>
+    </genClasses>
+    <genClasses ecoreClass="ASMLModel.ecore#//ComponentsBinRestrictionDeclareation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ASMLModel.ecore#//ComponentsBinRestrictionDeclareation/componentB"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ASMLModel.ecore#//ComponentsBinRestrictionDeclareation/wildcard"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

@@ -1,0 +1,155 @@
+<window id="funcionario" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.funcionario.FuncionarioCtr" sizable="true">
+
+	<div width="100%" align="right">
+		<div id="barradebotoes"></div>
+	</div>
+
+	<selecaobox>
+		<sylistbox id="listaSelecao">
+			<auxhead>
+				<auxheader colspan="7">
+					<grid>
+						<rows>
+							<row>
+								<cell>
+									<label value="Nome:" />
+									<textboxbind nomeDoObjeto="classecontrole.objetoAtualArg.nome" width="300px"></textboxbind>
+								</cell>
+								<cell>
+									<label value="Data de alteração inicio:" />
+									<separator></separator>
+									<dateboxbind nomeDoObjeto="classecontrole.objetoAtualArg.tsMovimentacao" width="100px"></dateboxbind>
+								</cell>
+								<cell>
+									<label value="Data de alteração fim:" />
+									<separator></separator>
+									<dateboxbind nomeDoObjeto="classecontrole.objetoAtualArg2.tsMovimentacao" width="100px"></dateboxbind>
+								</cell>
+							</row>
+							<row>
+								<cell>
+									<label value="Cidade:" />
+									<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade" dependeDoComponente="estados" identificador="cidades" width="300px"></bandboxbind>
+								</cell>
+								<cell>
+
+									<label value="Estado:" />
+									<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade.estado" dependeDoComponente="pais" identificador="estados" width="300px"></bandboxbind>
+								</cell>
+								<cell>
+									<label value="País:" />
+									<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade.estado.pais" identificador="pais" width="300px"></bandboxbind>
+								</cell>
+							</row>
+						</rows>
+					</grid>
+				</auxheader>
+			</auxhead>
+
+			<listhead id="cabecalho" >
+				<listheadersort label="Nome" value="nome" />
+				<listheadersort label="Data de criação" value="tsMovimentacao" />
+				<listheadersort label="Matrícula" value="matricula" />
+				<listheadersort label="Cidade" value="cidade.nome" />
+				<listheadersort label="Estado" value="cidade.estado.nome" width="300px" />
+				<listheadersort label="País" value="cidade.estado.pais.nome" />
+				<listheader label="Cursos" value="cursos.cursoVO.nome" />
+			</listhead>
+
+			<listitem height="25px" >
+				<listcellbind label="nome" />
+				<listcellbind label="tsMovimentacao" />
+				<listcellbind label="matricula" />
+				<listcellbind label="cidade.nome" />
+				<listcellbind label="cidade.estado.nome" />
+				<listcellbind label="cidade.estado.pais.nome" />
+				<listcellbind label="cursosStr" />
+			</listitem>
+
+		</sylistbox>
+
+	</selecaobox>
+
+	<manutencaobox>
+		<tabbox>
+			<tabs>
+				<tab label="Dados básicos" width="300px"></tab>
+				<tab label="Endereço" width="300px"></tab>
+				<tab label="Foto" width="300px"></tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<vbox>
+						<div class="col-xs-4">
+							<label value="Nome:" />
+							<textboxbind id="nome" width="400px" />
+						</div>
+						<div class="col-xs-1">
+							<label value="CPF:" />
+							<cpfboxbind id="cpf" width="200px" />
+						</div>
+						<div class="col-xs-1">
+							<label value="Matrícula:"></label>
+							<textboxbind id="matricula" mask="*999999" width="200px" />
+						</div>
+						<div class="col-xs-1">
+							<label value="Salário:"></label>
+							<moneyboxbind id="salario" style="text-align:right" class="form-control z-textbox" width="200px" />
+						</div>
+						<div class="col-xs-4">
+							<label value="País:"></label>
+							<bandboxbind id="pais" width="400px" nomeDoObjeto="classecontrole.objetoAtual.paisVO" identificador="pais" labelValorList="Países:nome" buttonVisible="false" class="form-control" />
+						</div>
+						<div class="col-xs-4">
+							<label value="Estado:"></label>
+							<bandboxbind id="estado" width="400px" nomeDoObjeto="classecontrole.objetoAtual.estadoVO" labelValorList="Estados:nome" dependeDoComponente="pais" identificador="estados" buttonVisible="false" class="form-control z-textbox" />
+						</div>
+						<div class="col-xs-4">
+							<label value="Cidade:"></label>
+							<bandboxbind id="cidade" width="400px" nomeDoObjeto="classecontrole.objetoAtual.cidade" labelValorList="Cidades:nome" dependeDoComponente="estados" identificador="cidades" buttonVisible="false" />
+						</div>
+						<div class="col-xs-12">
+							<box pack="center" width="100%" align="center">
+								<a onClick="popup_formacao.doModal()" label="Formação"></a>
+								<internalwindow id="popup_formacao" visible="false" position="center,center">
+									<apply templateURI="funcionario/funcionario_formacao.zul" />
+								</internalwindow>
+							</box>
+						</div>
+					</vbox>
+				</tabpanel>
+				<tabpanel id="endereco">
+					<label value="cep:"></label>
+					<textbox value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.cep}" inplace="true" onBlur="classecontrole.recuperaLogradouroPorCep(self)"></textbox>
+					<separator></separator>
+					<label value="Logradouro:"></label>
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtual.funcionarioEndereco.logradouro" identificador="logradouro" labelValorList="Logradouro-300px:nome;Bairro:bairro;Cidade:bairro.cidade" width="600px" widthList="1000px" heightList="400px" atualizarComponentes="endereco" />
+					<separator></separator>
+					<label value="Bairro:"></label>
+					<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro}"></label>
+					<separator></separator>
+					<label value="Cidade:"></label>
+					<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro.cidade}"></label>
+					<separator></separator>
+					<label value="Estado:"></label>
+					<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro.cidade.estado}"></label>
+				</tabpanel>
+				<tabpanel>
+					<vbox width="100%">
+						<hbox pack="center" width="100%">
+							<image id="imagem" width="600px"></image>
+						</hbox>
+						<hbox pack="center" width="100%">
+							<button label="Anexar" id="anexar" onClick='classecontrole.anexar("imagem")' />
+							<button label="Limpar" id="limparFoto" onClick='classecontrole.limparFoto()' />
+							<button label="+" onClick='classecontrole.aumentarImage(imagem)' />
+							<button label="-" onClick='classecontrole.diminuirImage(imagem)' />
+							<button label="download" onClick="classecontrole.downloadImage()"></button>
+						</hbox>
+					</vbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</manutencaobox>
+
+</window>

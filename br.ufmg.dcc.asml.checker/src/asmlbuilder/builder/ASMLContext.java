@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IJavaProject;
@@ -28,6 +29,7 @@ import asmlbuilder.matching.PrintMatchingVisitor;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.aSMLModel.ASMLModel;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
+import br.ufmg.dcc.asml.aSMLModel.MetaModule;
 import br.ufmg.dcc.asml.aSMLModel.View;
 
 public class ASMLContext {
@@ -41,7 +43,7 @@ public class ASMLContext {
 	// TreeSet<ComponentInstance>();
 	private ASMLModel asmlModel;
 	private Set<ASMLModel> otherAsmlModelReferenced = new HashSet<ASMLModel>();
-	private Map<IProject,IJavaProject> javaProjects = new HashMap<IProject, IJavaProject>();
+	private Map<IProject, IJavaProject> javaProjects = new HashMap<IProject, IJavaProject>();
 	private ASMLReosurceJavaVisitor reosurceJavaVisitor;
 	private IClasspathContainer classpathMavenContainer;
 	private ASMLResourceVisitor resourceVisitor;
@@ -71,7 +73,9 @@ public class ASMLContext {
 	private Map<String, AbstractComponent> packageMathing = new HashMap<String, AbstractComponent>();
 	private Set<String> jarMathingLoaded = new TreeSet<String>();
 	/*
-	 * private Map<String, IClassFile> classFilesByFullyQualifiedName = new HashMap<String, IClassFile>(); private Map<String, Set<IClassFile>> classFilesByPackageName = new HashMap<String, Set<IClassFile>>();
+	 * private Map<String, IClassFile> classFilesByFullyQualifiedName = new
+	 * HashMap<String, IClassFile>(); private Map<String, Set<IClassFile>>
+	 * classFilesByPackageName = new HashMap<String, Set<IClassFile>>();
 	 */
 	// private final Set<AbstractComponent> declaredComponents = new
 	// HashSet<AbstractComponent>(100);
@@ -89,6 +93,18 @@ public class ASMLContext {
 	}
 
 	public AbstractComponent getComponentByName(String name) {
+/*		final TreeIterator<EObject> allContents = asmlModel.eResource().getAllContents();
+		while (allContents.hasNext()) {
+			final EObject next = allContents.next();
+			if (next instanceof MetaModule) {
+				final MetaModule metaModule = (MetaModule) next;
+				if (metaModule.getName().endsWith("VO")){
+					System.out.println(metaModule.getFullName());
+					metaModule.getInstances();
+				}
+			}
+		}
+*/
 		for (AbstractComponent abstractComponent : asmlModel.getAllComponents()) {
 			if (abstractComponent.getName().equals(name)) {
 				return abstractComponent;
@@ -137,13 +153,20 @@ public class ASMLContext {
 	}
 
 	/*
-	 * public void addExternalComponentInstance(ComponentInstance componentInstance) { // System.out.println(componentInstance.getResource().getName()); externalComponentInstances.add(componentInstance); }
+	 * public void addExternalComponentInstance(ComponentInstance
+	 * componentInstance) { //
+	 * System.out.println(componentInstance.getResource().getName());
+	 * externalComponentInstances.add(componentInstance); }
 	 * 
-	 * public void removeExternalComponentInstance(ComponentInstance componentInstance) { externalComponentInstances.remove(componentInstance); }
+	 * public void removeExternalComponentInstance(ComponentInstance
+	 * componentInstance) {
+	 * externalComponentInstances.remove(componentInstance); }
 	 * 
-	 * public void clearExternalResource() { externalComponentInstances.clear(); }
+	 * public void clearExternalResource() { externalComponentInstances.clear();
+	 * }
 	 * 
-	 * public Set<ComponentInstance> getExternalComponentInstances() { return Collections.unmodifiableSet(externalComponentInstances); }
+	 * public Set<ComponentInstance> getExternalComponentInstances() { return
+	 * Collections.unmodifiableSet(externalComponentInstances); }
 	 */
 
 	public void addComponentInstance(ComponentInstance componentInstance) {
@@ -157,17 +180,17 @@ public class ASMLContext {
 					componentInstances.remove(componentInstance);
 					componentInstances.add(componentInstance);
 					addCacheByType(componentInstance, type);
-				} 
-				if(resource != null) {
+				}
+				if (resource != null) {
 					ComponentInstance componentInstanceOld = getComponentInstanceByIResourceName(resource);
 					componentInstance.setComponent(componentInstanceOld.getComponent());
 					componentInstances.remove(componentInstance);
 					componentInstances.add(componentInstance);
 					addCacheByResource(componentInstance, resource);
-				}else{
+				} else {
 					throw new RuntimeException("Erro ao adcionar instancia");
 				}
-			}else{
+			} else {
 				componentInstances.add(componentInstance);
 				addCacheByType(componentInstance, type);
 				addCacheByResource(componentInstance, resource);
@@ -181,9 +204,23 @@ public class ASMLContext {
 		if (type != null) {
 			String typeFullQualifyName = type.getFullyQualifiedName();
 			if (typeFullQualifyName != null) {
-				componentInstanceITypeName.remove(typeFullQualifyName);// TODO: Avaliar, acho que não precisa disso, diferente de Set, Map atualiza objetos em colisões.
+				componentInstanceITypeName.remove(typeFullQualifyName);// TODO:
+																		// Avaliar,
+																		// acho
+																		// que
+																		// não
+																		// precisa
+																		// disso,
+																		// diferente
+																		// de
+																		// Set,
+																		// Map
+																		// atualiza
+																		// objetos
+																		// em
+																		// colisões.
 				componentInstanceITypeName.put(typeFullQualifyName, componentInstance);
-//				componentInstanceITypeName.get("br.gov.prodemge.ssc.admin.comuns.constantes.ConstantesDeAcesso");
+				// componentInstanceITypeName.get("br.gov.prodemge.ssc.admin.comuns.constantes.ConstantesDeAcesso");
 			}
 		}
 	}
@@ -206,15 +243,18 @@ public class ASMLContext {
 		for (ComponentInstance componentInstance : componentInstances) {
 			if (componentInstance != null) {
 				AbstractComponent component = componentInstance.getComponent();
-				if(component ==null)
+				if (component == null)
 					continue;
 				IResource resource = componentInstance.getResource();
-				if(resource == null)
+				if (resource == null)
 					continue;
 				IProject project2 = resource.getProject();
-				if(project2 ==null)
+				if (project2 == null)
 					continue;
-				if (!componentInstance.isExternal() && project2!=null && project != null && project2.equals(project)) {//TODO - Melhorar isso
+				if (!componentInstance.isExternal() && project2 != null && project != null && project2.equals(project)) {// TODO
+																															// -
+																															// Melhorar
+																															// isso
 					auxInternal.add(componentInstance);
 				}
 			}
@@ -237,12 +277,12 @@ public class ASMLContext {
 	public List<Violation> getViolations() {
 		return violations;
 	}
-	
-	public void removeViolations(IResource resource){
+
+	public void removeViolations(IResource resource) {
 		List<Violation> violations2 = new ArrayList<Violation>();
 		for (Violation violation : this.violations) {
 			try {
-				if(violation.getResource().getProject()!=null && violation.getResource().getProject().equals(resource.getProject())){
+				if (violation.getResource().getProject() != null && violation.getResource().getProject().equals(resource.getProject())) {
 					violations2.add(violation);
 				}
 			} catch (Exception e) {
@@ -254,23 +294,26 @@ public class ASMLContext {
 		}
 	}
 
-	
-	public ASMLModel getAsmlModel(IProject iProject) {//TODO: Melhorar para evitar colisão de projetos que terminam com nomes iguais.
-		//TODO: Possibilitar que a vacina de cada projeto possa ser indicada via configuração
-		if(asmlModel==null)
+	public ASMLModel getAsmlModel(IProject iProject) {// TODO: Melhorar para
+														// evitar colisão de
+														// projetos que terminam
+														// com nomes iguais.
+		// TODO: Possibilitar que a vacina de cada projeto possa ser indicada
+		// via configuração
+		if (asmlModel == null)
 			return null;
 		EList<EObject> contents = asmlModel.eResource().getContents();
 		for (EObject eObject : contents) {
 			ASMLModel asmlModel = (ASMLModel) eObject;
 			String name = iProject.getName();
 			String name2 = asmlModel.getName();
-			if(name.endsWith(name2)){
+			if (name.endsWith(name2)) {
 				return asmlModel;
 			}
 		}
 		return null;
 	}
-	
+
 	public ASMLModel getAsmlModelPrimario() {
 		return asmlModel;
 	}
@@ -285,17 +328,17 @@ public class ASMLContext {
 
 	public IJavaProject getJavaProject(IProject project) {
 		IJavaProject iJavaProject = javaProjects.get(project);
-		if(iJavaProject==null){
+		if (iJavaProject == null) {
 			iJavaProject = JavaCore.create(project);
 			javaProjects.put(project, iJavaProject);
 		}
 		return iJavaProject;
 	}
 
-/*	public void setJavaProject(IJavaProject javaProject) {
-		this.javaProject = javaProject;
-	}
-*/
+	/*
+	 * public void setJavaProject(IJavaProject javaProject) { this.javaProject =
+	 * javaProject; }
+	 */
 	public ASMLReosurceJavaVisitor getReosurceJavaVisitor() {
 		return reosurceJavaVisitor;
 	}
@@ -388,7 +431,8 @@ public class ASMLContext {
 	}
 
 	/*
-	 * public Map<MetaClass, Set<MetaClass>> getSublMetaClasses() { return sublMetaClasses; }
+	 * public Map<MetaClass, Set<MetaClass>> getSublMetaClasses() { return
+	 * sublMetaClasses; }
 	 */
 
 	public ASMLBinder getAsmlBinder() {
@@ -412,7 +456,12 @@ public class ASMLContext {
 	}
 
 	/*
-	 * public Set<ComponentInstance> getResourcesMatchedInStaticAnalysis() { Set<ComponentInstance> resourcesMatchedInStaticAnalysis = new HashSet<ComponentInstance>(); for (AbstractComponent abstractComponent : declaredComponents) { resourcesMatchedInStaticAnalysis.addAll(abstractComponent .getInstances()); } return resourcesMatchedInStaticAnalysis; }
+	 * public Set<ComponentInstance> getResourcesMatchedInStaticAnalysis() {
+	 * Set<ComponentInstance> resourcesMatchedInStaticAnalysis = new
+	 * HashSet<ComponentInstance>(); for (AbstractComponent abstractComponent :
+	 * declaredComponents) {
+	 * resourcesMatchedInStaticAnalysis.addAll(abstractComponent
+	 * .getInstances()); } return resourcesMatchedInStaticAnalysis; }
 	 */
 
 	public List<AbstractComponent> getDeclaredComponents() {
@@ -429,14 +478,15 @@ public class ASMLContext {
 		if (fullPath == null)
 			return;
 		if (fullPath.contains("{?}")) {
-			// fullPath = abstractComponent.getFullPathComponent().split("\\{\\?\\}")[0];
+			// fullPath =
+			// abstractComponent.getFullPathComponent().split("\\{\\?\\}")[0];
 			fullPath = abstractComponent.getFullPathComponent();
 		}
 		if (fullPath.contains(".*")) {
 			fullPath = fullPath.replaceAll("\\.\\*", "");
 		}
 		String[] segments = fullPath.split("\\.");
-		if (/*segments.length <= 1 || */segments.length == 1 && ( segments[0].equals("java")|| segments[0].equals("javax")|| segments[0].equals("org")|| segments[0].equals("com")))
+		if (/* segments.length <= 1 || */segments.length == 1 && (segments[0].equals("java") || segments[0].equals("javax") || segments[0].equals("org") || segments[0].equals("com")))
 			return;
 		String matchingAux = "";
 		for (int i = 0; i < segments.length; i++) {
@@ -453,12 +503,14 @@ public class ASMLContext {
 		String matching = abstractComponent.getMatching();
 		if (matching != null) {
 			if (matching.contains("?")) {
-				// token = matching.replaceAll("\\{\\?\\}", "").replaceAll("\\{index\\}", "");
+				// token = matching.replaceAll("\\{\\?\\}",
+				// "").replaceAll("\\{index\\}", "");
 				String sufixAndPrefixNames[] = matching.split("\\{\\?\\}");
 				if (sufixAndPrefixNames.length > 0) {
-					// No momento trata apenas colisão de prefixos. Ex. VO => BaseVO
+					// No momento trata apenas colisão de prefixos. Ex. VO =>
+					// BaseVO
 					String sufixAndPrefixName = sufixAndPrefixNames[sufixAndPrefixNames.length - 1];
-					sufixAndPrefixName = sufixAndPrefixName.replace("_{*}","");
+					sufixAndPrefixName = sufixAndPrefixName.replace("_{*}", "");
 					sufixAndPrefixNameConvention.put(sufixAndPrefixName, abstractComponent);
 				}
 			}
@@ -482,13 +534,23 @@ public class ASMLContext {
 	}
 
 	/*
-	 * public void addClassFile(String packageName, IClassFile classFile) { //isere no mapa por qualifiedName classFilesByFullyQualifiedName.put(classFile .getType().getFullyQualifiedName(), classFile); //isere no mapa por package Set<IClassFile> classFiles = classFilesByPackageName.get(packageName); if(classFiles == null){ classFiles = new HashSet<IClassFile>(); classFilesByPackageName.put(packageName, classFiles); } classFiles.add(classFile); }
+	 * public void addClassFile(String packageName, IClassFile classFile) {
+	 * //isere no mapa por qualifiedName
+	 * classFilesByFullyQualifiedName.put(classFile
+	 * .getType().getFullyQualifiedName(), classFile); //isere no mapa por
+	 * package Set<IClassFile> classFiles =
+	 * classFilesByPackageName.get(packageName); if(classFiles == null){
+	 * classFiles = new HashSet<IClassFile>();
+	 * classFilesByPackageName.put(packageName, classFiles); }
+	 * classFiles.add(classFile); }
 	 * 
-	 * public IClassFile getClassFileByFullName(String fullName){ return classFilesByFullyQualifiedName.get(fullName); }
+	 * public IClassFile getClassFileByFullName(String fullName){ return
+	 * classFilesByFullyQualifiedName.get(fullName); }
 	 */
 
 	/*
-	 * public Set<IClassFile> getClassFileByPackageName(String pck){ return Collections.unmodifiableSet(classFilesByPackageName.get(pck)); }
+	 * public Set<IClassFile> getClassFileByPackageName(String pck){ return
+	 * Collections.unmodifiableSet(classFilesByPackageName.get(pck)); }
 	 */
 
 	public Set<ASMLModel> getOtherAsmlModelReferenced() {
@@ -530,21 +592,21 @@ public class ASMLContext {
 		this.designMode = designMode;
 	}
 
-	public void addJarMathingLoaded(String packageName){
+	public void addJarMathingLoaded(String packageName) {
 		jarMathingLoaded.add(packageName);
 	}
-	
-	public boolean isJarMathingLoaded(String packageName){
+
+	public boolean isJarMathingLoaded(String packageName) {
 		return jarMathingLoaded.contains(packageName);
 	}
-	
-	public boolean clearJarMathingLoaded(String packageName){
+
+	public boolean clearJarMathingLoaded(String packageName) {
 		return jarMathingLoaded.remove(packageName);
 	}
-	
-	public void clearJarMathingLoadedAll(){
-		 jarMathingLoaded.clear();;
-	}
 
+	public void clearJarMathingLoadedAll() {
+		jarMathingLoaded.clear();
+		;
+	}
 
 }

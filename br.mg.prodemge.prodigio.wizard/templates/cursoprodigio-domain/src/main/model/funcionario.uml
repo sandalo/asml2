@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_fU5J4NG0EeafvrG43tkG6A" name="funcionario">
+  <packageImport xmi:id="_jARYANHLEea9HeFL7zii0w">
+    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
+  </packageImport>
+  <packagedElement xmi:type="uml:Class" xmi:id="_HiyxMNG1EeafvrG43tkG6A" name="Funcionario"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_UHNUANG1EeafvrG43tkG6A" name="Cidade"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_c2pJUNG1EeafvrG43tkG6A" name="Pais"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_jZLpQNG1EeafvrG43tkG6A" name="Estado"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_wtfX8NG1EeafvrG43tkG6A" name="Bairro"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zfovcNG1EeafvrG43tkG6A" name="Logradouro"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_4mwaQNG1EeafvrG43tkG6A" name="contém" memberEnd="_4mxBUNG1EeafvrG43tkG6A _4nAR4dG1EeafvrG43tkG6A" navigableOwnedEnd="_4mxBUNG1EeafvrG43tkG6A _4nAR4dG1EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_4mxBUNG1EeafvrG43tkG6A" name="paisVOs" type="_c2pJUNG1EeafvrG43tkG6A" association="_4mwaQNG1EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4m_q0NG1EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4nAR4NG1EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_4nAR4dG1EeafvrG43tkG6A" name="estadoVOs" type="_jZLpQNG1EeafvrG43tkG6A" association="_4mwaQNG1EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4nO7YNG1EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4nO7YdG1EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_ZDGw0NG2EeafvrG43tkG6A" name="contém" memberEnd="_ZDGw0dG2EeafvrG43tkG6A _ZDH-8NG2EeafvrG43tkG6A" navigableOwnedEnd="_ZDH-8NG2EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_ZDGw0dG2EeafvrG43tkG6A" name="estado" type="_jZLpQNG1EeafvrG43tkG6A" aggregation="composite" association="_ZDGw0NG2EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZDHX4NG2EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZDHX4dG2EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_ZDH-8NG2EeafvrG43tkG6A" name="cidadeVOs" type="_UHNUANG1EeafvrG43tkG6A" association="_ZDGw0NG2EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_ZDImANG2EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_ZDImAdG2EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_sSzf4NG2EeafvrG43tkG6A" name="contém" memberEnd="_sS0G8NG2EeafvrG43tkG6A _sS18ING2EeafvrG43tkG6A" navigableOwnedEnd="_sS18ING2EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_sS0G8NG2EeafvrG43tkG6A" name="cidadeVOs" type="_UHNUANG1EeafvrG43tkG6A" aggregation="composite" association="_sSzf4NG2EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sS1VENG2EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sS1VEdG2EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_sS18ING2EeafvrG43tkG6A" name="bairros" type="_wtfX8NG1EeafvrG43tkG6A" association="_sSzf4NG2EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_sS3KQNG2EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_sS3KQdG2EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_lNDIsNG3EeafvrG43tkG6A" name="contém" memberEnd="_lNDvwNG3EeafvrG43tkG6A _lNFk8NG3EeafvrG43tkG6A" navigableOwnedEnd="_lNFk8NG3EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_lNDvwNG3EeafvrG43tkG6A" name="bairro" type="_wtfX8NG1EeafvrG43tkG6A" aggregation="composite" association="_lNDIsNG3EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lNEW0NG3EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lNE94NG3EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_lNFk8NG3EeafvrG43tkG6A" name="logradouros" type="_zfovcNG1EeafvrG43tkG6A" association="_lNDIsNG3EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lNGMANG3EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lNGzENG3EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zSeV0NG4EeafvrG43tkG6A" name="Curso"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_NfjGsNG5EeafvrG43tkG6A" name="FuncionarioCurso"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_c4tCANG5EeafvrG43tkG6A" name="possui" memberEnd="_c4tpENG5EeafvrG43tkG6A _c4veQNG5EeafvrG43tkG6A" navigableOwnedEnd="_c4veQNG5EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_c4tpENG5EeafvrG43tkG6A" name="funcionario" type="_HiyxMNG1EeafvrG43tkG6A" aggregation="composite" association="_c4tCANG5EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c4u3MNG5EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c4u3MdG5EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_c4veQNG5EeafvrG43tkG6A" name="funcionarioCursoVOs" type="_NfjGsNG5EeafvrG43tkG6A" association="_c4tCANG5EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_c4wFUNG5EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_c4wsYNG5EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_N2g_wNG6EeafvrG43tkG6A" name="." memberEnd="_N2hm0NG6EeafvrG43tkG6A _N2jcANG6EeafvrG43tkG6A" navigableOwnedEnd="_N2jcANG6EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_N2hm0NG6EeafvrG43tkG6A" name="." type="_NfjGsNG5EeafvrG43tkG6A" aggregation="shared" association="_N2g_wNG6EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_N2iN4NG6EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_N2i08NG6EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_N2jcANG6EeafvrG43tkG6A" name="curso" type="_zSeV0NG4EeafvrG43tkG6A" association="_N2g_wNG6EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_N2kDENG6EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_N2kDEdG6EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_RadVsNG8EeafvrG43tkG6A" name="FuncionarioEndereco"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_7l1WUNG8EeafvrG43tkG6A" name="possui" memberEnd="_7l1WUdG8EeafvrG43tkG6A _7l4ZoNG8EeafvrG43tkG6A" navigableOwnedEnd="_7l4ZoNG8EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_7l1WUdG8EeafvrG43tkG6A" name="funcionario" type="_HiyxMNG1EeafvrG43tkG6A" association="_7l1WUNG8EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7l3LgNG8EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7l3ykNG8EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_7l4ZoNG8EeafvrG43tkG6A" name="funcionarioEndereco" type="_RadVsNG8EeafvrG43tkG6A" association="_7l1WUNG8EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_7l5nwNG8EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_7l6O0NG8EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_8XEwkNG9EeafvrG43tkG6A" name="possui" memberEnd="_8XFXoNG9EeafvrG43tkG6A _8XHz4NG9EeafvrG43tkG6A" navigableOwnedEnd="_8XFXoNG9EeafvrG43tkG6A _8XHz4NG9EeafvrG43tkG6A">
+    <ownedEnd xmi:id="_8XFXoNG9EeafvrG43tkG6A" name="." type="_RadVsNG8EeafvrG43tkG6A" association="_8XEwkNG9EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8XGlwNG9EeafvrG43tkG6A"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8XHM0NG9EeafvrG43tkG6A" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_8XHz4NG9EeafvrG43tkG6A" name="logradouro" type="_zfovcNG1EeafvrG43tkG6A" association="_8XEwkNG9EeafvrG43tkG6A">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_8XIa8NG9EeafvrG43tkG6A" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_8XIa8dG9EeafvrG43tkG6A" value="1"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="__bxPoNHIEea9HeFL7zii0w" name="FuncionarioAnexo"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_J8-kkNHJEea9HeFL7zii0w" name="possui" memberEnd="_J8_LoNHJEea9HeFL7zii0w _J9AZwNHJEea9HeFL7zii0w" navigableOwnedEnd="_J9AZwNHJEea9HeFL7zii0w">
+    <ownedEnd xmi:id="_J8_LoNHJEea9HeFL7zii0w" name="funcionario" type="_HiyxMNG1EeafvrG43tkG6A" aggregation="composite" association="_J8-kkNHJEea9HeFL7zii0w">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_J8_ysNHJEea9HeFL7zii0w" value="1"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_J8_ysdHJEea9HeFL7zii0w" value="1"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_J9AZwNHJEea9HeFL7zii0w" name="funcionarioAnexoVOs" type="__bxPoNHIEea9HeFL7zii0w" association="_J8-kkNHJEea9HeFL7zii0w">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_J9BA0NHJEea9HeFL7zii0w"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_J9BA0dHJEea9HeFL7zii0w" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_OIlD0PeQEeas8pLjnyU4vg" name="Dependente"/>
+</uml:Model>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>br.mg.gov.prodemge</groupId>
+		<artifactId>prodemge</artifactId>
+		<version>4.0.0</version>
+		<relativePath>../prodemge</relativePath>
+	</parent>
+
+	<groupId>br.gov.prodemge.prodigio</groupId>
+	<artifactId>cursoprodigio</artifactId>
+	<version>0.01-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>cursoprodigio</name>
+	<description>cursoprodigio</description>
+
+	<properties>
+		<!-- PLUGINS -->
+		<plugin.compiler.version>3.2</plugin.compiler.version>
+		<!-- JAVA VERSION -->
+		<java.version>1.8</java.version>
+		<!-- ENCONDING -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   		<version.source.compiler>1.8</version.source.compiler>
+        <version.target.compiler>1.8</version.target.compiler>
+
+		<jboss.bom.version>1.0.0.Final</jboss.bom.version>
+		<version.projeto-atual>0.01-SNAPSHOT</version.projeto-atual>
+		<version.prodigio>8.0.003-ALPHA002</version.prodigio>
+		<version.hibernate.core>4.2.0.CR1</version.hibernate.core>
+				<!-- Properties TESTES -->
+		<jboss.bom.version>1.0.0.Final</jboss.bom.version>
+		<version.arquillian.bom>1.1.5.Final</version.arquillian.bom>
+		<version.arquilian.jboss>7.2.0.Final</version.arquilian.jboss>
+		<version.jboss.as.javaee>3.0.2.Final</version.jboss.as.javaee>
+		<version.jboss.as>7.5.Final</version.jboss.as>
+		<version.junit>4.11</version.junit>
+
+	</properties>
+
+	<!-- <dependencies> <dependency> <groupId>junit</groupId> <artifactId>junit</artifactId> 
+		<scope>test</scope> </dependency> </dependencies> -->
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Dependencias testes INICIO -->
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-web-6.0</artifactId>
+				<version>${version.jboss.as.javaee}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+				<version>${jboss.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${version.arquillian.bom}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-negocio-test</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${version.junit}</version>
+			</dependency>
+			<!-- Dependencias testes FIM -->
+
+			<!-- DEPENDENCIAS DO JBOSS -->
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-tools</artifactId>
+				<version>${jboss.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.bom</groupId>
+				<artifactId>jboss-javaee-6.0-with-hibernate</artifactId>
+				<version>${jboss.bom.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- PRODIGIO -->
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-negocio-interface</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-negocio</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-web-zk</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-dominio</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-comum</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.mg.gov.prodemge.prodigio</groupId>
+				<artifactId>prodigio-infraestrutura</artifactId>
+				<version>${version.prodigio}</version>
+			</dependency>
+
+			
+			<!-- HIBERNATE -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>${version.hibernate.core}</version>
+			</dependency>
+
+			<!-- PROJETO ATUAL -->
+			<dependency>
+				<groupId>br.gov.prodemge.prodigio</groupId>
+				<artifactId>cursoprodigio-domain</artifactId>
+				<version>${version.projeto-atual}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.gov.prodemge.prodigio</groupId>
+				<artifactId>cursoprodigio-backend</artifactId>
+				<type>ejb</type>
+				<version>${version.projeto-atual}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.gov.prodemge.prodigio</groupId>
+				<artifactId>cursoprodigio-frontend</artifactId>
+				<type>war</type>
+				<version>${version.projeto-atual}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.gov.prodemge.prodigio</groupId>
+				<artifactId>cursoprodigio-app-backend</artifactId>
+				<version>${version.projeto-atual}</version>
+			</dependency>
+			<dependency>
+				<groupId>br.gov.prodemge.prodigio</groupId>
+				<artifactId>cursoprodigio-app-frontend</artifactId>
+				<version>${version.projeto-atual}</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<defaultGoal>package</defaultGoal>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${plugin.compiler.version}</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+						<encoding>${project.build.sourceEncoding}</encoding>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-ear-plugin</artifactId>
+					<version>2.7</version>
+					<configuration>
+						<!-- Tell Maven we are using Java EE 6 -->
+						<version>6</version>
+						<!-- Use Java EE ear libraries as needed. Java EE ear libraries are 
+							in easy way to package any libraries needed in the ear, and automatically 
+							have any modules (EJB-JARs and WARs) use them -->
+						<defaultLibBundleDir>lib</defaultLibBundleDir>
+						<modules/>
+						<earSourceDirectory>${project.build.outputDirectory}</earSourceDirectory>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.1.1</version>
+					<configuration>
+						<!-- Java EE 6 doesn't require web.xml, Maven needs to catch up! -->
+						<!--failOnMissingWebXml>false</failOnMissingWebXml -->
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-ejb-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<!-- Tell Maven we are using EJB 3.1 -->
+						<ejbVersion>3.1</ejbVersion>
+					</configuration>
+				</plugin>
+				<!-- The JBoss AS plugin deploys your ear to a local JBoss AS container -->
+				<!-- Due to Maven's lack of intelligence with EARs we need to configure 
+					the jboss-as maven plugin to skip deployment for all modules. We then enable 
+					it specifically in the ear module. -->
+
+
+				<!-- Plugins maven TESTES INICIO -->
+				<plugin>
+					<groupId>org.jboss.as.plugins</groupId>
+					<artifactId>jboss-as-maven-plugin</artifactId>
+					<version>${version.jboss.as}</version>
+					<inherited>true</inherited>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.17</version>
+				</plugin>
+
+			</plugins>
+			<!-- Plugins maven TESTES FIM -->
+
+
+
+		</pluginManagement>
+	</build>
+
+  <modules>
+    <module>../cursoprodigio-domain</module>
+    <module>../cursoprodigio-backend</module>
+    <module>../cursoprodigio-frontend</module>
+    <module>../cursoprodigio-app-frontend</module>
+    <module>../cursoprodigio-app-backend</module>
+  </modules>
+</project>

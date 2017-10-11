@@ -1,0 +1,41 @@
+<window id="<%conceito%>_window"
+	apply="<%ecosistema_raw_matching%><%ecosistema_name%>.<%sistema_name%>.controle.<%modulo%>.<%Conceito%>Ctr"
+	sizable="true" title="<%Conceito%>">
+	
+		<selecaobox>
+		<sylistbox id="listaSelecao">
+			<auxhead class="cabecalhoPesquisa">
+				<auxheader>
+					<label value="ID:" />
+					<textboxarg id="idArg"></textboxarg>
+				</auxheader>
+
+
+			</auxhead>
+
+			<listhead id="cabecalho">
+				<listheadersort label="ID" value="id" />
+			</listhead>
+
+			<listitem height="25px">
+				<listcellbind label="id">
+				</listcellbind>
+			</listitem>
+
+
+		</sylistbox>
+
+	</selecaobox>
+
+	<manutencaobox>
+		<tablelayout>
+			<tablechildren>
+				<vbox>
+					<label value="ID:" />
+					<label value="@{classecontrole.objetoAtual.id}" />
+				</vbox>
+			</tablechildren>
+		</tablelayout>
+	</manutencaobox>
+
+</window>

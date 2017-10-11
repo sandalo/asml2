@@ -1,0 +1,33 @@
+<window id="paises" height="600px" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.cidade.BairroCtr" sizable="true" mode="modal" width="80%" title="Bairro" >
+	<div id="barradebotoes" ></div>
+	<selecaobox>
+		<sylistbox id="listaSelecao" rows="10" pageSize="10">
+			<auxhead class="cabecalhoPesquisa">
+				<auxheader>
+					<label value="Nome do bairro:" />
+					<textboxarg id="nomeArg" width="200px"></textboxarg>
+				</auxheader>
+			</auxhead>
+			<listhead id="cabecalho" class="cabecalhoDados">
+				<listheadersort label="Nome do bairro" value="nome" />
+				<listheadersort label="Cidade" value="cidade.nome" />
+			</listhead>
+			<listitem height="25px">
+				<listcellbind label="nome" />
+				<listcellbind label="cidade.nome" />
+			</listitem>
+		</sylistbox>
+	</selecaobox>
+	<manutencaobox>
+		<tablelayout columns="3">
+			<tablechildren>
+				<vbox>
+					<label value="Nome do bairro:"></label>
+					<textboxbind id="nome" maxlength="400" width="400px" />
+					<label value="Cidade:"></label>
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtual.cidade" width="400px" />
+				</vbox>
+			</tablechildren>
+		</tablelayout>
+	</manutencaobox>
+</window>

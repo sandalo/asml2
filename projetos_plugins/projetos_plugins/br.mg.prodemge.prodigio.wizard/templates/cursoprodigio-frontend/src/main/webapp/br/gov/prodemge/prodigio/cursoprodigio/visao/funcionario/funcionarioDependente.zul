@@ -1,0 +1,45 @@
+<window id="dependente" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.funcionario.FuncionarioDependenteCtr" sizable="true" title="Cursos" border="normal" closable="true">
+	<div id="barradebotoes" align="right"></div>
+
+	<selecaobox>
+		<sylistbox id="listaSelecao">
+			<auxhead class="cabecalhoPesquisa">
+				<auxheader>
+					<label value="Nome:" />
+					<textboxbind nomeDoObjeto="classecontrole.objetoAtualArg.nome"></textboxbind>
+				</auxheader>
+			</auxhead>
+			<listhead id="cabecalho">
+				<listheadersort label="Nome" value="nome" />
+			</listhead>
+			<listitem height="25px">
+				<listcellbind label="nome" />
+			</listitem>
+		</sylistbox>
+	</selecaobox>
+
+	<manutencaobox>
+		<tablelayout>
+			<tablechildren>
+				<vbox>
+					<label value="Funcionario:" />
+					<label value="@{classecontrole.objetoAtual.funcionario.nome}" />
+					<label value="Nome:" />
+					<textboxbind id="nome" width="300px" />
+				</vbox>
+				<vbox>
+					<vbox width="100%">
+						<hbox pack="center" width="100%">
+							<imagebind id="imagem" content="@{classecontrole.objetoAtual.imagem}"></imagebind>
+						</hbox>
+						<hbox pack="center" width="100%">
+							<button label="Anexar" id="anexar" onClick='classecontrole.anexar("imagem")' />
+							<button label="Limpar" id="limparFoto" onClick='classecontrole.limparFoto()' />
+						</hbox>
+					</vbox>
+				</vbox>
+			</tablechildren>
+		</tablelayout>
+	</manutencaobox>
+
+</window>

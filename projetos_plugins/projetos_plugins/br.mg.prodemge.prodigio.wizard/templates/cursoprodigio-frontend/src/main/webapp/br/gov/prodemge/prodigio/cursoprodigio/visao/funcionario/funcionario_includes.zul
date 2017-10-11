@@ -1,0 +1,82 @@
+<window id="funcionario" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.funcionario.FuncionarioCtr" sizable="true">
+
+	<div width="100%" align="right">
+		<div id="barradebotoes"></div>
+	</div>
+
+	<selecaobox>
+		<sylistbox id="listaSelecao">
+			<auxhead>
+				<auxheader colspan="2">
+					<label value="Nome:" />
+					<textboxarg id="nomeArg"></textboxarg>
+				</auxheader>
+				<auxheader>
+					<label value="CPF:" />
+					<textboxarg id="cpfArg"></textboxarg>
+				</auxheader>
+				<auxheader>
+					<label value="Cidade:" />
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade" width="300px"></bandboxbind>
+				</auxheader>
+				<auxheader>
+					<label value="Estado:" />
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade.estado" width="300px"></bandboxbind>
+				</auxheader>
+				<auxheader>
+					<label value="País:" />
+					<bandboxbind nomeDoObjeto="classecontrole.objetoAtualArg.cidade.estado.pais" width="300px"></bandboxbind>
+				</auxheader>
+			</auxhead>
+
+			<listhead id="cabecalho" sclass=".">
+				<listheadersort label="Nome" value="nome" />
+				<listheadersort label="CPF" value="cpf" />
+				<listheadersort label="Matrícula" value="matricula" />
+				<listheadersort label="Cidade" value="cidade.nome" />
+				<listheadersort label="Estado" value="cidade.estado.nome" />
+				<listheadersort label="País" value="cidade.estado.pais.nome" />
+			</listhead>
+
+			<listitem height="25px" sclass=".">
+				<listcellbind label="nome" />
+				<listcellbind label="cpf" />
+				<listcellbind label="matricula" />
+				<listcellbind label="cidade.nome" />
+				<listcellbind label="cidade.estado.nome" />
+				<listcellbind label="cidade.estado.pais.nome" />
+			</listitem>
+		</sylistbox>
+	</selecaobox>
+	<manutencaobox>
+		<tabbox>
+			<tabs>
+				<tab label="Dados básicos" width="300px"></tab>
+				<tab label="Endereço" width="300px"></tab>
+				<tab label="Foto" width="300px"></tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<include src="funcionario/funcionario_dados_basicos.zul" />
+				</tabpanel>
+				<tabpanel id="endereco">
+						<include src="funcionario/funcionario_endereco.zul" />
+				</tabpanel>
+				<tabpanel>
+					<vbox width="100%">
+						<hbox pack="center" width="100%">
+							<image id="imagem" width="600px"></image>
+						</hbox>
+						<hbox pack="center" width="100%">
+							<button label="Anexar" id="anexar" onClick='classecontrole.anexar("imagem")' />
+							<button label="Limpar" id="limparFoto" onClick='classecontrole.limparFoto()' />
+							<button label="+" onClick='classecontrole.aumentarImage(imagem)' />
+							<button label="-" onClick='classecontrole.diminuirImage(imagem)' />
+						</hbox>
+					</vbox>
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</manutencaobox>
+
+</window>

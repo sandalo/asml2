@@ -1,0 +1,45 @@
+<div>
+	
+	
+	<detbox width="100%" id="cursosHumanasDet" nomeDoObjeto="classecontrole.objetoAtual.cursosHumanas" label="Formação humanas" nomeDoAtributoMestre="funcionario" >
+		<listboxdet id="cursosHumanas" rows="5" pageSize="5">
+			<listhead>
+				<listheader label="Cursos:" value="cursos" />
+			</listhead>
+			<listitem>
+				<listcell>
+					<bandboxbind nomeDoObjeto="cursosHumanas.cursoVO" width="400px" metodoFiltro="filtraCursoHumanas"/>
+				</listcell>
+			</listitem>
+		</listboxdet>
+	</detbox>
+	
+	<detbox width="100%" id="cursosExatasDet" nomeDoObjeto="classecontrole.objetoAtual.cursosExatas" label="Formação exatas" nomeDoAtributoMestre="funcionario">
+		<listboxdet id="cursosExatas" rows="5" pageSize="5">
+			<listhead>
+				<listheader label="Cursos:" value="cursos" />
+			</listhead>
+			<listitem>
+				<listcell>
+					<bandboxbind nomeDoObjeto="cursosExatas.cursoVO" width="400px" />
+				</listcell>
+			</listitem>
+		</listboxdet>
+	</detbox>
+
+	<listbox model="@{classecontrole.objetoAtual.cursos}">
+		<template name="model">
+			<listitem>
+				<listcell>
+					<label value="${each.cursoVO.nome}"></label>
+				</listcell>
+			</listitem>
+		</template>
+	</listbox>
+
+	<box pack="center" width="100%" align="center">
+		<button onClick="popup_formacao.setVisible(false);" label="Fechar"></button>
+		<button onClick="classecontrole.salvar();" label="Salvar"></button>
+	</box>
+
+</div>

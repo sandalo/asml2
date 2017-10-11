@@ -1,0 +1,47 @@
+<vbox>
+	<div class="col-xs-4">
+		<label value="Nome:" />
+		<textboxbind nomeDoObjeto="classecontrole.objetoAtual.nome" width="400px" />
+	</div>
+	<div class="col-xs-1">
+		<label value="CPF:" />
+		<cpfboxbind id="cpf" width="200px" constraint="no empty" />
+	</div>
+	<div class="col-xs-1">
+		<label value="Matrícula:"></label>
+		<textboxbind id="matricula" mask="*999999" width="200px" />
+	</div>
+	<div class="col-xs-1">
+		<label value="Salário:"></label>
+		<moneyboxbind id="salario" style="text-align:right" class="form-control z-textbox" width="200px" limit="10"/>
+	</div>
+	<div class="col-xs-4">
+		<label value="País:"></label>
+		<bandboxbind width="400px" nomeDoObjeto="classecontrole.objetoAtual.paisVO" identificador="pais" labelValorList="Países:nome" buttonVisible="false" class="form-control" usarFiltroEmMemoria=""/>
+	</div>
+	<div class="col-xs-4">
+		<label value="Estado:"></label>
+		<bandboxbind  width="400px" nomeDoObjeto="classecontrole.objetoAtual.estadoVO" labelValorList="Estados:nome" dependeDoComponente="pais" identificador="estados" buttonVisible="false" class="form-control z-textbox" />
+	</div>
+	<div class="col-xs-4">
+		<label value="Cidade:"></label>
+		<bandboxbind width="400px" nomeDoObjeto="classecontrole.objetoAtual.cidade" labelValorList="Cidades:nome" dependeDoComponente="estados" identificador="cidades" buttonVisible="false" />
+	</div>
+	<div class="col-xs-4">
+		<label value="Tem filhos?"></label>
+		<checkboxbind nomeDoObjeto="classecontrole.objetoAtual.temFilhos" />
+	</div>
+	<div class="col-xs-8">
+		<label value="Estado civil:"></label>
+		<radiogroupbind nomeDoObjeto="classecontrole.objetoAtual.estadoCivil" width="400px" />
+		<combobox model="@{classecontrole.estadoCivil}" selectedItem="@{classecontrole.objetoAtual.estadoCivil}"></combobox>
+	</div>
+	<div class="col-xs-12">
+		<box pack="center" width="100%" align="center">
+			<a onClick="popup_formacao.doModal()" label="Formação"></a>
+			<internalwindow id="popup_formacao" visible="false" position="center,center">
+				<apply templateURI="funcionario/funcionario_formacao.zul" />
+			</internalwindow>
+		</box>
+	</div>
+</vbox>

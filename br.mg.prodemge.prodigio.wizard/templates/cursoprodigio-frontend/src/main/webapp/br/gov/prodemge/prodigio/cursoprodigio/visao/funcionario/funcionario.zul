@@ -1,0 +1,51 @@
+<window id="funcionario" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.funcionario.FuncionarioCtr" height="1000px" sizable="true" border="normal" title="Funcionário" closable="true">
+	<div width="100%" align="right">
+		<a onClick='classecontrole.abrecasoDeUso("cidade/pais.zul",true,"","100%")'>Link para Pais</a>
+		<a onClick='classecontrole.abrecasoDeUso("curso/curso.zul",true,"highlighted","60%")'>Link para Curso</a>
+		<div id="barradebotoes">
+			<button label="Help" style="left:1%;position:absolute"></button>
+			<button label="Voltar" onClick="classecontrole.voltar()"></button>
+			<button label="Exportar" onClick="classecontrole.exportar()" id="exportar"></button>
+		</div>
+	</div>
+
+	<apply templateURI="funcionario/funcionario_lista.zul" />
+
+	<manutencaobox>
+		<tabbox>
+			<tabs>
+				<tab label="Dados básicos" width="300px"></tab>
+				<tab label="Endereço" width="300px"></tab>
+				<tab label="Foto" width="300px"></tab>
+				<tab label="Breve descrição" width="300px"></tab>
+				<tab label="Anexos" width="300px"></tab>
+				<tab label="Dependentes" width="300px"></tab>
+			</tabs>
+			<tabpanels>
+				<tabpanel>
+					<apply templateURI="funcionario/funcionario_dados_basicos.zul" />
+				</tabpanel>
+				<tabpanel id="endereco">
+					<apply templateURI="funcionario/funcionario_endereco.zul" />
+				</tabpanel>
+				<tabpanel>
+					<apply templateURI="funcionario/funcionario_foto.zul" />
+				</tabpanel>
+				<tabpanel>
+					<ckeditorbind id="ed" value="@{classecontrole.objetoAtual.breveDescricao}"></ckeditorbind>
+					<button label="Visualizar" onClick="self.getNextSibling().doModal()"></button>
+					<internalwindow position="center,center" visible="false" closable="true" title="Visualizar texto">
+						<html id="h" content="@{ed.value}" />
+					</internalwindow>
+				</tabpanel>
+				<tabpanel>
+					<apply templateURI="funcionario/funcionario_anexos.zul" />
+				</tabpanel>
+				<tabpanel>
+					<apply templateURI="funcionario/funcionario_dependentes.zul" />
+				</tabpanel>
+			</tabpanels>
+		</tabbox>
+	</manutencaobox>
+
+</window>

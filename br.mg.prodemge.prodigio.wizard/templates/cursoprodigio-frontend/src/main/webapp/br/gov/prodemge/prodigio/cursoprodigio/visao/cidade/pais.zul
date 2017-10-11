@@ -1,0 +1,47 @@
+<window id="paises" height="600px" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.cidade.PaisCtr" sizable="true" title="Pais" closable="true" border="normal" contentStyle="overflow:auto;">
+	<div id="barradebotoes" align="right">
+		<a onClick='classecontrole.abrecasoDeUso("curso/curso.zul",true,"","100%")'>Link para Curso</a>
+		<button label="Voltar" onClick="classecontrole.voltar()"></button>
+	</div>
+	<selecaobox>
+		<sylistbox id="listaSelecao" rows="10" pageSize="10">
+			<auxhead class="cabecalhoPesquisa">
+				<auxheader>
+					<label value="Nome do país:" />
+					<textboxarg id="nomeArg" width="200px"></textboxarg>
+				</auxheader>
+			</auxhead>
+			<listhead id="cabecalho" class="cabecalhoDados">
+				<listheadersort label="Nome do país" value="nome" />
+			</listhead>
+			<listitem height="25px">
+				<listcellbind label="nome" />
+			</listitem>
+		</sylistbox>
+	</selecaobox>
+
+	<manutencaobox>
+		<label value="Nome do país:"></label>
+		<textboxbind id="nome" maxlength="200" width="25%" />
+		<detbox width="100%" id="estadosDet" nomeDoObjeto="classecontrole.objetoAtual.estados" label="Estados">
+			<listboxdet id="estados" rows="2" pageSize="10">
+				<listitem>
+					<listcell>
+						<textboxbind nomeDoObjeto="estados.nome" width="60%" />
+					</listcell>
+					<listcell>
+						<detbox width="100%" id="cidadesDet" nomeDoObjeto="estados.cidades" label="Cidades">
+							<listboxdet id="cidades" rows="2" pageSize="10">
+								<listitem>
+									<listcell>
+										<textboxbind nomeDoObjeto="cidades.nome" width="60%" />
+									</listcell>
+								</listitem>
+							</listboxdet>
+						</detbox>
+					</listcell>
+				</listitem>
+			</listboxdet>
+		</detbox>
+	</manutencaobox>
+</window>

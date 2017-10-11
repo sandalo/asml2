@@ -1,0 +1,60 @@
+<window id="cursos"
+	apply="br.gov.prodemge.prodigio.cursoprodigio.controle.curso.CursoCtr"
+	sizable="true" title="Cursos" border="normal" closable="true">
+	<div id="barradebotoes" align="right">
+		<a
+			onClick='classecontrole.abrecasoDeUso("cidade/logradouro.zul",true,"","100%")'>
+			Link para Logradouro
+		</a>
+		<button label="Voltar" onClick="classecontrole.voltar()"></button>
+	</div>
+
+
+	<selecaobox>
+
+		<sylistbox id="listaSelecao">
+			<auxhead class="cabecalhoPesquisa">
+				<auxheader>
+					<label value="Nome:" />
+					<textboxarg id="nomeArg"></textboxarg>
+				</auxheader>
+
+
+			</auxhead>
+
+			<listhead id="cabecalho">
+				<listheadersort label="Nome" value="nome" />
+			</listhead>
+
+			<listitem height="25px">
+				<listcellbind label="nome">
+					<div>Teste</div>
+				</listcellbind>
+			</listitem>
+
+
+		</sylistbox>
+
+	</selecaobox>
+
+	<manutencaobox>
+		<tablelayout>
+			<tablechildren>
+				<vbox>
+					<label value="Nome:" />
+					<textboxbind id="nome" width="300px" />
+					<label value="Ementa:" />
+					<ckeditorbind id="ed"
+						value="@{classecontrole.objetoAtual.ementa}">
+					</ckeditorbind>
+
+					<label value="Área:" />
+					<bandboxbind
+						nomeDoObjeto="classecontrole.objetoAtual.areaCurso">
+					</bandboxbind>
+				</vbox>
+			</tablechildren>
+		</tablelayout>
+	</manutencaobox>
+
+</window>

@@ -1,0 +1,132 @@
+<zk xmlns:w="http://www.zkoss.org/2005/zk/client" xmlns:h="http://www.w3.org/1999/xhtml">
+	<window id="principal" apply="br.gov.prodemge.prodigio.cursoprodigio.controle.CursoProdigioWindowIntroducao" sizable="true">
+		<div class="row">
+			<div class="col-sm-12">
+				<navbar id="menubar_principal" orient="horizontal">
+					<nav label="Menu" visible="true" badgeText="1" onCreate='self.setBadgeText(self.getChildren().size()+"")'>
+						<navitem label="Funcionário (CRUD - Mestre detalhe)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="funcionario/funcionario.zul" />
+						</navitem>
+						<navitem label="Dependentes (CRUD)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="funcionario/funcionarioDependente.zul" />
+						</navitem>
+						<navitem label="País (CRUD - Mestre detalhe - Subdetalhe)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="cidade/pais.zul" />
+						</navitem>
+						<navitem label="Logradouro (CRUD)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="cidade/logradouro.zul" />
+						</navitem>
+						<navitem label="Bairro (CRUD)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="cidade/bairro.zul" />
+						</navitem>
+						<navitem label="Curso (CRUD)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="curso/curso.zul" />
+						</navitem>
+						<navitem label="Compromisso (CRUD)" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="compromisso/compromisso.zul" />
+						</navitem>
+						<navitem label="Comite gestor" visible="true" onClick="classecontrole.abrir(self)">
+							<custom-attributes urlcasodeuso="comite/comitegestor.zul" />
+						</navitem>
+
+					</nav>
+				</navbar>
+			</div>
+		</div>
+		<div sclass="breadcrumb" id="breadcrumb">
+			<!-- 			<a href="#">Home</a>
+				<a href="#">Library</a>
+			-->
+		</div>
+		<div class="row" height="100%">
+			<div id="meio" class="col-sm-12">
+				<div height="600px"></div>
+				<!-- 				<vlayout spacing="15px">
+					<div> 
+					<hbox spacing="15px">
+					<vbox>
+					<groupbox width="600px">
+					<caption>Painel</caption>
+					<button label="Highlighted" onClick='classecontrole.abrirCasoDeUso("curso/curso.zul",false,"highlighted","80%")'></button>
+					<button label="Botão2"></button>
+					<button label="Botão3"></button>
+					</groupbox>
+					
+					<groupbox width="600px">
+					<caption>Denúncias</caption>
+					<grid>
+					<columns>
+					<column hflex="5">Recebidas</column>
+					<column hflex="6">Não recebidas</column>
+					<column hflex="3">Ação</column>
+					</columns>
+					<rows sclass="narrow">
+					<row>
+					<label value="Arabic (ar)" />
+					<label value="Ayman Elgharabawy" />
+					<button label="+"></button>
+					</row>
+					<row>
+					<label value="Hungarian (hu)" />
+					<label value="Andreas Klein" />
+					<button label="+"></button>
+					</row>
+					<row>
+					<label value="Italian (it)" />
+					<label value="Matteo Barbieri" />
+					<button label="+"></button>
+					</row>
+					</rows>
+					</grid>
+					</groupbox>
+					</vbox>
+					
+					<groupbox width="600px">
+					<caption>Downloads</caption>
+					<grid>
+					<columns>
+					<column hflex="5">Documentação</column>
+					<column hflex="6">Ação</column>
+					</columns>
+					<rows sclass="narrow">
+					<row>
+					<label value="Arabic (ar)" />
+					<label value="Ayman Elgharabawy" />
+					</row>
+					<row>
+					<label value="Hungarian (hu)" />
+					<label value="Andreas Klein" />
+					</row>
+					<row>
+					<label value="Italian (it)" />
+					<label value="Matteo Barbieri" />
+					</row>
+					</rows>
+					</grid>
+					</groupbox>
+					</hbox>
+					<groupbox width="50%">
+					<caption>Links úteis</caption>
+					<grid>
+					<auxhead>
+					<auxheader colspan="4" label="Contributor of ZK International Message(Part)" />
+					</auxhead>
+					<columns>
+					<column hflex="5">Descrição</column>
+					<column hflex="6">Links</column>
+					</columns>
+					<rows sclass="narrow">
+					<row>
+					<label value="Arabic (ar)" />
+					<a>link1</a>
+					</row>
+					</rows>
+					</grid>
+					</groupbox>
+					</vlayout>-->
+			</div>
+		</div>
+
+
+	</window>
+</zk>

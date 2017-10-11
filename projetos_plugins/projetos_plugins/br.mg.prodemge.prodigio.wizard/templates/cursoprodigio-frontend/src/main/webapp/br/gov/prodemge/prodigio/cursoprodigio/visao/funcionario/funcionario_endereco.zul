@@ -1,0 +1,19 @@
+<vbox>
+	<label value="cep:"></label>
+	<textbox value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.cep}" inplace="true" onBlur="classecontrole.recuperaLogradouroPorCep(self)"></textbox>
+	<separator></separator>
+
+	<label value="Logradouro:"></label>
+	<bandboxbind nomeDoObjeto="classecontrole.objetoAtual.funcionarioEndereco.logradouro" identificador="logradouro" labelValorList="Logradouro-300px:nome;Bairro:bairro;Cidade:bairro.cidade" width="600px" widthList="1000px" heightList="400px" atualizarComponentes="endereco" />
+	<separator></separator>
+
+
+	<label value="Bairro:"></label>
+	<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro}"></label>
+	<separator></separator>
+	<label value="Cidade:"></label>
+	<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro.cidade}"></label>
+	<separator></separator>
+	<label value="Estado:"></label>
+	<label value="@{classecontrole.objetoAtual.funcionarioEndereco.logradouro.bairro.cidade.estado}"></label>
+</vbox>

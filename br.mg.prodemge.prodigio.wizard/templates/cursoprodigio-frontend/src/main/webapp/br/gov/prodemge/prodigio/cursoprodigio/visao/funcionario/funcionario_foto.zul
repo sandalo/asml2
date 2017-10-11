@@ -1,0 +1,13 @@
+<vbox width="100%">
+	<hbox pack="center">
+		<imagebind id="imagem" content="@{classecontrole.objetoAtual.imagem}" ></imagebind>
+	</hbox>
+	<hbox pack="center" width="100%">
+		<button label="Anexar" id="anexar" onClick='classecontrole.anexar("imagem")' />
+		
+		
+		<button label="Limpar" id="limparFoto" onClick='classecontrole.limparFoto()' />
+		<button label="+" onClick='classecontrole.aumentarImage(imagem)' />
+		<button label="-" onClick='classecontrole.diminuirImage(imagem)' />
+	</hbox>
+</vbox>
