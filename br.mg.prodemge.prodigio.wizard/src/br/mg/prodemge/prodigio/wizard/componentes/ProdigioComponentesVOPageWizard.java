@@ -15,6 +15,7 @@ public class ProdigioComponentesVOPageWizard extends WizardPage {
 	private Composite container;
 	private Text inputNomeDaNovaInstanciaDoComponente;
 	private Text inputModulo;
+	private Label labelModulo;
 
 	public Text getInputModulo() {
 		return inputModulo;
@@ -53,15 +54,19 @@ public class ProdigioComponentesVOPageWizard extends WizardPage {
 	
 	private void initUI() {
 		GridData gd_combo = new GridData(SWT.FILL, SWT.CENTER, true, false);
-		gd_combo.widthHint = 200;
+		gd_combo.widthHint = 450;
 		
 		ModifyListener modifyListener = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				if (!inputNomeDaNovaInstanciaDoComponente.getText().isEmpty() && !inputModulo.getText().isEmpty()) 
 					updateButtons(true);
-				 else 
-					updateButtons(false);
+				 else {
+						if (!inputNomeDaNovaInstanciaDoComponente.getText().isEmpty() && inputModulo.getVisible()==false) 
+							updateButtons(true);
+						else
+							updateButtons(false);
+				 }
 			}
 
 			private void updateButtons(boolean value) {
@@ -79,14 +84,22 @@ public class ProdigioComponentesVOPageWizard extends WizardPage {
 		inputNomeDaNovaInstanciaDoComponente.setLayoutData(gd_combo);
 		inputNomeDaNovaInstanciaDoComponente.addModifyListener(modifyListener);
 		
-		Label labelPacote = new Label(container, SWT.NONE);
-		labelPacote.setText("Digite o nome do módulo:");
+		labelModulo = new Label(container, SWT.NONE);
+		labelModulo.setText("Digite o nome do módulo:");
 		
 		inputModulo = new Text(container, SWT.BORDER);
 		inputModulo.setLayoutData(gd_combo);
 		inputModulo.setEditable(false);
 	}
 	
+	public Label getLabelModulo() {
+		return labelModulo;
+	}
+
+	public void setLabelModulo(Label labelModulo) {
+		this.labelModulo = labelModulo;
+	}
+
 	@Override
 	public boolean canFlipToNextPage() {
 		return false;

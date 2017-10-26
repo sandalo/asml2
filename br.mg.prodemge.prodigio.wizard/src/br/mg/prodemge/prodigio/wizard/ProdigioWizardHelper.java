@@ -150,13 +150,17 @@ public class ProdigioWizardHelper {
 		}
 	}
 
-	private static void criaHierarquiaDaFolder(IFolder folder) throws CoreException {
+	public static void criaHierarquiaDaFolder(IFolder folder) {
 		IContainer parent = folder.getParent();
 		if (parent instanceof IFolder) {
 			criaHierarquiaDaFolder((IFolder) parent);
 		}
 		if (!folder.exists()) {
-			folder.create(false, true, null);
+			try {
+				folder.create(false, true, null);
+			} catch (CoreException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 
@@ -268,7 +272,7 @@ public class ProdigioWizardHelper {
 	}
 
 	public static void copiaArquivoDoTemplateParaArquivo(IFile ifile, File fileTemplate, Map parametros) {
-		BufferedReader buff = null;
+ 		BufferedReader buff = null;
 		ByteArrayOutputStream bao = null;
 		try {
 			criaHierarquiaDaFolder((IFolder) ifile.getParent());

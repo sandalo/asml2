@@ -43,7 +43,7 @@ public class ASMLResourceDeltaVisitor extends ASMLResourceVisitor implements IRe
 			if (componentInstance != null)
 //				throw new RuntimeException("Erro  ao adiconar novo recurso para uma instancia já existente, se o recurso é novo não deveria existir instancia de componente associado ao recurso");
 				asmlContext.removeComponentInstance(componentInstance);
-			componentInstance = ComponentInstance.createInstance(resource, false, null);
+			componentInstance = ComponentInstance.createInstance(resource, false);
 			asmlContext.addComponentInstance(componentInstance);
 			break;
 		case IResourceDelta.REMOVED:

@@ -31,9 +31,9 @@ public class ComponentInstance implements Comparable<ComponentInstance> {
  
 	private ComponentInstance() {	}
 	
-	public static ComponentInstance createInstance(IResource resource, boolean external, CompilationUnit compilationUnitAST){
+	public static ComponentInstance createInstance(IResource resource, boolean external){
 		ComponentInstance componentInstance = new ComponentInstance();
-		componentInstance.setCompilationUnitAST(compilationUnitAST);
+		//componentInstance.setCompilationUnitAST(compilationUnitAST);
 		componentInstance.setExternal(external);
 		componentInstance.setResource(resource);
 		return componentInstance;

@@ -46,12 +46,13 @@ public class ASMLResourceVisitor implements IResourceVisitor {
 
 		ComponentInstance componentInstance = asmlContext.getComponentInstanceByIResourceName(resource);
 		if (componentInstance == null) {
-			if (resource.getFileExtension() == null || !resource.getFileExtension().equals("java")) {
+			componentInstance = ComponentInstance.createInstance(resource, false);
+/*			if (resource.getFileExtension() == null || !resource.getFileExtension().equals("java")) {
 				componentInstance = ComponentInstance.createInstance(resource, false, null);
 			} else {
 				throw new RuntimeException("Recurso sem componentInstance. "+resource);
 			} 
-		}
+*/		}
 		this.asmlContext.addComponentInstance(componentInstance);
 		if (resource instanceof IFile && resource.getFileExtension().equals("java")){
 			parse(componentInstance);

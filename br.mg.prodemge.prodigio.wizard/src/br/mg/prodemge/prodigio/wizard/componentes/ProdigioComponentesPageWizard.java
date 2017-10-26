@@ -1,5 +1,6 @@
 package br.mg.prodemge.prodigio.wizard.componentes;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -122,15 +123,19 @@ public class ProdigioComponentesPageWizard extends WizardPage {
 
 				ProdigioComponentesWizard.setComponenteQueSeraInstanciado(abstractComponent);
 
+				File template = ProdigioComponentesWizard.recuperarTemplate(abstractComponent.getFullName());
 				if (!ProdigioComponentesWizard.requerComponenteDominante(abstractComponent)) {
-
-					recuperaComponentesDoTipoModulo();
-
-					carregaComboModulos();
-
-					comboModulos.setVisible(true);
-
-					labelModulos.setVisible(true);
+						recuperaComponentesDoTipoModulo();
+						carregaComboModulos();
+						comboModulos.setVisible(true);
+						labelModulos.setVisible(true);
+				} else if (template.isDirectory()) {
+					comboModulos.setVisible(false);
+					labelModulos.setVisible(false);
+					if (isPageComplete())
+						setPageComplete(true);
+					else
+						setPageComplete(false);
 				} else {
 					if (isPageComplete())
 						setPageComplete(true);
@@ -213,7 +218,7 @@ public class ProdigioComponentesPageWizard extends WizardPage {
 				AbstractComponent component = (AbstractComponent) eObject;
 				String fullName = component.getFullName();
 				boolean hasUppercase = !fullName.equals(fullName.toLowerCase());
-				if (hasUppercase && ProdigioComponentesWizard.templates.get(fullName) != null) {
+				if (/* hasUppercase && */ProdigioComponentesWizard.templates.get(fullName) != null) {
 					componentes.put(fullName, component);
 				}
 			}
@@ -228,7 +233,7 @@ public class ProdigioComponentesPageWizard extends WizardPage {
 		for (EObject eObject : allComponents) {
 			if (!(eObject instanceof ASMLModel)) {
 				AbstractComponent component = (AbstractComponent) eObject;
-				if(component.getName().equals("AppVO")){
+				if (component.getName().equals("AppVO")) {
 					final AbstractComponent componentPai = (AbstractComponent) component.eContainer();
 					String fullName = componentPai.getFullName();
 					final Set<ComponentInstance> instances = componentPai.getInstances();
@@ -247,6 +252,5 @@ public class ProdigioComponentesPageWizard extends WizardPage {
 			return true;
 		return false;
 	}
-
 
 }

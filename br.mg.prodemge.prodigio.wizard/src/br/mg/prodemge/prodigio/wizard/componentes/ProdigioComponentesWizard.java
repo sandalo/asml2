@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -23,7 +24,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -31,12 +31,12 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.osgi.framework.Bundle;
 
 import asmlbuilder.Activator;
+import asmlbuilder.builder.ASMLProcessor;
 import br.mg.prodemge.prodigio.wizard.ProdigioWizardHelper;
 import br.ufmg.dcc.asml.ComponentInstance;
 import br.ufmg.dcc.asml.aSMLModel.AbstractComponent;
@@ -88,32 +88,44 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 
 	private void initTemplates() {
 		templates.clear();
-
 		Bundle bundle = Platform.getBundle("br.mg.prodemge.prodigio.wizard");
+
 		String caminhoDoTemplate = "/templates_componentes/src/main/java/";
 		Enumeration<URL> entries = bundle.findEntries(caminhoDoTemplate, "*", true);
-		while (entries.hasMoreElements()) {
-			URL url = (URL) entries.nextElement();
-			final String[] segments = url.getFile().split("/");
-			final String templateNameWithExtension = segments[segments.length - 1];
-			String path = url.toString();
-			String ext = path.substring(path.lastIndexOf(".") + 1, path.length());
-			String templateName = templateNameWithExtension.replace("." + ext, "");
-			templates.put(templateName, templateNameWithExtension);
-		}
+		preencheMapDeTemplates(entries);
 
 		caminhoDoTemplate = "/templates_componentes/src/main/webapp/";
 		entries = bundle.findEntries(caminhoDoTemplate, "*", true);
-		while (entries.hasMoreElements()) {
-			URL url = (URL) entries.nextElement();
-			final String[] segments = url.getFile().split("/");
-			final String templateNameWithExtension = segments[segments.length - 1];
-			String path = url.toString();
-			String ext = path.substring(path.lastIndexOf(".") + 1, path.length());
-			String templateName = templateNameWithExtension.replace("." + ext, "");
-			templates.put(templateName, templateNameWithExtension);
-		}
+		preencheMapDeTemplates(entries);
 
+		caminhoDoTemplate = "/templates_componentes/src/test/java/";
+		entries = bundle.findEntries(caminhoDoTemplate, "*", true);
+		preencheMapDeTemplates(entries);
+
+	}
+
+	private void preencheMapDeTemplates(Enumeration<URL> entries) {
+		try {
+			while (entries.hasMoreElements()) {
+				URL url = (URL) entries.nextElement();
+				File f = new File(FileLocator.toFileURL(url).getPath());
+				if (f.isFile()) {
+					final String[] segments = url.getFile().split("/");
+					final String templateNameWithExtension = segments[segments.length - 1];
+					String path = url.toString();
+					String ext = path.substring(path.lastIndexOf(".") + 1, path.length());
+					String templateName = templateNameWithExtension.replace("." + ext, "");
+					templates.put(templateName, templateNameWithExtension);
+				} else {
+					final String[] segments = url.getFile().split("/");
+					final String templateName = segments[segments.length - 1];
+					templates.put(templateName, templateName);
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private String extractTemplateName(String path) {
@@ -132,7 +144,6 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 			openedProjectsMap.put(iProject.getName(), iProject);
 		}
 		atualizaVaccina();
-
 	}
 
 	@Override
@@ -172,7 +183,7 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 	}
 
 	private ComponentInstance[] recuperaNomeDaHierarquiaDoComponenteDominante(int length) {
-		int index = length-1;
+		int index = length - 1;
 		ComponentInstance[] compontentesParentsDoComponenteDominante = new ComponentInstance[length];
 		ComponentInstance aux;
 		aux = ProdigioComponentesWizard.componentInstanceDominante;
@@ -191,7 +202,7 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 	}
 
 	private AbstractComponent[] recuperaNomeDaHierarquiaDoComponenteQueSeraInstanciado(int length) {
-		int index = length-1;
+		int index = length - 1;
 		final AbstractComponent[] hierarquiaDoComponentesQueSeraInstanciado = new AbstractComponent[length];
 		AbstractComponent aux = ProdigioComponentesWizard.componenteQueSeraInstanciado;
 		while (!aux.getName().equals("sistema")) {
@@ -213,26 +224,40 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 			stringPathComponente = recuperaPathDoComponenteQueNaoPossuiComponenteDominante(nomeClasse, modulo);
 		}
 
-		File file = recuperarTemplate(templates.get(nomeDoComponenteQueSeraInstanciado));
+		File file = recuperarTemplate(nomeDoComponenteQueSeraInstanciado);
 		final String pathAux = file.toString();
 		if (pathAux.contains("\\webapp\\")) {
 			stringPathComponente = stringPathComponente.replace("/java/", "/webapp/");
 		}
+		if (pathAux.contains("\\test\\")) {
+			stringPathComponente = stringPathComponente.replace("/main/", "/test/");
+		}
 
 		final String[] segments = pathAux.split("\\.");
-
-		final String extension = segments[segments.length - 1];
-		IFile iFile = iprojectSelecionado.getFile(stringPathComponente + "." + extension);
-		ProdigioWizardHelper.copiaArquivoDoTemplateParaArquivo(iFile, file, variables);
-
-		IWorkbench wb = PlatformUI.getWorkbench();
-		IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+		if (!file.isDirectory()) {
+			final String extension = segments[segments.length - 1];
+			IFile iFile = null;
+			iFile = iprojectSelecionado.getFile(stringPathComponente + "." + extension);
+			ProdigioWizardHelper.copiaArquivoDoTemplateParaArquivo(iFile, file, variables);
+			IWorkbench wb = PlatformUI.getWorkbench();
+			IWorkbenchWindow win = wb.getActiveWorkbenchWindow();
+			try {
+				IDE.openEditor(win.getActivePage(), iFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			final String extension = segments[segments.length - 1];
+			IFolder folder = iprojectSelecionado.getFolder(stringPathComponente);
+			ProdigioWizardHelper.criaHierarquiaDaFolder(folder);
+		}
 		try {
-			IDE.openEditor(win.getActivePage(), iFile);
-		} catch (PartInitException e) {
+			iprojectSelecionado.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			atualizaVaccina();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		atualizaVaccina();
+
 	}
 
 	private void criaVariaveisRelacionadosAsClasseQueSeraoExtendidas() {
@@ -252,16 +277,28 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 	}
 
 	private String recuperaPathDoComponenteQueNaoPossuiComponenteDominante(String nomeClasse, String modulo) {
-		String stringPathComponente;
-		final String camada = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer().eContainer()).getName();
-		final Set<ComponentInstance> instances = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer().eContainer().eContainer()).getInstances();
-		final ComponentInstance instanceSistema = instances.iterator().next();
-		final IPath fullPath = instanceSistema.getResource().getFullPath();
-		final IPath removeFirstSegments = fullPath.removeFirstSegments(1);
-		final String matching = componenteQueSeraInstanciado.getMatching();
-		nomeClasse = matching.replaceAll("\\{\\?\\}", nomeClasse);
-		stringPathComponente = removeFirstSegments.append(camada).append(modulo).append(nomeClasse).toString();
-		stringPathComponente = stringPathComponente.replace("{", "").replace("}", "").replace("_", "").replace("?", "").replace("extension=zul", "").replace("*", "");
+		String stringPathComponente = null;
+		if (!ProdigioComponentesWizard.componenteQueSeraInstanciado.getName().equals("modulo")) {
+			final String camada = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer().eContainer()).getName();
+			final Set<ComponentInstance> instances = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer().eContainer().eContainer()).getInstances();
+			final ComponentInstance instanceSistema = instances.iterator().next();
+			final IPath fullPath = instanceSistema.getResource().getFullPath();
+			final IPath removeFirstSegments = fullPath.removeFirstSegments(1);
+			final String matching = componenteQueSeraInstanciado.getMatching();
+			nomeClasse = matching.replaceAll("\\{\\?\\}", nomeClasse);
+			stringPathComponente = removeFirstSegments.append(camada).append(modulo).append(nomeClasse).toString();
+			stringPathComponente = stringPathComponente.replace("{", "").replace("}", "").replace("_", "").replace("?", "").replace("extension=zul", "").replace("*", "");
+		}else{
+			final String camada = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer()).getName();
+			final Set<ComponentInstance> instances = ((AbstractComponent) ProdigioComponentesWizard.componenteQueSeraInstanciado.eContainer().eContainer()).getInstances();
+			final ComponentInstance instanceSistema = instances.iterator().next();
+			final IPath fullPath = instanceSistema.getResource().getFullPath();
+			final IPath removeFirstSegments = fullPath.removeFirstSegments(1);
+			final String matching = componenteQueSeraInstanciado.getMatching();
+			nomeClasse = matching.replaceAll("\\{\\?\\}", nomeClasse);
+			stringPathComponente = removeFirstSegments.append(camada).append(modulo).append(nomeClasse).toString();
+			stringPathComponente = stringPathComponente.replace("{", "").replace("}", "").replace("_", "").replace("?", "").replace("extension=zul", "").replace("*", "");
+		}
 		return stringPathComponente;
 	}
 
@@ -294,12 +331,17 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 				Activator.getAsmlProcessor().fullBuild(iProject, new NullProgressMonitor());
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Atualizar os componentes arquiteturais.");
+			e.printStackTrace();
 		}
 	}
 
+	
 	private void criaVariaveisDinamicas() {
-		variables.put("<%modulo%>", getInstanciaDoComponentePaiDoQueSeraInstanciad().getRawName());
+		final ComponentInstance instanciaDoComponentePaiDoQueSeraInstanciad = getInstanciaDoComponentePaiDoQueSeraInstanciad();
+		if (instanciaDoComponentePaiDoQueSeraInstanciad != null) {
+			final String rawName = instanciaDoComponentePaiDoQueSeraInstanciad.getRawName();
+			variables.put("<%modulo%>", rawName);
+		}
 	}
 
 	private void criaVariaveisRelacionadasAoConceito() {
@@ -341,13 +383,17 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 		}
 	}
 
-	private File recuperarTemplate(String template) {
+	public static File recuperarTemplate(String template) {
 		Bundle bundle = Platform.getBundle("br.mg.prodemge.prodigio.wizard");
 		String caminhoDoTemplate = "/templates_componentes/src/main/java/";
-		URL fileURL = bundle.getEntry(caminhoDoTemplate + template);
+		URL fileURL = bundle.getEntry(caminhoDoTemplate + templates.get(template));
 		if (fileURL == null) {
 			caminhoDoTemplate = "/templates_componentes/src/main/webapp/";
-			fileURL = bundle.getEntry(caminhoDoTemplate + template);
+			fileURL = bundle.getEntry(caminhoDoTemplate + templates.get(template));
+		}
+		if (fileURL == null) {
+			caminhoDoTemplate = "/templates_componentes/src/test/java/";
+			fileURL = bundle.getEntry(caminhoDoTemplate + templates.get(template));
 		}
 
 		URL fileURL2;
@@ -380,11 +426,22 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 				final String primeiraletra = rawName.substring(0, 1).toUpperCase();
 				final String nome = primeiraletra + rawName.substring(1);
 				_pageVO.getInputNomeDaNovaInstanciaDoComponente().setText(nome);
+				_pageVO.getInputModulo().setVisible(true);
+				_pageVO.getLabelModulo().setVisible(true);
 				return _pageVO;
 			} else if (page.isPageComplete()) {
-				carregaIntanciasDeComponentesDominantes();
-				((ProdigioComponentesPage2Wizard) _pageTwo).updatePage();
-				return _pageTwo;
+				final File recuperarTemplate = recuperarTemplate(componenteQueSeraInstanciado.getFullName());
+				if (recuperarTemplate.isDirectory()) {
+					_pageVO.getInputModulo().setVisible(false);
+					_pageVO.getLabelModulo().setVisible(false);
+					return _pageVO;
+				} else {
+					_pageVO.getInputModulo().setVisible(true);
+					_pageVO.getLabelModulo().setVisible(true);
+					carregaIntanciasDeComponentesDominantes();
+					((ProdigioComponentesPage2Wizard) _pageTwo).updatePage();
+					return _pageTwo;
+				}
 			}
 		}
 
@@ -511,4 +568,8 @@ public class ProdigioComponentesWizard extends Wizard implements INewWizard {
 		System.out.println(str);
 	}
 
+	public ProdigioComponentesPageWizard get_pageOne() {
+		return _pageOne;
+	}
+	
 }

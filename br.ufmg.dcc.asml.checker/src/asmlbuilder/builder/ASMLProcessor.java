@@ -363,7 +363,7 @@ public class ASMLProcessor {
 										String typePath = iPackageFragment.getPath().toString() + "/" + iClassFile.getType().getFullyQualifiedName().replaceAll("\\.", "/") + ".class";
 										FileInJar fileInJar = new FileInJar();
 										fileInJar.setFullPath(typePath);
-										ComponentInstance componentInstance = ComponentInstance.createInstance(fileInJar, true, null);
+										ComponentInstance componentInstance = ComponentInstance.createInstance(fileInJar, true);
 										componentInstance.setType(iClassFile.getType());
 										asmlContext.addComponentInstance(componentInstance);
 										//System.out.println(jarName+" => "+componentInstance);
@@ -402,7 +402,8 @@ public class ASMLProcessor {
 								continue;//Arquivos sem classe declarada
 							}
 							IType iType = types[0];
-							ComponentInstance componentInstance = ComponentInstance.createInstance(iCompilationUnit.getResource(), false, null);
+							final IResource resource = iCompilationUnit.getResource();
+							ComponentInstance componentInstance = ComponentInstance.createInstance(resource, false);
 							componentInstance.setType(iType);
 							asmlContext.addComponentInstance(componentInstance);
 						}
@@ -663,7 +664,7 @@ public class ASMLProcessor {
 		return null;
 	}
 
-	protected void clean(IProgressMonitor monitor, IProject iProject) throws CoreException {
+	public void clean(IProgressMonitor monitor, IProject iProject) throws CoreException {
 		iProject.deleteMarkers(ASMLConstant.MARKER_TYPE, true, IResource.DEPTH_INFINITE);
 	}
 
