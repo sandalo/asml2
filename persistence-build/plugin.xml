@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="persitenceBuilder"
+         name="Persitence Project Builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="persistencebuild.builder.PersitenceBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="persitenceNature"
+         name="Persitence Project Nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="persistencebuild.builder.PersitenceNature">
+         </run>
+      </runtime>
+      <builder
+            id="persistence-build.persitenceBuilder">
+      </builder>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Persitence Project Nature commands"
+            id="persistence-build.persitenceNature.category">
+      </category>
+      <command
+            name="Add/RemovePersitence Project Nature"
+            defaultHandler="persistencebuild.builder.AddRemovePersitenceNatureHandler"
+            categoryId="persistence-build.persitenceNature.category"
+            id="persistence-build.addRemovePersitenceNature">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+         <command
+               commandId="persistence-build.addRemovePersitenceNature"
+               label="Disable persistence.xml update"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <test
+                              value="persistence-build.persitenceNature"
+                              property="org.eclipse.core.resources.projectNature">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="persistence-build.addRemovePersitenceNature"
+               label="Enable persistence.xml update"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <adapt
+                           type="org.eclipse.core.resources.IProject">
+                        <not>
+                           <test
+                                 value="persistence-build.persitenceNature"
+                                 property="org.eclipse.core.resources.projectNature">
+                           </test>
+                        </not>
+                     </adapt>
+                  </iterate>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+   <extension
+         id="xmlProblem"
+         name="XML Problem"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.core.resources.problemmarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
+</plugin>
