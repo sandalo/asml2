@@ -182,7 +182,8 @@ public class PersitenceBuilder extends IncrementalProjectBuilder {
 		try {
 
 			final IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-			final IProject project = root.getProject("meucurso-backend");
+			final String backend_project = resource.getProject().getName().replaceAll("domain", "backend");
+			final IProject project = root.getProject(backend_project);
 			final IResource persistence = project.findMember("/src/main/resources/META-INF/persistence.xml");
 
 			ICompilationUnit element = (ICompilationUnit) JavaCore.create(resource);
@@ -241,12 +242,15 @@ public class PersitenceBuilder extends IncrementalProjectBuilder {
 	public static void addTagClass(IFile ifile, File fileTemplate, String nomeClass) {
 		BufferedReader buff = null;
 		BufferedReader buff2 = null;
+		BufferedReader buff3 = null;
 		ByteArrayOutputStream bao = null;
 		try {
 			InputStream in = new FileInputStream(fileTemplate);
 			InputStream in2 = new FileInputStream(fileTemplate);
+			InputStream in3 = new FileInputStream(fileTemplate);
 			buff = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 			buff2 = new BufferedReader(new InputStreamReader(in2, "UTF-8"));
+			buff3 = new BufferedReader(new InputStreamReader(in3, "UTF-8"));
 			bao = new ByteArrayOutputStream();
 			String bytesRead = "";
 			boolean jaExiste = false;
@@ -261,6 +265,16 @@ public class PersitenceBuilder extends IncrementalProjectBuilder {
 			}
 			if (jaExiste)
 				return;
+			
+			
+			if(contTag==0){
+				while ((bytesRead = buff3.readLine()) != null) {
+					contTag++;
+					if (bytesRead.contains("</non-jta-data-source>")) {
+						break;
+					}
+				}
+			}
 
 			int contTag2 = 0;
 			String quebra = "\n";
@@ -284,12 +298,16 @@ public class PersitenceBuilder extends IncrementalProjectBuilder {
 			}
 			buff.close();
 			buff2.close();
+			buff3.close();
 			bao.close();
 			in.close();
 			in2.close();
+			in3.close();
 		} catch (Exception e) {
 			try {
 				buff.close();
+				buff2.close();
+				buff3.close();
 				bao.close();
 			} catch (IOException e1) {
 				throw new RuntimeException("Erro ao criar estutura do projeto ou pasta ", e1);
